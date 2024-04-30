@@ -1,0 +1,36 @@
+h1{
+    padding-left:175px;
+    padding-right:175px;
+}
+.searchBar{
+    background-color:#4ABDAC;
+    height: 55px;
+    line-height:55px;
+    padding-left:175px;
+    padding-right:175px;
+
+
+}
+
+input {
+    border-radius:20px;
+    width:20em;
+    height: 2em;
+    text-indent: 15px;
+    border:none;
+    margin-right: 10px;
+}
+
+input[type=submit] {
+    width:10em;
+    background-color:#FC4A1A;
+    color:white;
+    text-indent:0px;
+    margin-left:100px;
+    height:2em;
+
+}
+input[type=submit]:active {
+    outline:auto;
+}
+

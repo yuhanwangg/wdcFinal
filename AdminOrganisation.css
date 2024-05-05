@@ -38,7 +38,7 @@ input[type=submit]:active {
 }
 
 
-.UserBox {
+.organisationBox {
     display:flex;
     flex-direction:column;
     justify-content: flex-start;
@@ -51,91 +51,79 @@ input[type=submit]:active {
     padding:10px;
 }
 
-.UserBox .lastLine {
+.organisationBox .paragraphAndButton {
     display: flex;
     flex-direction:row;
     justify-content:space-between;
 }
 
-.UserBox p {
+.organisationBox p {
     margin: 0;
     padding: 0.5em;
 }
 
-.UserBox button, .UserEdit button   {
+button {
     border-radius:20px;
     background-color:#FC4A1A;
     color:white;
     border:none;
-    width:15%;
+}
+
+.organisationBox button {
+    border:none;
+    width:40%;
     height:34.5px;
     align-self:flex-end;
     font-weight:bold;
     font-size:1em;
+    margin-left:10px;
 
 }
 
-.UserBox button:active, .UserEdit button:active  {
+button:active {
     outline:auto;
 }
 
-.UserBox .Name {
+.nameAndButtons button {
+    width:100px;
+    height:40px;
+}
+
+.nameAndButtons .accept {
+    margin-right: 20px;
+    background-color: #4ABDAC;
+}
+
+.organisationBox .name {
     font-weight:700;
     font-size:large;
     padding-bottom: 1em;
 
 }
 
-.UserEdit {
-    border-radius:20px;
-    background-color:#F5F5F5;
-    margin-left:175px;
-    margin-right:175px;
-    margin-top:75px;
-    padding:10px;
-}
-
-.ChangeTextInputs {
-    display:flex;
-    flex-direction:column;
-    justify-content: flex-start;
-}
-
-.UserEdit input[type=text] {
-    background-color:#D9D9D9;
-    margin-top: 10px;
-    text-indent: 15px;
-    border:none;
-    /* margin-right: 10px; */
-    height: 2em;
-}
-
-.UserEdit .SaveDeleteButtons {
+.branches {
     display:flex;
     flex-direction:row;
     justify-content: space-between;
-    margin-top:10px;
+
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:75px;
 }
 
-.UserEdit input[type=submit] {
-    background-color:#4ABDAC;
-    color:white;
-    text-indent:0px;
-    margin:0px;
-    border-radius:20px;
-    border:none;
-
-    width:15%;
-    height:34.5px;
-    /* align-self:flex-end; */
-    font-weight:bold;
-    font-size:1em;
+.branchRequests {
+    width:45%;
 }
-/* 
-.UserEdit .SaveDeleteButtons button {
-    align-self:flex-start;
-} */
 
+.currentBranches {
+    width:45%;
+}
+
+.nameAndButtons {
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: space-between;
+}
 
 @media only screen and (max-width:900px) {
     .searchBar {
@@ -149,12 +137,7 @@ input[type=submit]:active {
         margin:auto;
     }
 
-    .UserBox {
-        margin-left:auto;
-        margin-right:auto;
-    }
-
-    .UserEdit {
+    .organisationBox {
         margin-left:auto;
         margin-right:auto;
     }

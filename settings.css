@@ -7,7 +7,7 @@ h1{
     padding-right:175px;
 }
 
-input {
+.userInfo input {
     /* border-radius:20px; */
     width:100%;
     height: 2em;
@@ -50,23 +50,49 @@ input[type=submit]:active {
     flex-direction: column;
 }
 
+.box .checkAndSave {
+    display:flex;
+    align-items: center;
+    margin-top: 5px;
+}
+.box .checkboxContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.checkboxContainer input[type="checkbox"] {
+    margin-right: 5px;
+    width:min-content;
+    height: 2em;
+    text-indent: 15px;
+    border:none;
+    /* margin-right: 10px; */
+    margin-bottom: 5px;
+}
+
+.saveButton {
+    margin-left: auto;
+}
+
+.deleteButton {
+    margin-left: auto;
+    margin-top: 5px;
+}
+
 .box .lastLine {
     display: flex;
     flex-direction:row;
     justify-content:space-between;
 }
 
-.box .signUpSelect {
-    display: flex;
-    flex-direction:row;
-}
-
-.box .signUpSelect button {
-    margin-left: 3px;
-    margin-right: 3px;
-}
-
 .box p {
+    margin: 0;
+    padding: 0.5em;
+}
+
+.box b {
     margin: 0;
     padding: 0.5em;
 }
@@ -84,15 +110,6 @@ input[type=submit]:active {
     padding-left: 1%;
     padding-right: 1%
 
-}
-
-.box .signUpButton {
-  align-self: flex-end;
-  margin-top: 5px;
-}
-
-.box .googleButton {
-    align-self: center;
 }
 
 .box button:active {

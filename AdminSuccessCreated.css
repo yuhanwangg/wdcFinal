@@ -37,8 +37,8 @@ button {
 
 @media only screen and (max-width:900px) {
     .successBox, button {
-        margin-left:auto;
-        margin-right:auto;
+        margin-left:0;
+        margin-right:0;
     }
     #breadcrumb{
         margin-left:0px;

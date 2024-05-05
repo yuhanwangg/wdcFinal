@@ -1,0 +1,118 @@
+body {
+    /* we are using Inter font, but there are fallbacks listed */
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+p {
+    align-self: center;
+}
+
+input {
+    border-radius:20px;
+    width:100%;
+    height: 2em;
+    text-indent: 15px;
+    border:none;
+    /* margin-right: 10px; */
+    margin-bottom: 5px;
+}
+
+input[type=submit] {
+    width:15%;
+    background-color:#FC4A1A;
+    color:white;
+    text-indent:0px;
+    margin:auto;
+    height:2em;
+
+}
+
+input[type=submit]:active {
+    outline:auto;
+}
+
+.centeredText {
+    display:flex;
+    margin: auto;
+    justify-content: center;
+}
+
+.box {
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    border-radius:20px;
+    background-color:#D9D9D9;
+    width: 40%;
+    margin-top:75px !important;
+    margin:auto;
+    padding:10px;
+}
+
+.box p {
+    margin: 0;
+    padding: 0.5em;
+}
+
+.box button {
+    border-radius:20px;
+    background-color:#FC4A1A;
+    color:white;
+    border:none;
+    /* width:15%; */
+    height:34.5px;
+    /* align-self:flex-end; */
+    font-weight:bold;
+    font-size:1em;
+    padding-left: 3%;
+    padding-right: 3%
+
+}
+
+.box .loginSpace {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+    width: 70%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.box .loginButton {
+  align-self: flex-end;
+  margin-top: 5px;
+}
+
+.box .googleButton {
+    align-self: center;
+    margin-top: 5px;
+}
+
+.box button:active {
+    outline:auto;
+}
+
+.box .Name {
+    font-weight:700;
+    font-size:large;
+    padding-bottom: 1em;
+
+}
+
+.orDivider {
+    align-self:center
+}
+
+@media only screen and (max-width:900px) {
+
+    input, input[type=submit] {
+        width:100%;
+        margin:auto;
+    }
+
+    .box {
+        margin-left:auto;
+        margin-right:auto;
+    }
+}

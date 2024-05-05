@@ -6,6 +6,10 @@ h1{
     padding-left:175px;
     padding-right:175px;
 }
+
+h2 {
+    font-size:medium;
+}
 .searchBar{
     background-color:#4ABDAC;
     height: 55px;

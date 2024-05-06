@@ -147,3 +147,52 @@ button {
     padding-left:20px;
     padding-right:20px;
 }
+
+.footer {
+    background-color:#D1EEE5;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:90px;
+    padding-left:175px;
+    padding-right:175px;
+    height:165px;
+    align-items: center;
+}
+
+.footer #logoutFooter {
+    margin-left:auto;
+}
+
+@media only screen and (max-width:900px) {
+    h1{
+        padding:0px;
+    }
+    .postsPages {
+        padding:0px;
+    }
+    .boxes {
+        flex-direction:column;
+        padding:0px;
+    }
+    .branchList {
+        width:auto;
+    }
+
+    .posts {
+        width:auto;
+        margin:auto;
+    }
+
+    .logo {
+        max-height:100px;
+        max-width:100px;
+    }
+
+    .footer {
+        gap:5px;
+        padding-left:0;
+        padding-right:0;
+    }
+
+}

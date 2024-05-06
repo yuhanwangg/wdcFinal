@@ -7,6 +7,10 @@ p {
     align-self: center;
 }
 
+a {
+    color: #4ABDAC;
+    text-decoration: none;
+}
 input {
     border-radius:20px;
     width:100%;
@@ -42,7 +46,7 @@ input[type=submit]:active {
     flex-direction:column;
     justify-content: center;
     border-radius:20px;
-    background-color:#D9D9D9;
+    background-color:#E9E9E9;
     width: 40%;
     margin-top:75px !important;
     margin:auto;

@@ -1,0 +1,134 @@
+body {
+    /* we are using Inter font, but there are fallbacks listed */
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+h1{
+    padding-left:175px;
+    padding-right:175px;
+}
+.searchBar{
+    background-color:#4ABDAC;
+    height: 55px;
+    line-height:55px;
+    padding-left:175px;
+    padding-right:175px;
+    margin:auto;
+}
+
+input {
+    border-radius:20px;
+    width:20%;
+    height: 2em;
+    text-indent: 15px;
+    border:none;
+    margin-right: 10px;
+}
+
+input[type=submit] {
+    width:15%;
+    background-color:#FC4A1A;
+    color:white;
+    text-indent:0px;
+    margin:auto;
+    height:2em;
+
+}
+input[type=submit]:active {
+    outline:auto;
+}
+
+.organisationName {
+    color:#4ABDAC;
+    margin: 0;
+    padding: 0.5em;
+}
+
+.logoJoin {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    text-align: center;
+    height: 120px;
+    width: 250px;
+}
+
+.contentLeft {
+    display:flex;
+    flex-direction:column;
+}
+
+.logo {
+    max-width: 80%;
+    max-height: 80%;
+    margin-bottom: 5%;
+}
+
+.UserBox {
+    display:flex;
+    flex-direction:row;
+    justify-content: flex-start;
+    border-radius:20px;
+    /* background-color:#D9D9D9; */
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:20px;
+    padding:10px;
+    border-color: #4ABDAC;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.UserBox p {
+    margin: 0;
+    padding: 0.5em;
+}
+
+/* join button */
+.UserBox button {
+    border-radius:20px;
+    background-color:#FC4A1A;
+    color:white;
+    border:none;
+    /* width:30%; */
+    height:34.5px;
+    align-self:center;
+    font-weight:bold;
+    font-size:1em;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.UserBox button:active {
+    outline:auto;
+}
+
+.UserBox .Name {
+    font-weight:700;
+    font-size:large;
+    padding-bottom: 1em;
+
+}
+
+.pageNo {
+    margin-right: 175px;
+    display:flex;
+    justify-content: flex-end;
+}
+
+@media only screen and (max-width:900px) {
+    .searchBar {
+        height:auto;
+        padding-left:15px;
+        padding-right:15px;
+        line-height:45px;
+    }
+    input, input[type=submit] {
+        width:100%;
+        margin:auto;
+    }
+
+    .UserBox {
+        margin-left:auto;
+        margin-right:auto;
+    }
+}

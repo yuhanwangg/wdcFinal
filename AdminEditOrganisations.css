@@ -7,6 +7,12 @@ h1{
     padding-right:175px;
 }
 
+.contentWrapper {
+    min-height:100vh;
+    margin-bottom: -295px;
+}
+
+
 .searchBar{
     background-color:#4ABDAC;
     height: 55px;

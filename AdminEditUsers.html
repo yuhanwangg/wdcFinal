@@ -9,33 +9,44 @@
     </head>
 
     <body>
-        <!-- nav bar -->
+        <div class="contentWrapper">
+            <!-- nav bar -->
 
-        <h1>Edit Users</h1>
+            <h1>Edit Users</h1>
 
-        <!-- search bar -->
-        <div class="searchBar">
-            <input type="text" placeholder="First Name">
-            <input type="text" placeholder="Last Name">
-            <input type="text" placeholder="Email">
-            <input type="submit">
-        </div>
-
-        <!-- User box, filled using something (AJAX?), should be empty <p> tags -->
-        <div class="UserEdit">
-            <div class="changeTextInputs">
-                <input type="text" placeholder="Current User Name">
-                <input type="text" placeholder="Current First Name">
-                <input type="text" placeholder="Current Last Name">
-                <input type="text" placeholder="Current Email">
+            <!-- search bar -->
+            <div class="searchBar">
+                <input type="text" placeholder="First Name">
+                <input type="text" placeholder="Last Name">
+                <input type="text" placeholder="Email">
+                <input type="submit">
             </div>
-            <div class = "SaveDeleteButtons">
-                <button>Delete User</button>
-                <input type="submit" placeholder="Save">
+
+            <!-- User box, filled using something (AJAX?), should be empty <p> tags -->
+            <div class="UserEdit">
+                <div class="changeTextInputs">
+                    <input type="text" placeholder="Current User Name">
+                    <input type="text" placeholder="Current First Name">
+                    <input type="text" placeholder="Current Last Name">
+                    <input type="text" placeholder="Current Email">
+                </div>
+                <div class = "SaveDeleteButtons">
+                    <button>Delete User</button>
+                    <input type="submit" placeholder="Save">
+                </div>
             </div>
         </div>
 
         <!-- footer -->
+        <div class="footer">
+            <p>Edit Users</p>
+            <p>Edit Organisations</p>
+            <p>Admin</p>
+            <p>Volunteer Opportunities</p>
+            <p>Find Organisations</p>
+            <p id="logoutFooter">Logout</p>
+        </div>
+
 
     </body>
 

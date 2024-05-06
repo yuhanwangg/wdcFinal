@@ -9,29 +9,31 @@
     </head>
 
     <body>
-        <!-- nav bar -->
+        <div class="contentWrapper">
+            <!-- nav bar -->
 
-        <h1>Edit Organisations</h1>
+            <h1>Edit Organisations</h1>
 
-        <!-- search bar -->
-        <div class="searchBar">
-            <input type="text" placeholder="Organisation Name">
-            <input type="text" placeholder="Email">
-            <input type="submit">
-        </div>
-
-        <!-- Oranisation edit box, filled using something (Vue?), placeholder changes -->
-        <div class="organisationEdit">
-            <div class="changeTextInputs">
-                <input type="text" placeholder="Current Organisation Name">
-                <input type="text" placeholder="Current Organisation Email">
-                <!-- when the input is changed, e.g. onInput updateCharacterCount() -->
-                <textarea maxlength="750">Their bio that spans multiple lines. Its very very very very long, and it really does span multiple lines, this just takes a while to write multiple lines. Something about how great they are and what you can do to make an impact. They are really important to the world, and your local community. Everyone loves organisation Name. With them you will be satisfied in how you are helping the world, all it takes is just one person to make a difference. Join us today and you wont regret it. We promise!"</textarea>
-                <!-- <div id="characterCount">0/750</div>  -->
+            <!-- search bar -->
+            <div class="searchBar">
+                <input type="text" placeholder="Organisation Name">
+                <input type="text" placeholder="Email">
+                <input type="submit">
             </div>
-            <div class = "SaveDeleteButtons">
-                <button>Delete Organisation</button>
-                <input type="submit" placeholder="Save">
+
+            <!-- Oranisation edit box, filled using something (Vue?), placeholder changes -->
+            <div class="organisationEdit">
+                <div class="changeTextInputs">
+                    <input type="text" placeholder="Current Organisation Name">
+                    <input type="text" placeholder="Current Organisation Email">
+                    <!-- when the input is changed, e.g. onInput updateCharacterCount() -->
+                    <textarea maxlength="750">Their bio that spans multiple lines. Its very very very very long, and it really does span multiple lines, this just takes a while to write multiple lines. Something about how great they are and what you can do to make an impact. They are really important to the world, and your local community. Everyone loves organisation Name. With them you will be satisfied in how you are helping the world, all it takes is just one person to make a difference. Join us today and you wont regret it. We promise!"</textarea>
+                    <!-- <div id="characterCount">0/750</div>  -->
+                </div>
+                <div class = "SaveDeleteButtons">
+                    <button>Delete Organisation</button>
+                    <input type="submit" placeholder="Save">
+                </div>
             </div>
         </div>
 

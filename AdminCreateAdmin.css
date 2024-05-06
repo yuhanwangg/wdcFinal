@@ -12,6 +12,9 @@ h2 {
     font-size:medium;
 }
 
+.contentWrapper {
+    min-height:100vh;
+}
 
 .createAdmin {
     border-radius:20px;

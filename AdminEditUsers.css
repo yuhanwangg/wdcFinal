@@ -9,7 +9,7 @@ h1{
 
 .contentWrapper {
     min-height:100vh;
-    margin-bottom: -295px;
+    /* margin-bottom: -295px; */
 }
 
 
@@ -44,7 +44,7 @@ input[type=submit]:active {
     outline:auto;
 }
 
-.UserEdit button   {
+#UserEdit button, #confirmBox .confirmButtons .confirmDelete {
     border-radius:20px;
     background-color:#FC4A1A;
     color:white;
@@ -57,11 +57,11 @@ input[type=submit]:active {
 
 }
 
-.UserEdit button:active  {
+button:active {
     outline:auto;
 }
 
-.UserEdit {
+#UserEdit {
     border-radius:20px;
     background-color:#EDEDED;
     margin-left:175px;
@@ -76,23 +76,22 @@ input[type=submit]:active {
     justify-content: flex-start;
 }
 
-.UserEdit input[type=text] {
+#UserEdit input[type=text] {
     background-color:#FFFFFF;
     margin-top: 10px;
     text-indent: 15px;
     border:none;
-    /* margin-right: 10px; */
     height: 2em;
 }
 
-.UserEdit .SaveDeleteButtons {
+#UserEdit .SaveDeleteButtons {
     display:flex;
     flex-direction:row;
     justify-content: space-between;
     margin-top:10px;
 }
 
-.UserEdit input[type=submit] {
+#UserEdit input[type=submit], #confirmBox .confirmButtons .back, #deletedSuccess .back{
     background-color:#4ABDAC;
     color:white;
     text-indent:0px;
@@ -102,7 +101,6 @@ input[type=submit]:active {
 
     width:15%;
     height:34.5px;
-    /* align-self:flex-end; */
     font-weight:bold;
     font-size:1em;
 }
@@ -120,7 +118,7 @@ input[type=submit]:active {
     flex-wrap:wrap;
 }
 
-.saveSuccess {
+#saveSuccess {
     margin-left:175px;
     margin-right:175px;
     margin-top:10px;
@@ -131,9 +129,37 @@ input[type=submit]:active {
     text-align: center;
 }
 
-.saveSuccess p {
+#saveSuccess p {
     color:white;
 }
+
+#confirmBox {
+    border-radius:20px;
+    background-color:#EDEDED;
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:75px;
+    padding:10px;
+    text-align: center;
+}
+
+#confirmBox .confirmButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#deletedSuccess {
+    border-radius:20px;
+    background-color:#EDEDED;
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:75px;
+    padding:10px;
+    text-align: center;
+}
+
+
 @media only screen and (max-width:900px) {
     .searchBar {
         height:auto;
@@ -146,7 +172,7 @@ input[type=submit]:active {
         margin:auto;
     }
 
-    .UserEdit {
+    #UserEdit {
         margin-left:auto;
         margin-right:auto;
     }
@@ -159,6 +185,11 @@ input[type=submit]:active {
         padding-right:0;
         flex-direction: column;
         justify-content: flex-start;
+    }
+
+    #saveSuccess, #confirmBox, #deletedSuccess {
+        margin-left:0;
+        margin-right:0;
     }
 
 }

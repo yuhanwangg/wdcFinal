@@ -24,7 +24,7 @@
             </div>
 
             <!-- User box, filled using something (AJAX?), should be empty <p> tags -->
-            <div class="UserEdit">
+            <div id="UserEdit">
                 <div class="changeTextInputs">
                     <input type="text" placeholder="Current User Name">
                     <input type="text" placeholder="Current First Name">
@@ -32,7 +32,7 @@
                     <input type="text" placeholder="Current Email">
                 </div>
                 <div class = "SaveDeleteButtons">
-                    <button>Delete User</button>
+                    <button onclick="checkDeleteUser()">Delete User</button>
                     <input type="submit" value="Save" onclick="saveUserInfoConfirm()">
                 </div>
             </div>

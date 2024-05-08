@@ -120,6 +120,20 @@ input[type=submit]:active {
     flex-wrap:wrap;
 }
 
+.saveSuccess {
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:10px;
+    background-color:#F7B733;
+    border-radius:20px;
+    padding-top:5px;
+    padding-bottom:5px;
+    text-align: center;
+}
+
+.saveSuccess p {
+    color:white;
+}
 @media only screen and (max-width:900px) {
     .searchBar {
         height:auto;

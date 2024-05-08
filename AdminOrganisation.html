@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="AdminOrganisation.css">
         <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src = "AdminOrganisations.js"></script>
 
     </head>
 
@@ -38,7 +39,7 @@
                         in how you are helping the world, all it takes is
                         just one person to make a difference. Join us today
                         and you wont regret it. We promise!</p>
-                    <button>Edit</button>
+                    <button onclick="goToEditOrganisation()">Edit</button>
                 </div>
             </div>
 
@@ -54,8 +55,8 @@
                         <div class="nameAndButtons">
                             <p>Branch name 6</p>
                             <div>
-                                <button class="accept">Accept &check;</button>
-                                <button class="reject">Reject &#10005;</button>
+                                <button class="accept" onclick="branchRequestAccept('BranchName requested using Vue', this)">Accept &check;</button>
+                                <button class="reject" onclick="branchRequestReject(this)">Reject &#10005;</button>
                             </div>
                         </div>
                         <hr>
@@ -64,8 +65,8 @@
                         <div class="nameAndButtons">
                             <p>Branch name 7</p>
                             <div>
-                                <button class="accept">Accept &check;</button>
-                                <button class="reject">Reject &#10005;</button>
+                                <button class="accept" onclick="branchRequestAccept('BranchName requested using Vue', this)">Accept &check;</button>
+                                <button class="reject" onclick="branchRequestReject(this)">Reject &#10005;</button>
                             </div>
                         </div>
                         <hr>
@@ -73,8 +74,8 @@
                         <div class="nameAndButtons">
                             <p>Branch name 8</p>
                             <div>
-                                <button class="accept">Accept &check;</button>
-                                <button class="reject">Reject &#10005;</button>
+                                <button class="accept" onclick="branchRequestAccept('BranchName requested using Vue', this)">Accept &check;</button>
+                                <button class="reject" onclick="branchRequestReject(this)">Reject &#10005;</button>
                             </div>
                         </div>
                         <hr>
@@ -91,31 +92,31 @@
                         <!-- These wouldn't exist until there are branches -->
                         <div class="nameAndButtons">
                             <p>Branch name 1</p>
-                            <button class="remove">Remove</button>
+                            <button class="remove" onclick="branchRemove(this)">Remove</button>
                         </div>
                         <hr>
 
                         <div class="nameAndButtons">
                             <p>Branch name 2</p>
-                            <button class="remove">Remove</button>
+                            <button class="remove" onclick="branchRemove(this)">Remove</button>
                         </div>
                         <hr>
 
                         <div class="nameAndButtons">
                             <p>Branch name 3</p>
-                            <button class="remove">Remove</button>
+                            <button class="remove" onclick="branchRemove(this)">Remove</button>
                         </div>
                         <hr>
 
                         <div class="nameAndButtons">
                             <p>Branch name 4</p>
-                            <button class="remove">Remove</button>
+                            <button class="remove" onclick="branchRemove(this)">Remove</button>
                         </div>
                         <hr>
 
                         <div class="nameAndButtons">
                             <p>Branch name 5</p>
-                            <button class="remove">Remove</button>
+                            <button class="remove" onclick="branchRemove(this)">Remove</button>
                         </div>
                         <hr>
                     </div>

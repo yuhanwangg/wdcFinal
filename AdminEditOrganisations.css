@@ -9,7 +9,6 @@ h1{
 
 .contentWrapper {
     min-height:100vh;
-    margin-bottom: -295px;
 }
 
 
@@ -40,11 +39,11 @@ input[type=submit] {
     height:2em;
 
 }
-input[type=submit]:active {
+input[type=submit]:active, .organisationEdit input[type=submit]:active, button:active {
     outline:auto;
 }
 
-.organisationEdit button   {
+.organisationEdit button, #confirmBox .confirmButtons .confirmDelete  {
     border-radius:20px;
     background-color:#FC4A1A;
     color:white;
@@ -85,7 +84,6 @@ input[type=submit]:active {
 }
 
 .organisationEdit textarea {
-    /* position:relative; */
     resize:none;
     height:8em;
     text-indent: 0px;
@@ -108,7 +106,7 @@ input[type=submit]:active {
     margin-top:10px;
 }
 
-.organisationEdit input[type=submit] {
+.organisationEdit input[type=submit], #confirmBox .confirmButtons .back, #deletedSuccess .back {
     background-color:#4ABDAC;
     color:white;
     text-indent:0px;
@@ -118,11 +116,26 @@ input[type=submit]:active {
 
     width:15%;
     height:34.5px;
-    /* align-self:flex-end; */
     font-weight:bold;
     font-size:1em;
 }
 
+.backToOrganisations {
+    width:auto;
+    height:auto;
+    background-color:#4ABDAC;
+    color:white;
+    text-indent:0px;
+    margin:0px;
+    border-radius:20px;
+    border:none;
+    font-weight:bold;
+    font-size:1em;
+}
+
+#confirmBox .confirmButtons .back, #deletedSuccess .back {
+    height:auto;
+}
 
 .footer {
     background-color:#D1EEE5;
@@ -135,6 +148,47 @@ input[type=submit]:active {
     height:165px;
     align-items: center;
     flex-wrap:wrap;
+}
+
+#saveSuccess {
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:10px;
+    background-color:#F7B733;
+    border-radius:20px;
+    padding-top:5px;
+    padding-bottom:5px;
+    text-align: center;
+}
+
+#saveSuccess p {
+    color:white;
+}
+
+#confirmBox {
+    border-radius:20px;
+    background-color:#EDEDED;
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:75px;
+    padding:10px;
+    text-align: center;
+}
+
+#confirmBox .confirmButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#deletedSuccess {
+    border-radius:20px;
+    background-color:#EDEDED;
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:75px;
+    padding:10px;
+    text-align: center;
 }
 
 @media only screen and (max-width:900px) {
@@ -163,5 +217,10 @@ input[type=submit]:active {
         padding-right:0;
         flex-direction: column;
         justify-content: flex-start;
+    }
+
+    #saveSuccess, #confirmBox, #deletedSuccess {
+        margin-left:0;
+        margin-right:0;
     }
 }

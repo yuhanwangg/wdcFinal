@@ -41,6 +41,10 @@ button {
     /* font-size:1em; */
 }
 
+button:active {
+    outline:auto;
+}
+
 .footer {
     background-color:#D1EEE5;
     display: flex;

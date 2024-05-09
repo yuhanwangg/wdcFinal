@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="AdminEditOrganisations.css">
         <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src = "AdminEditOrganisations.js"></script>
 
     </head>
 
@@ -31,8 +32,8 @@
                     <!-- <div id="characterCount">0/750</div>  -->
                 </div>
                 <div class = "SaveDeleteButtons">
-                    <button>Delete Organisation</button>
-                    <input type="submit" placeholder="Save">
+                    <button onclick="checkDeleteOrganisatoin()">Delete Organisation</button>
+                    <input type="submit" onclick="saveOrganisationInfoConfirm()" value="Save">
                 </div>
             </div>
         </div>

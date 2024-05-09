@@ -129,8 +129,12 @@ button:active {
 
 .nameAndButtons {
     display:flex;
-    flex-flow:row wrap;
+    flex-direction:row;
     justify-content: space-between;
+}
+
+.branchRequests .nameAndButtons {
+    flex-flow:wrap;
 }
 
 .footer {

@@ -24,14 +24,24 @@
 
             <!-- Branch boxes and post updates -->
             <div class="boxes">
-                <div class="branchList">
-                    <h2>Current Branch</h2>
+                <div class="dropdown">
+                    <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button>
+                    <div id="myDropdown" class="dropdown-content">
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 1</a>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 2</a>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 3</a>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 4</a>
+                    </div>
+                  </div>
+<!--
+                <div class="branchList"> -->
+                    <!-- <h2>Current Branch</h2> -->
                     <!-- filled with all the branch names from Ajax -->
-                    <p>Branch Name 1</p>
+                    <!-- <p>Branch Name 1</p>
                     <p>Branch Name 2</p>
                     <p>Branch Name 3</p>
                     <p>Branch Name 4</p>
-                </div>
+                </div> -->
 
                 <div class="posts">
                     <h2>New Post</h2>

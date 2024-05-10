@@ -1,3 +1,30 @@
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function showBranchOptions() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+        }
+        }
+    }
+}
+
+function chooseBranch(branch) {
+    var branchName = 
+    document.getElement
+}
+
+
+
 function post() {
     var updateTitleInput = document.querySelector('.newPost input[type="text"]').value;
     var updateMessageInput = document.querySelector('.newPost textarea').value;

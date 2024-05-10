@@ -19,10 +19,11 @@ window.onclick = function(event) {
 }
 
 function chooseBranch(branch) {
-    var branchName = 
-    document.getElement
+    var branchName = branch.textContent;
+    var dropDown = document.querySelector(".dropbtn");
+    dropDown.innerText = branchName + " ▼";
+    document.getElementById("myDropdown").classList.remove("show");
 }
-
 
 
 function post() {

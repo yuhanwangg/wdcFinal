@@ -27,6 +27,7 @@ function chooseBranch(branch) {
 
 
 function post() {
+
     var updateTitleInput = document.querySelector('.newPost input[type="text"]').value;
     var updateMessageInput = document.querySelector('.newPost textarea').value;
 
@@ -82,5 +83,71 @@ function post() {
 
     oldPostsContainer.insertBefore(newPost, oldPostsContainer.firstChild);
 
+    // Convert NodeList to an array for easier manipulation
+    var allPosts = document.querySelectorAll('.oldPosts');
+    var postsArray = Array.from(allPosts);
 
+    // Hide posts beyond the 4th index
+    for (var i = 4; i < postsArray.length; i++) {
+        postsArray[i].style.display = 'none';
+    }
+}
+var currentPageNumber = 0;
+function nextPage() {
+    currentPageNumber++;
+    if (currentPageNumber === 0) {
+        var newPostBox = document.querySelector('.newPost');
+        newPostBox.classList.remove('hidden');
+    } else {
+        var newPostBox = document.querySelector('.newPost');
+        newPostBox.classList.add('hidden');
+    }
+
+    //remove everything (except for current Branch selector) and load new updates from array of updates
+    var allPosts = document.querySelectorAll('.oldPosts');
+    var postsArray = Array.from(allPosts);
+
+    //load in new updates from next page
+    //postsarray will be from the SQL
+    // var oldPosts = postsArray;
+    //hide all posts that aren't on the page
+    for (var i = 0; i < postsArray.length; i++) {
+        postsArray[i].style.display = 'none';
+    }
+    //show the 4 visible posts on the page
+    for (var i = 4*currentPageNumber; i < 4*currentPageNumber + 4; i++) {
+        postsArray[i].style.display = 'block';
+    }
+
+}
+
+function backPage() {
+    //ensure that you don't go back to a non-existant page
+    if (currentPageNumber > 0) {
+        currentPageNumber--;
+
+        //remove everything (except for current Branch selector) and load new updates from array of updates
+        var allPosts = document.querySelectorAll('.oldPosts');
+        var postsArray = Array.from(allPosts);
+
+        //load in new updates from next page
+        //postsarray will be from the SQL
+        // var oldPosts = postsArray;
+        //hide all posts that aren't on the page
+        for (var i = 0; i < postsArray.length; i++) {
+            postsArray[i].style.display = 'none';
+        }
+        //show the 4 visible posts on the page
+        for (var i = 4*currentPageNumber; i < 4*currentPageNumber + 4; i++) {
+            postsArray[i].style.display = 'block';
+        }
+
+        if (currentPageNumber === 0) {
+            var newPostBox = document.querySelector('.newPost');
+            newPostBox.classList.remove('hidden');
+        } else {
+            var newPostBox = document.querySelector('.newPost');
+            newPostBox.classList.add('hidden');
+        }
+    }
 }

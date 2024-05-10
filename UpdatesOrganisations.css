@@ -184,21 +184,30 @@ button {
     margin-bottom:10px;
 }
 
-.nextPageButton {
+.nextPageButtons {
+    margin-right:175px;
+    margin-left:175px;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+/* .nextPageButton {
     margin-right:175px;
     display:flex;
     flex-direction:row;
     justify-content:flex-end;
 }
-
-.nextPageButton button {
+.backPageButton {
+    margin-left: 175px;
+} */
+.nextPageButtons button{
     padding-top:10px;
     padding-bottom:25px;
     padding-left:20px;
     padding-right:20px;
 }
 
-.nextPageButton button:active {
+.nextPageButtons button:active{
     outline:auto;
 }
 
@@ -215,6 +224,9 @@ button {
     flex-wrap:wrap;
 }
 
+.newPost.hidden {
+    display: none;
+}
 @media only screen and (max-width:900px) {
     h1{
         padding:0px;

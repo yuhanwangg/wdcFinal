@@ -91,7 +91,7 @@ function post() {
     var postsArray = Array.from(allPosts);
 
     // Hide posts beyond the 4th index
-    for (var i = 4; i < postsArray.length; i++) {
+    for (let i = 4; i < postsArray.length; i++) {
         postsArray[i].style.display = 'none';
     }
 
@@ -103,7 +103,7 @@ function post() {
 
     //change the number of posts
     var postNumber = document.querySelector('#numPosts');
-    postNumber.innerText = allPosts.length + " Posts"
+    postNumber.innerText = allPosts.length + " Posts";
 
     //change the page number
     var pageNumber = document.querySelector('#pageNum');
@@ -115,13 +115,12 @@ function nextPage() {
 
     // Hide the "New Post" box if it's not the first page
     var newPostBox = document.querySelector('.newPost');
+    var newPostTitle = document.querySelector('h2');
     if (currentPageNumber !== 0) {
         newPostBox.classList.add('hidden');
-        var newPostTitle = document.querySelector('h2');
         newPostTitle.classList.add('hidden');
     } else {
         newPostBox.classList.remove('hidden');
-        var newPostTitle = document.querySelector('h2');
         newPostTitle.classList.remove('hidden');
 
     }
@@ -133,7 +132,7 @@ function nextPage() {
     //postsarray will be from the SQL
     // var oldPosts = postsArray;
     //hide all posts that aren't on the page
-    for (var i = 0; i < postsArray.length; i++) {
+    for (let i = 0; i < postsArray.length; i++) {
         postsArray[i].style.display = 'none';
     }
 
@@ -142,7 +141,7 @@ function nextPage() {
     var endIndex = (currentPageNumber + 1) * 4;
 
     // Display posts within the calculated range
-    for (var i = startIndex; i < endIndex && i < allPosts.length; i++) {
+    for (let i = startIndex; i < endIndex && i < allPosts.length; i++) {
         allPosts[i].style.display = 'block';
     }
 
@@ -179,7 +178,7 @@ function backPage() {
         //postsarray will be from the SQL
         // var oldPosts = postsArray;
         //hide all posts that aren't on the page
-        for (var i = 0; i < postsArray.length; i++) {
+        for (let i = 0; i < postsArray.length; i++) {
             postsArray[i].style.display = 'none';
         }
 
@@ -187,19 +186,17 @@ function backPage() {
         var endIndex = (currentPageNumber + 1) * 4;
 
         //show the 4 visible posts on the page
-        for (var i = startIndex; i < endIndex && i < allPosts.length; i++) {
+        for (let i = startIndex; i < endIndex && i < allPosts.length; i++) {
             postsArray[i].style.display = 'block';
         }
 
+        var newPostBox = document.querySelector('.newPost');
+        var newPostTitle = document.querySelector('h2');
         if (currentPageNumber === 0) {
-            var newPostBox = document.querySelector('.newPost');
             newPostBox.classList.remove('hidden');
-            var newPostTitle = document.querySelector('h2');
             newPostTitle.classList.remove('hidden');
         } else {
-            var newPostBox = document.querySelector('.newPost');
             newPostBox.classList.add('hidden');
-            var newPostTitle = document.querySelector('h2');
             newPostTitle.classList.add('hidden');
         }
 

@@ -91,19 +91,27 @@ function post() {
     for (var i = 4; i < postsArray.length; i++) {
         postsArray[i].style.display = 'none';
     }
-}
-var currentPageNumber = 0;
-function nextPage() {
-    currentPageNumber++;
-    if (currentPageNumber === 0) {
-        var newPostBox = document.querySelector('.newPost');
-        newPostBox.classList.remove('hidden');
-    } else {
-        var newPostBox = document.querySelector('.newPost');
-        newPostBox.classList.add('hidden');
+
+    //if there are more than 4 posts, display the next page button
+    if (allPosts.length > 4) {
+        var nextPageButton = document.querySelector('.next');
+        nextPageButton.style.display = 'block';
     }
 
-    //remove everything (except for current Branch selector) and load new updates from array of updates
+}
+var currentPageNumber = 0;
+
+function nextPage() {
+    currentPageNumber++;
+
+    // Hide the "New Post" box if it's not the first page
+    var newPostBox = document.querySelector('.newPost');
+    if (currentPageNumber !== 0) {
+        newPostBox.classList.add('hidden');
+    } else {
+        newPostBox.classList.remove('hidden');
+    }
+
     var allPosts = document.querySelectorAll('.oldPosts');
     var postsArray = Array.from(allPosts);
 
@@ -114,11 +122,30 @@ function nextPage() {
     for (var i = 0; i < postsArray.length; i++) {
         postsArray[i].style.display = 'none';
     }
-    //show the 4 visible posts on the page
-    for (var i = 4*currentPageNumber; i < 4*currentPageNumber + 4; i++) {
-        postsArray[i].style.display = 'block';
+
+    // Calculate the start and end index of posts to display
+    var startIndex = currentPageNumber * 4;
+    var endIndex = (currentPageNumber + 1) * 4;
+
+    // Display posts within the calculated range
+    for (var i = startIndex; i < endIndex && i < allPosts.length; i++) {
+        allPosts[i].style.display = 'block';
     }
 
+    // Hide or show the Next Page button based on whether there are more posts to display
+    var nextPageButton = document.querySelector('.next');
+    var previousPageButon = document.querySelector('.previous');
+        if (endIndex >= allPosts.length) {
+            nextPageButton.style.display = 'none';
+            if (startIndex != 0) {
+                previousPageButon.style.display = 'block';
+            }
+        } else {
+            nextPageButton.style.display = 'block';
+            if (startIndex != 0) {
+                previousPageButon.style.display = 'block';
+            }
+        }
 }
 
 function backPage() {
@@ -137,8 +164,12 @@ function backPage() {
         for (var i = 0; i < postsArray.length; i++) {
             postsArray[i].style.display = 'none';
         }
+
+        var startIndex = currentPageNumber * 4;
+        var endIndex = (currentPageNumber + 1) * 4;
+
         //show the 4 visible posts on the page
-        for (var i = 4*currentPageNumber; i < 4*currentPageNumber + 4; i++) {
+        for (var i = startIndex; i < endIndex && i < allPosts.length; i++) {
             postsArray[i].style.display = 'block';
         }
 
@@ -149,5 +180,18 @@ function backPage() {
             var newPostBox = document.querySelector('.newPost');
             newPostBox.classList.add('hidden');
         }
+
+        // Hide or show the Next Page and the Previous page button based on whether there are more posts to display
+        var nextPageButton = document.querySelector('.next');
+        var previousPageButon = document.querySelector('.previous');
+        if (startIndex === 0) {
+            previousPageButon.style.display = 'none';
+            nextPageButton.style.display = 'block';
+        }
+        else if (endIndex < allPosts.length) {
+            previousPageButon.style.display = 'block';
+            nextPageButton.style.display = 'block';
+        }
+
     }
 }

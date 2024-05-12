@@ -189,17 +189,9 @@ button {
     margin-left:175px;
     display:flex;
     flex-direction:row;
-    justify-content:space-between;
+    justify-content:flex-start;
 }
-/* .nextPageButton {
-    margin-right:175px;
-    display:flex;
-    flex-direction:row;
-    justify-content:flex-end;
-}
-.backPageButton {
-    margin-left: 175px;
-} */
+
 .nextPageButtons button{
     padding-top:10px;
     padding-bottom:25px;
@@ -209,6 +201,15 @@ button {
 
 .nextPageButtons button:active{
     outline:auto;
+}
+
+.nextPageButtons .next {
+    margin-left: auto;
+    display:none;
+}
+
+.nextPageButtons .previous {
+    display:none;
 }
 
 .footer {

@@ -1,5 +1,8 @@
+var currentPageNumber = 0;
+
 /* When the user clicks on the button,
 toggle between hiding and showing the dropdown content */
+
 function showBranchOptions() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
@@ -18,12 +21,12 @@ window.onclick = function(event) {
     }
 }
 
-function chooseBranch(branch) {
-    var branchName = branch.textContent;
-    var dropDown = document.querySelector(".dropbtn");
-    dropDown.innerText = branchName + " ▼";
-    document.getElementById("myDropdown").classList.remove("show");
-}
+// function chooseBranch(branch) {
+//     var branchName = branch.textContent;
+//     var dropDown = document.querySelector(".dropbtn");
+//     dropDown.innerText = branchName + " ▼";
+//     document.getElementById("myDropdown").classList.remove("show");
+// }
 
 
 function post() {
@@ -98,8 +101,14 @@ function post() {
         nextPageButton.style.display = 'block';
     }
 
+    //change the number of posts
+    var postNumber = document.querySelector('#numPosts');
+    postNumber.innerText = allPosts.length + " Posts"
+
+    //change the page number
+    var pageNumber = document.querySelector('#pageNum');
+    pageNumber.innerText = "Page " + (currentPageNumber + 1) + "/" + Math.ceil(allPosts.length/4);
 }
-var currentPageNumber = 0;
 
 function nextPage() {
     currentPageNumber++;
@@ -108,8 +117,13 @@ function nextPage() {
     var newPostBox = document.querySelector('.newPost');
     if (currentPageNumber !== 0) {
         newPostBox.classList.add('hidden');
+        var newPostTitle = document.querySelector('h2');
+        newPostTitle.classList.add('hidden');
     } else {
         newPostBox.classList.remove('hidden');
+        var newPostTitle = document.querySelector('h2');
+        newPostTitle.classList.remove('hidden');
+
     }
 
     var allPosts = document.querySelectorAll('.oldPosts');
@@ -135,17 +149,21 @@ function nextPage() {
     // Hide or show the Next Page button based on whether there are more posts to display
     var nextPageButton = document.querySelector('.next');
     var previousPageButon = document.querySelector('.previous');
-        if (endIndex >= allPosts.length) {
-            nextPageButton.style.display = 'none';
-            if (startIndex != 0) {
-                previousPageButon.style.display = 'block';
-            }
-        } else {
-            nextPageButton.style.display = 'block';
-            if (startIndex != 0) {
-                previousPageButon.style.display = 'block';
-            }
+    if (endIndex >= allPosts.length) {
+        nextPageButton.style.display = 'none';
+        if (startIndex != 0) {
+            previousPageButon.style.display = 'block';
         }
+    } else {
+        nextPageButton.style.display = 'block';
+        if (startIndex != 0) {
+            previousPageButon.style.display = 'block';
+        }
+    }
+
+    //change the page number
+    var pageNumber = document.querySelector('#pageNum');
+    pageNumber.innerText = "Page " + (currentPageNumber + 1) + "/" + Math.ceil(allPosts.length/4);
 }
 
 function backPage() {
@@ -176,9 +194,13 @@ function backPage() {
         if (currentPageNumber === 0) {
             var newPostBox = document.querySelector('.newPost');
             newPostBox.classList.remove('hidden');
+            var newPostTitle = document.querySelector('h2');
+            newPostTitle.classList.remove('hidden');
         } else {
             var newPostBox = document.querySelector('.newPost');
             newPostBox.classList.add('hidden');
+            var newPostTitle = document.querySelector('h2');
+            newPostTitle.classList.add('hidden');
         }
 
         // Hide or show the Next Page and the Previous page button based on whether there are more posts to display
@@ -192,6 +214,9 @@ function backPage() {
             previousPageButon.style.display = 'block';
             nextPageButton.style.display = 'block';
         }
-
     }
+
+    //change the page number
+    var pageNumber = document.querySelector('#pageNum');
+    pageNumber.innerText = "Page " + (currentPageNumber + 1) + "/" + Math.ceil(allPosts.length/4);
 }

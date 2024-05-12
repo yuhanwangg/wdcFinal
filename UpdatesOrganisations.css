@@ -8,7 +8,7 @@ h1{
 }
 
 .contentWrapper {
-    min-height:100vh;
+    min-height: 100vh;
 }
 
 .postsPages {
@@ -16,10 +16,11 @@ h1{
     padding-right:15px;
     display:flex;
     flex-direction:row;
-    justify-content:space-between;
+    justify-content:flex-start;
 }
 
 .postsPages #numberOfPosts {
+    margin-left:auto;
     display: flex;
     flex-direction:row;
     justify-content:space-evenly;
@@ -40,6 +41,8 @@ h1{
 /* Dropdown Button */
 .dropbtn {
     background-color: #FC4A1A;
+    border-radius:20px;
+    text-indent:10px;
     color: white;
     height:50px;
     width:222px;
@@ -60,7 +63,7 @@ h1{
     display: inline-block;
 }
 
-  /* Dropdown Content (Hidden by Default) */
+  /* Dropdown Content (Hidden by Default)
   .dropdown-content {
     display: none;
     position: absolute;
@@ -71,18 +74,18 @@ h1{
   }
 
   /* Links inside the dropdown */
-  .dropdown-content a {
+  /* .dropdown-content option {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-  }
+  } */
 
   /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #ddd;}
+  /* .dropdown-content option:hover {background-color: #ddd;} */
 
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;}
+  /* .show {display:block;} */
 
 .posts {
     display:flex;
@@ -185,8 +188,8 @@ button {
 }
 
 .nextPageButtons {
-    margin-right:175px;
-    margin-left:175px;
+    padding-left: 175px;
+    padding-right:175px;
     display:flex;
     flex-direction:row;
     justify-content:flex-start;
@@ -225,9 +228,12 @@ button {
     flex-wrap:wrap;
 }
 
-.newPost.hidden {
+.hidden {
     display: none;
 }
+
+
+
 @media only screen and (max-width:900px) {
     h1{
         padding:0px;
@@ -243,9 +249,10 @@ button {
         width:auto;
     }
 
-    .posts {
-        width:auto;
-        margin:auto;
+    .newPost{
+       width: auto;
+       margin-left:0;
+       margin-right:0;
     }
 
     .logo {
@@ -253,8 +260,9 @@ button {
         max-width:100px;
     }
 
-    .nextPageButton {
-        margin-right:0px;
+    .nextPageButtons {
+        padding-left:0;
+        padding-right:0;
     }
 
     .footer {

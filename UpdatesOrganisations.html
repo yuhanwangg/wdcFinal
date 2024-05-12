@@ -19,21 +19,25 @@
             <!-- Branch boxes and post updates -->
             <div class="boxes">
                 <div class="dropdown">
-                    <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button>
-                    <div id="myDropdown" class="dropdown-content">
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 1</a>
+                    <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
+                    <select class="dropbtn" onclick="showBranchOptions()">
+                        <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
+                        <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
+                        <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
+                        <option value="Branch4" onclick="choseBranch(this)" >Branch Name 4</option>
+                      <!-- <a href="#" onclick="chooseBranch(this)" selected>Branch Name 1</a>
                       <a href="#" onclick="chooseBranch(this)">Branch Name 2</a>
                       <a href="#" onclick="chooseBranch(this)">Branch Name 3</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 4</a>
-                    </div>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 4</a> -->
+                    </select>
                 </div>
 
                 <!-- vue updates the number of posts and number of pages-->
                 <div class="postsPages">
                     <h2>New Post</h2>
                     <div id="numberOfPosts">
-                        <p>Posts</p>
-                        <p>Page 1/12</p>
+                        <p id="numPosts">0 Posts</p>
+                        <p id="pageNum">Page 1/1</p>
                     </div>
                 </div>
 
@@ -46,7 +50,7 @@
                     </div>
                     <!-- these are posts that are created using ajax -->
                     <div class = "allPosts">
-                        <div class="oldPosts">
+                        <!-- <div class="oldPosts">
                             <div class="postInfo">
                                 <p class="title">Important Update Name</p>
                                 <div class="extraDetails">
@@ -104,7 +108,7 @@
                                 </p>
                             </div>
                             <img class="logo" src="exampleLogo.png" alt="Company logo">
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>

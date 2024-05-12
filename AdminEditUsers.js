@@ -19,8 +19,8 @@ function deleteUser() {
     var deletedSuccess = document.createElement('div');
     deletedSuccess.id = 'deletedSuccess';
     deletedSuccess.innerHTML = '<p>User deleted!</p><button class="back" onclick="backToUsers()">Back To Users</button></div>';
-    var parent = document.querySelector('.contentWrapper');
-    parent.appendChild(deletedSuccess);
+    var content = document.querySelector('.contentWrapper');
+    content.appendChild(deletedSuccess);
 }
 
 function checkDeleteUser() {

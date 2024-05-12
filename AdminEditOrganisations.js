@@ -19,8 +19,8 @@ function deleteOrganisation() {
     var deletedSuccess = document.createElement('div');
     deletedSuccess.id = 'deletedSuccess';
     deletedSuccess.innerHTML = '<p>Organisation deleted!</p><button class="backToOrganisations" onclick="backToOrganisations()">Back To Organisations</button></div>';
-    var parent = document.querySelector('.contentWrapper');
-    parent.appendChild(deletedSuccess);
+    var content = document.querySelector('.contentWrapper');
+    content.appendChild(deletedSuccess);
 }
 
 function checkDeleteOrganisatoin() {

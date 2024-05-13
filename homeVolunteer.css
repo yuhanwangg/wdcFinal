@@ -8,6 +8,18 @@
     box-sizing: border-box;
 }
 
+h2 {
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h1 {
+    font-size: 50px;
+}
+
 header {
     position: fixed;
     margin: 0;
@@ -105,12 +117,8 @@ header {
     padding: 125px 175px 100px 175px;
 }
 
-.topContent h2 {
-    font-size: 32px;
-}
 
 .leftContent h1 {
-    font-size: 50px;
     padding-bottom: 25px;
     padding-right: 50px;
 }
@@ -135,10 +143,6 @@ header {
     font-size: 24px;
     font-weight: lighter;
     justify-content: space-between;
-}
-
-#findLocal h2 {
-    font-size: 32px;
 }
 
 #donatingHand {
@@ -175,7 +179,6 @@ header {
     padding-top: 20px;
     padding: 16px;
     text-align: center;
-    font-size: 24px;
 }
 
 .findOpp {

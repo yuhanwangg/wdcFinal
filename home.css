@@ -146,12 +146,14 @@ header {
     transform: translateY(2px);
 }
 
+/* FIND LOCAL VOLUNTEERING OPPORTUNITIES */
+
 #findLocal {
     display: flex;
     padding-left: 175px;
     padding-right: 175px;
     padding-top: 60px;
-
+    width: 100%;
     font-size: 24px;
     font-weight: lighter;
     justify-content: space-between;
@@ -164,6 +166,7 @@ header {
 #donatingHand {
     margin-left: 5px;
     font-size: 60px;
+    color: #F7B733;
 }
 
 #find {
@@ -171,10 +174,11 @@ header {
     overflow: hidden;
     display: flex;
     justify-content: space-between;
-    padding-left: 175px;
-    padding-right: 175px;
     padding-top: 50px;
+    padding-right: 175px;
+    padding-left: 175px;
 }
+
 
 #find img {
     border-top-left-radius: 50px;
@@ -183,13 +187,13 @@ header {
     outline-width: 1px;
     outline-style: solid;
     width: 550px;
-    height: 400px;
+    height: 375px;
 }
 
 #find h3 {
-    outline-color: #BABABA;
-    outline-width: 1px;
-    outline-style: solid;
+    border-color: #BABABA;
+    border-width: 0px 2px 2px 2px;
+    border-style: solid;
     padding-top: 20px;
     padding: 16px;
     text-align: center;
@@ -200,6 +204,7 @@ header {
     display: block;
     /* making everything clickable */
     margin-right: 36px;
+    /* make this adjustable*/
 }
 
 .findLocal {
@@ -247,15 +252,18 @@ header {
 }
 
 #heart-icon {
-    font-size: 40px;
+    font-size: 45px;
+    color: #4ABDAC;
 }
 
 #flower {
-    font-size: 40px;
+    font-size: 45px;
+    color: #4ABDAC;
 }
 
 #pplIcon {
-    font-size: 40px;
+    font-size: 45px;
+    color: #4ABDAC;
 }
 
 #why div:hover {
@@ -322,6 +330,19 @@ header {
     background-color: #ed4618;
     transition: .2s;
     transform: translateY(2px);
+}
+
+.footer {
+    background-color: #D1EEE5;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 175px;
+    padding-right: 175px;
+    margin-top: 110px;
+    height: 165px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 

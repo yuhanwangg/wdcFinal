@@ -1,0 +1,141 @@
+body {
+    /* we are using Inter font, but there are fallbacks listed */
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+h1{
+    padding-left:175px;
+    padding-right:175px;
+}
+
+.userInfo input {
+    /* border-radius:20px; */
+    width:100%;
+    height: 2em;
+    text-indent: 15px;
+    border:none;
+    /* margin-right: 10px; */
+    margin-bottom: 5px;
+}
+
+input[type=submit] {
+    width:15%;
+    background-color:#FC4A1A;
+    color:white;
+    text-indent:0px;
+    margin:auto;
+    height:2em;
+
+}
+
+input[type=submit]:active {
+    outline:auto;
+}
+
+
+.box {
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-start;
+
+    border-radius:20px;
+    background-color:#E9E9E9;
+    margin-left:175px;
+    margin-right:175px;
+    margin-top:75px;
+    padding:10px;
+}
+
+.box .userInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.box .checkAndSave {
+    display:flex;
+    align-items: center;
+    margin-top: 5px;
+}
+.box .checkboxContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.checkboxContainer input[type="checkbox"] {
+    margin-right: 5px;
+    width:min-content;
+    height: 2em;
+    text-indent: 15px;
+    border:none;
+    /* margin-right: 10px; */
+    margin-bottom: 5px;
+}
+
+.saveButton {
+    margin-left: auto;
+}
+
+.deleteButton {
+    margin-left: auto;
+    margin-top: 5px;
+}
+
+.box .lastLine {
+    display: flex;
+    flex-direction:row;
+    justify-content:space-between;
+}
+
+.box p {
+    margin: 0;
+    padding: 0.5em;
+}
+
+.box b {
+    margin: 0;
+    padding: 0.5em;
+}
+
+.box button {
+    border-radius:20px;
+    background-color:#FC4A1A;
+    color:white;
+    border:none;
+    /* width:15%; */
+    height:34.5px;
+    /* align-self:flex-end; */
+    font-weight:bold;
+    font-size:1em;
+    padding-left: 1%;
+    padding-right: 1%
+
+}
+
+.box button:active {
+    outline:auto;
+}
+
+.box .Name {
+    font-weight:700;
+    font-size:large;
+    padding-bottom: 1em;
+
+}
+
+.orDivider {
+    align-self:center
+}
+
+@media only screen and (max-width:900px) {
+
+    input, input[type=submit] {
+        width:100%;
+        margin:auto;
+    }
+
+    .box {
+        margin-left:auto;
+        margin-right:auto;
+    }
+}

@@ -1,0 +1,343 @@
+* {
+    /* we are using Inter font, but there are fallbacks listed */
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+header {
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 20px 5%;
+    /* overflow-x: hidden; */
+}
+
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    list-style-type: none;
+    text-decoration: none;
+    color: black;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 5px 0;
+    margin: 0px 30px;
+}
+
+.navbar a.active {
+    color: #4ABDAC;
+}
+
+.navbar a:hover {
+    color: #F7B733;
+    transition: .3s;
+}
+
+.userLogIn {
+    display: flex;
+    align-items: center;
+}
+
+.user i {
+    font-size: 0.9rem;
+    margin-right: 20px;
+}
+
+.ri-user-fill {
+    color: #4ABDAC;
+    margin-right: 5px;
+}
+
+#menu-icon {
+    font-size: 25px;
+    color: black;
+    cursor: pointer;
+    z-index: 10001;
+    display: none;
+}
+
+.nav_buttons {
+    display: flex;
+    align-items: center;
+}
+
+.nav_buttons a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-right: 25px;
+    margin-left: 10px;
+    color: black
+}
+
+.nav_buttons a:hover {
+    color: #4ABDAC;
+    transition: .3s;
+}
+
+.logo {
+    max-width: 100px;
+    margin-right: 3px;
+}
+
+/* TITLE */
+
+.topContent {
+    display: flex;
+    justify-content: space-between;
+    /* padding-right: 175px;
+    padding-left: 175px;
+    padding-top: 125px;
+    padding-bottom: 100px; */
+
+    padding: 125px 175px 100px 175px;
+}
+
+
+.leftContent h1 {
+    padding-bottom: 25px;
+    padding-right: 50px;
+}
+
+.leftContent {
+    margin-right: 20px;
+}
+
+.rightContent {
+    margin-left: 20px;
+    text-align: right;
+    border-left: 2px solid #BABABA;
+}
+
+.oldPosts {
+    border-radius: 20px;
+    background-color: #D9D9D9;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.updateLogo {
+    max-height: 50%;
+    max-width: 20%;
+    border-radius: 20px;
+}
+
+.extraDetails {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.extraDetails p {
+    padding-right: 50px;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.updatesList {
+    background-color: #F7B733;
+}
+
+/* FINDING */
+#findLocal {
+    display: flex;
+    padding-left: 175px;
+    padding-right: 175px;
+    padding-top: 60px;
+    width: 100%;
+    font-size: 24px;
+    font-weight: lighter;
+    justify-content: space-between;
+}
+
+#donatingHand {
+    margin-left: 5px;
+    font-size: 60px;
+    color: #F7B733;
+}
+
+#find {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 50px;
+    padding-right: 175px;
+    padding-left: 175px;
+}
+
+
+#find img {
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    outline-color: #BABABA;
+    outline-width: 1px;
+    outline-style: solid;
+    width: 550px;
+    height: 375px;
+}
+
+#find h3 {
+    border-color: #BABABA;
+    border-width: 0px 2px 2px 2px;
+    border-style: solid;
+    padding-top: 20px;
+    padding: 16px;
+    text-align: center;
+}
+
+.findOpp {
+    display: block;
+    /* making everything clickable */
+    margin-right: 36px;
+    /* make this adjustable*/
+}
+
+.findLocal {
+    display: block;
+}
+
+/* TAKE CARE */
+.desc {
+    width: 100%;
+    overflow: hidden;
+    padding-left: 175px;
+    padding-right: 175px;
+    padding-top: 80px;
+}
+
+.desc h2 {
+    text-align: center;
+}
+
+.desc p {
+    padding-top: 40px;
+    text-align: center;
+}
+
+.yellowBG {
+    background-image: linear-gradient(white, #f4dfb4, white);
+    margin-top: 50px;
+    padding-bottom: 100px;
+}
+
+#why {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 175px;
+    padding-right: 175px;
+    padding-top: 10px;
+}
+
+#why p {
+    padding-top: 15px;
+    padding: 15px 5px 180px 5px;
+}
+
+#why div:hover {
+    box-shadow: 0 5px 20px 0 #F7B733;
+    transition: .2s;
+}
+
+.hydration {
+    padding: 32px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.takeEasy {
+    padding: 32px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.askHelp {
+    padding: 32px;
+    margin: 10px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Bottom */
+.bottom {
+    padding-top: 50px;
+    padding-left: 175px;
+    padding-right: 175px;
+}
+
+.contactTitle {
+    display: flex;
+    justify-content: start;
+}
+
+#contactIcon {
+    font-size: 35px;
+    margin-left: 10px;
+    color: #F7B733;
+}
+
+.supportTitle {
+    padding-top: 50px;
+    display: flex;
+    justify-content: start;
+}
+
+#phoneIcon {
+    font-size: 35px;
+    margin-left: 10px;
+    color: #F7B733;
+}
+
+.bottom p {
+    padding: 10px;
+}
+
+.footer {
+    background-color: #eeebd1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 175px;
+    padding-right: 175px;
+    margin-top: 110px;
+    height: 165px;
+    align-items: center;
+    flex-wrap: wrap;
+}

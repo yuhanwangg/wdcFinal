@@ -7,10 +7,10 @@
     <title>homepage Volunteer</title>
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="homeVolunteer.css">
+    <link rel="stylesheet" href="homeOrgVerified.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <script src="homeVolunteer.js"></script>
+    <script src="homeOrgVerified.js"></script>
 </head>
 
 <body>
@@ -18,9 +18,7 @@
         <img class="logo" src="images_assets/logo.png" alt="logo">
         <ul class="navbar">
             <li><a href="#">Home</a></li>
-            <li><a href="#">Volunteer Opportunities</a></li>
-            <li><a href="#">Find Organisations</a></li>
-            <li><a href="#">RSVP'd</a></li>
+            <li><a href="#">Opportunities</a></li>
             <li><a href="#">Updates</a></li>
         </ul>
         <div class="profile">
@@ -30,10 +28,25 @@
         </div>
     </header>
 
+    <div class="top">
+        <div class="title">
+            <h1>Welcome,</h1>
+            <h1>[insert organisation]</h1>
+        </div>
+
+        <div class="dropdown">
+            <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
+            <select class="dropbtn">
+                <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
+                <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
+                <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
+                <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
+            </select>
+        </div>
+    </div>
+
     <div class="topContent">
         <div class="leftContent">
-            <h1>Welcome,
-                [insert name]</h1>
             <h2>See your mark on the world</h2>
         </div>
 
@@ -101,10 +114,8 @@
         </div>
     </div>
     <div id="findLocal">
-        <h2>Find your local volunteering
-            opportunities today!
+        <h2>Quicklinks
         </h2>
-        <div class="bx bxs-donate-heart" id="donatingHand"></div>
     </div>
 
     <div id="find">
@@ -121,54 +132,28 @@
             </div>
         </a>
     </div>
-    <div id="takeCare">
-        <div class="desc">
-            <h2>You've joined [insert number] of people making a mark on this world.</h2>
-            <p>Volunteering is difficult, we understand that. But remember, sometimes times can be tough and you
-                need a
-                break. If you
-                use up all that empathy and kindness for everyone else, who will take care of you?</p>
-        </div>
-    </div>
-    <div class="yellowBG">
-        <div id="why">
-            <div class="hydration">
-                <h3>1. Stay Hydrated</h3>
-                <p>Regular water breaks are crucial in keeping you healthy and in the right health to take care of
-                    others.</p>
-                <!-- <div class="bx bxs-heart" id="heart-icon"></div> -->
-            </div>
-            <div class="takeEasy">
-                <h3>2. Take it easy</h3>
-                <p>Volunteering can be physically demanding. Even if you push through it with your best attitude, take
-                    time for a break,
-                    time for yourself.</p>
-                <!-- <div class="bx bxs-florist" id="flower"></div> -->
-            </div>
-            <div class="askHelp">
-                <h3>3. Ask for help</h3>
-                <p>It can be confronting sometimes. Check in on yourself, and if you need further support, or feel
-                    unsafe to yourself,
-                    please contact below.</p>
-                <!-- <div class="bx bxs-group" id="pplIcon"></div> -->
-            </div>
-        </div>
-    </div>
 
-    <div class="bottom">
-        <div class="contactTitle">
-            <h2>Contact</h2>
-            <div class="bx bxl-gmail" id="contactIcon"></div>
+    <div class="welcome">
+        <div class="thanks">
+            <h3>Thank you for partnering with us at [name]</h3>
+            <p>This site cannot be run without you guys.</p>
+            <p>For organisations that wish to create variants/branches for specific locations or categories, please fill
+                out
+                the form
+                in our branch request.</p>
+            <p>Otherwise, your ability as an organisation will be as following:</p>
+            <p>> Create listings of events</p>
+            <p>> Create updates from your selected branch</p>
+            <p>> See list of people RSVP'ed for events</p>
+            <p>> Modify and edit events</p>
+            <p>We ask that you only have one account controlling the main.</p>
         </div>
-        <p><strong>Email:</strong> <a href="mailto:@somethingsmthing.gmail.com"
-                target="_blank">@somethingsmthing.gmail.com</a></p>
-
-        <div class="supportTitle">
-            <h2>Support</h2>
-            <div class="bx bxs-phone" id="phoneIcon"></div>
+        <div class="buttonList">
+            <a class="contactBtn" href="#"><button>Contact Us</button></a>
+            <a class="reqBtn" href="#"><button>Request Branch</button></a>
+            <a class="eventBtn" href="#"><button>Create Event</button></a>
+            <a class="updateBtn" href="#"><button>Create Update</button></a>
         </div>
-        <p><strong>Lifeline:</strong> <a href="tel:131114">13 11 14</a></p> <!-- making this clickable-->
-        <p><strong>Beyond Blue:</strong> <a href="tel:1300224636">1300 22 4636</a></p>
     </div>
 
     <div class="footer">

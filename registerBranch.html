@@ -1,40 +1,59 @@
 <!-- sign up: User -->
 
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <title>Register a New Branch</title>
-        <link rel="stylesheet" href="registerBranch.css">
-        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-    </head>
+<head>
+    <title>Register a New Branch</title>
+    <link rel="stylesheet" href="registerBranch.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <body>
-        <!-- nav bar -->
+</head>
 
-        <h1>Register a new branch</h1>
+<body>
 
-        <div class="box">
-            <div class = "userInfo">
-                <p>Branch Name</p>
-                <input type="text" placeholder="Name">
-            </div>
+    <!-- nav bar -->
+    <header>
+        <img class="logo" src="images_assets/logo.png" alt="logo">
+        <ul class="navbar">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Opportunities</a></li>
+            <li><a href="#">Updates</a></li>
+        </ul>
+        <div class="profileMenu">
+            <a href="#">
+                <div class="profile">
+                    <p>Name</p>
+                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg">
+                </div>
+            </a>
+            <div class="bx bx-menu" id="menu-icon"></div>
+        </div>
+    </header>
 
-            <div class = "userInfo">
-                <p>Branch Location</p>
-                <input type="text" placeholder="Suburb">
-                <input type="text" placeholder="State">
-                <input type="text" placeholder="Postcode">
-                <input type="text" placeholder="Country">
-            </div>
+    <h1>Register a new branch</h1>
 
-            <button class = "saveButton">Send Request</button>
-
+    <div class="box">
+        <div class="userInfo">
+            <p>Branch Name</p>
+            <input type="text" placeholder="Name">
         </div>
 
-        <!-- footer -->
+        <div class="userInfo">
+            <p>Branch Location</p>
+            <input type="text" placeholder="Suburb">
+            <input type="text" placeholder="State">
+            <input type="text" placeholder="Postcode">
+            <input type="text" placeholder="Country">
+        </div>
 
-    </body>
+        <button class="saveButton">Send Request</button>
+
+    </div>
+
+    <!-- footer -->
+
+</body>
 
 </html>

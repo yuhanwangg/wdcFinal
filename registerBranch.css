@@ -2,47 +2,153 @@ body {
     /* we are using Inter font, but there are fallbacks listed */
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
-h1{
-    padding-left:175px;
-    padding-right:175px;
+
+h1 {
+    padding-left: 175px;
+    padding-right: 175px;
+}
+
+header {
+    position: fixed;
+    margin: 0;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 20px 5%;
+    /* overflow-x: hidden; */
+}
+
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    list-style-type: none;
+    text-decoration: none;
+    color: black;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 5px 0;
+    margin: 0px 30px;
+}
+
+.navbar a.active {
+    color: #4ABDAC;
+}
+
+.navbar a:hover {
+    color: #F7B733;
+    transition: .3s;
+}
+
+.userLogIn {
+    display: flex;
+    align-items: center;
+}
+
+.user i {
+    font-size: 0.9rem;
+    margin-right: 20px;
+}
+
+.ri-user-fill {
+    color: #4ABDAC;
+    margin-right: 5px;
+}
+
+#menu-icon {
+    font-size: 25px;
+    color: black;
+    cursor: pointer;
+    z-index: 10001;
+    display: none;
+}
+
+.nav_buttons {
+    display: flex;
+    align-items: center;
+}
+
+.nav_buttons a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-right: 25px;
+    margin-left: 10px;
+    color: black
+}
+
+.nav_buttons a:hover {
+    color: #4ABDAC;
+    transition: .3s;
+}
+
+.profileMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.profile img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.logo {
+    max-width: 100px;
+    margin-right: 3px;
 }
 
 .userInfo input {
     /* border-radius:20px; */
-    width:100%;
+    width: 100%;
     height: 2em;
     text-indent: 15px;
-    border:none;
+    border: none;
     /* margin-right: 10px; */
     margin-bottom: 5px;
 }
 
 input[type=submit] {
-    width:15%;
-    background-color:#FC4A1A;
-    color:white;
-    text-indent:0px;
-    margin:auto;
-    height:2em;
+    width: 15%;
+    background-color: #FC4A1A;
+    color: white;
+    text-indent: 0px;
+    margin: auto;
+    height: 2em;
 
 }
 
 input[type=submit]:active {
-    outline:auto;
+    outline: auto;
 }
 
 
 .box {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     justify-content: flex-start;
 
-    border-radius:20px;
-    background-color:#E9E9E9;
-    margin-left:175px;
-    margin-right:175px;
-    margin-top:75px;
-    padding:10px;
+    border-radius: 20px;
+    background-color: #E9E9E9;
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-top: 75px;
+    padding: 10px;
 }
 
 .box .userInfo {
@@ -51,10 +157,11 @@ input[type=submit]:active {
 }
 
 .box .checkAndSave {
-    display:flex;
+    display: flex;
     align-items: center;
     margin-top: 5px;
 }
+
 .box .checkboxContainer {
     display: flex;
     align-items: center;
@@ -64,10 +171,10 @@ input[type=submit]:active {
 
 .checkboxContainer input[type="checkbox"] {
     margin-right: 5px;
-    width:min-content;
+    width: min-content;
     height: 2em;
     text-indent: 15px;
-    border:none;
+    border: none;
     /* margin-right: 10px; */
     margin-bottom: 5px;
 }
@@ -83,8 +190,8 @@ input[type=submit]:active {
 
 .box .lastLine {
     display: flex;
-    flex-direction:row;
-    justify-content:space-between;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .box p {
@@ -98,44 +205,44 @@ input[type=submit]:active {
 }
 
 .box button {
-    border-radius:20px;
-    background-color:#FC4A1A;
-    color:white;
-    border:none;
+    border-radius: 20px;
+    background-color: #FC4A1A;
+    color: white;
+    border: none;
     /* width:15%; */
-    height:34.5px;
+    height: 34.5px;
     /* align-self:flex-end; */
-    font-weight:bold;
-    font-size:1em;
+    font-weight: bold;
+    font-size: 1em;
     padding-left: 1%;
     padding-right: 1%
-
 }
 
 .box button:active {
-    outline:auto;
+    outline: auto;
 }
 
 .box .Name {
-    font-weight:700;
-    font-size:large;
+    font-weight: 700;
+    font-size: large;
     padding-bottom: 1em;
 
 }
 
 .orDivider {
-    align-self:center
+    align-self: center
 }
 
 @media only screen and (max-width:900px) {
 
-    input, input[type=submit] {
-        width:100%;
-        margin:auto;
+    input,
+    input[type=submit] {
+        width: 100%;
+        margin: auto;
     }
 
     .box {
-        margin-left:auto;
-        margin-right:auto;
+        margin-left: auto;
+        margin-right: auto;
     }
 }

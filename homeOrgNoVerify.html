@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homepage Volunteer</title>
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="homeOrgNoVerify.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <script src="homeOrgNoVerify.js"></script>
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="images_assets/logo.png" alt="logo">
+        <ul class="navbar">
+            <li><a href="#">Home</a></li>
+        </ul>
+        <div class="profileMenu">
+            <a href="#">
+                <div class="profile">
+                    <p>Name</p>
+                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg">
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="topContent">
+        <div class="title">
+            <h1>Welcome,</h1>
+            <h1>[insert organisation]</h1>
+        </div>
+
+        <div class="dropdown">
+            <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
+            <select class="dropbtn">
+                <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
+                <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
+                <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
+                <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="preVerified">
+        <div class="titleForm">
+            <h3>Before you can start posting, please complete the following steps: </h3>
+        </div>
+        <div class="stepCircles">
+            <div>
+                <p>1</p>
+            </div>
+            <i class="bx bxs-right-arrow-alt" id="rightArrow"></i>
+            <div>
+                <p>2</p>
+            </div>
+            <i class="bx bxs-right-arrow-alt" id="rightArrow"></i>
+            <div>
+                <p>3</p>
+            </div>
+        </div>
+        <!--  ask for description of organisation -->
+        <div class="description">
+            <form id="descriptionForm">
+                <strong>Please provide a short description for your organisation:</strong>
+                <textarea id="descForm" name="description" placeholder="Type here..."></textarea>
+                <div class="inline">
+                    <div class="charLeft">
+                        <p>Characters left: <span class="descCount">350</span></p>
+                    </div>
+                    <input type="submit" value="Submit" class="submitButton">
+                </div>
+            </form>
+        </div>
+        <!--  ask for website link-->
+        <div class="webLink">
+            <form id="webLinkForm">
+                <strong>Enter your website link:</strong>
+                <textarea id="websiteLink" name="webLink" placeholder="www.example.com.au..."></textarea>
+                <input type="submit" value="Submit" class="submitButton">
+            </form>
+        </div>
+        <!--  ask for logo upload-->
+        <div class="logoUpload">
+            <form id="logoUploadForm">
+                <strong>Upload your logo:</strong>
+                <input type="file" id="image" name="fileName">
+                <input type="submit" value="Submit" class="submitButton">
+            </form>
+        </div>
+    </div>
+
+    <div class="welcome">
+        <div class="thanks">
+            <h3>Thank you for partnering with us at [name]</h3>
+            <p>This site cannot be run without you guys.</p>
+            <p>For organisations that wish to create variants/branches for specific locations or categories, please fill
+                out
+                the form
+                in our branch request.</p>
+            <p>Otherwise, your ability as an organisation will be as following:</p>
+            <p>> Create listings of events</p>
+            <p>> Create updates from your selected branch</p>
+            <p>> See list of people RSVP'ed for events</p>
+            <p>> Modify and edit events</p>
+            <p>We ask that you only have one account controlling the main.</p>
+        </div>
+        <div class="buttonList">
+            <a class="contactBtn" href="#"><button>Contact Us</button></a>
+            <a class="reqBtn" href="#"><button>Request Branch</button></a>
+            <a class="eventBtn" href="#"><button>Create Event</button></a>
+            <a class="updateBtn" href="#"><button>Create Update</button></a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Edit Users</p>
+        <p>Edit Organisations</p>
+        <p>Admin</p>
+        <p>Volunteer Opportunities</p>
+        <p>Find Organisations</p>
+        <p id="logoutFooter">Logout</p>
+    </div>
+
+</body>
+
+</html>

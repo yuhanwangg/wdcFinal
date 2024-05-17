@@ -8,6 +8,17 @@
     box-sizing: border-box;
 }
 
+h2 {
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h1 {
+    font-size: 50px;
+}
 
 header {
     position: fixed;
@@ -120,6 +131,29 @@ header {
     font-size: 28px;
 }
 
+/*
+.replacementText {
+    display: none;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 20px;
+    color: black;
+}
+
+.replacementText h1 {
+    font-size: 25px;
+}
+
+.replacementText .text {
+    margin-bottom: 20px;
+}
+
+.replacementText .btn {
+    font-size: 15px;
+}
+*/
+
 .heroText h1 {
     padding: 1%;
     background-color: #4ABDAC;
@@ -148,7 +182,7 @@ header {
 
 /* FIND LOCAL VOLUNTEERING OPPORTUNITIES */
 
-#findLocal {
+#findLocalTitle {
     display: flex;
     padding-left: 175px;
     padding-right: 175px;
@@ -159,7 +193,7 @@ header {
     justify-content: space-between;
 }
 
-#findLocal h2 {
+#findLocalTitle h2 {
     font-size: 32px;
 }
 
@@ -173,10 +207,11 @@ header {
     width: 100%;
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
-    padding-top: 50px;
-    padding-right: 175px;
-    padding-left: 175px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding: 50px;
+    flex-wrap: wrap;
 }
 
 
@@ -188,6 +223,7 @@ header {
     outline-style: solid;
     width: 550px;
     height: 375px;
+    margin-top: 36px;
 }
 
 #find h3 {
@@ -197,7 +233,6 @@ header {
     padding-top: 20px;
     padding: 16px;
     text-align: center;
-    font-size: 24px;
 }
 
 .findOpp {
@@ -352,11 +387,43 @@ header {
         transition: .2s;
     }
 
+    .heroText h1 {
+        font-size: 35px;
+        transform: translateY(-50%);
+    }
+
+    .imageContainer button {
+        font-size: 25px;
+        transform: translateY(-200%);
+    }
+
+    .onTop {
+        display: flex;
+    }
+
     .navbar a {
         padding: 5px 0;
         margin: 0px 20px;
     }
 
+    #why {
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    #why div {
+        margin-top: 20px;
+
+    }
+
+    #findLocalTitle {
+        padding-top: 10%;
+        padding-left: 10%;
+        padding-right: 10%;
+        text-align: center;
+    }
 }
 
 @media (max-width: 1090px) {
@@ -378,6 +445,14 @@ header {
         transition: all .3s ease;
     }
 
+    .findLocal {
+        margin-top: 36px;
+    }
+
+    .findOpp {
+        margin-right: 0px;
+    }
+
     .navbar a {
         display: block;
         margin: 12px 0;
@@ -397,5 +472,15 @@ header {
 
     .navbar.open {
         right: 2%;
+    }
+}
+
+@media (max-width:400px) {
+    .desc {
+        width: 100%;
+        overflow: hidden;
+        padding: 50px 0px 0px 0px;
+        margin-left: 10%;
+        margin-right: 10%;
     }
 }

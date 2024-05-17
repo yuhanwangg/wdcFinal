@@ -379,4 +379,12 @@ form {
         margin-left: 10%;
     }
 
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+        padding-right: 0;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
 }

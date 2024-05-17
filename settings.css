@@ -33,10 +33,13 @@ header {
 
 .navbar {
     display: flex;
-    align-items: baseline;
 }
 
 .navbar a {
+    color: black;
+}
+
+.navbar li {
     list-style-type: none;
     text-decoration: none;
     color: black;
@@ -46,9 +49,6 @@ header {
     margin: 0px 30px;
 }
 
-.navbar a.active {
-    color: #4ABDAC;
-}
 
 .navbar a:hover {
     color: #F7B733;
@@ -108,7 +108,7 @@ header {
     align-items: end;
     text-align: center;
     vertical-align: middle;
-    line-height: 30px;
+    line-height: 10px;
 }
 
 .profile img {
@@ -120,6 +120,7 @@ header {
 .logo {
     max-width: 100px;
     margin-right: 3px;
+    transform: translateX(100px);
 }
 
 .userInfo input {

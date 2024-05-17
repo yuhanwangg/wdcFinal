@@ -234,13 +234,25 @@ input[type=submit]:active {
 }
 
 .buttonHolder {
-    position: absolute;
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+}
+
+.loginPrompt {
+    border-radius: 20px;
+    width: 100px;
+    height: 5em;
+    text-indent: 15px;
+    border: none;
+    background-color: #FC4A1A;
+    color: white;
+    text-indent: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    margin-top: 48%;
-    margin-left: 2%;
+    margin-right: 20px;
+    font-size: 12pt;
 }
 
 .RSVPSmall {

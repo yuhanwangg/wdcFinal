@@ -7,6 +7,19 @@ body {
     min-height:100vh;
 }
 
+h1 {
+    padding-left: 175px;
+    padding-right: 175px;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 1px solid;
+    width: 100%;
+    color: black;
+}
+
 header {
     position: fixed;
     margin: 0;
@@ -19,6 +32,7 @@ header {
     justify-content: space-between;
     background: white;
     padding: 20px 5%;
+    /* overflow-x: hidden; */
 }
 
 .navbar {
@@ -26,6 +40,10 @@ header {
 }
 
 .navbar a {
+    color: black;
+}
+
+.navbar li {
     list-style-type: none;
     text-decoration: none;
     color: black;
@@ -35,9 +53,6 @@ header {
     margin: 0px 30px;
 }
 
-.navbar a.active {
-    color: #4ABDAC;
-}
 
 .navbar a:hover {
     color: #F7B733;
@@ -85,10 +100,31 @@ header {
     transition: .3s;
 }
 
+.profileMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 10px;
+}
+
+.profile img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
 .logo {
     max-width: 100px;
     margin-right: 3px;
-    margin-left: 150px;
+    transform: translateX(100px);
 }
 
 .title {

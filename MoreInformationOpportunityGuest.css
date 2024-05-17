@@ -23,6 +23,7 @@ header {
 
 .navbar {
     display: flex;
+    list-style-type: none;
 }
 
 .navbar a {

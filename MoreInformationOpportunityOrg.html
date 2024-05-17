@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <title>More Information</title>
+        <link rel="stylesheet" href="MoreInformationOpportunityOrg.css">
+        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src = "MoreInformationOpportunityOrg.js"></script>
+
+    </head>
+
+    <body>
+        <div class="contentWrapper">
+            <!-- nav bar -->
+            <header>
+                <img class="logo" src="images_assets/logo.png" alt="logo">
+                <ul class="navbar">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Volunteer Opportunities</a></li>
+                    <li><a href="#">Find Organisations</a></li>
+                    <li><a href="#">RSVP'd</a></li>
+                    <li><a href="#">Updates</a></li>
+                </ul>
+                <div class="profileMenu">
+                    <a href="#">
+                        <div class="profile">
+                            <p>Name</p>
+                            <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
+                        </div>
+                    </a>
+                    <div class="bx bx-menu" id="menu-icon"></div>
+                </div>
+
+            </header>
+
+            <!-- Page Title -->
+            <h1 class="title">Volunteer Opportunites</h1>
+
+             <!-- Search Bar -->
+             <div class="searchBar">
+                <input type="text" placeholder="Categories">
+                <input type="text" placeholder="Time Commitment">
+                <input type="text" placeholder="Location">
+                <input type="submit" value="Search">
+            </div>
+
+            <!-- Past Page Link -->
+            <div class="pastLink">
+                <span><a href="example.com" class="organisationName">Volunteer Opportunities</a> &gt; Program name</span>
+            </div>
+
+            <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
+            <div class="opportunityBox">
+                <div class="columnHold">
+                    <div class = "contentLeft">
+                        <h3>Program Name</h3>
+                        <a href = "link.com" class="organisationName"><b>Organisation Name</b></a>
+                        <div class="tags">
+                            <span class="opportunityTag">Tag 1</span>
+                            <span class="opportunityTag">Tag 2</span>
+                            <span class="opportunityTag">Tag 3</span>
+                        </div>
+                        <p>Suburb, state, country</p>
+                        <p>Are you ready to bring joy and companionship to the lives of seniors in our community? Join our volunteer program at the heart of our aged care facility and make a meaningful impact every day!
+                        </p>
+                        <p>As a volunteer, you'll have the opportunity to brighten the days of our residents through engaging activities, heartfelt conversations, and compassionate care. Whether you have a knack for arts and crafts, enjoy playing games, or simply love spending time with others, there's a role for you here.
+                        </p>
+                        <p>You'll be welcomed into our warm and supportive environment, where your kindness and dedication will truly make a difference. Whether you're assisting with daily activities, helping residents stay active and engaged, or simply lending a listening ear, your presence will be cherished and valued.
+                        </p>
+                        <p>Our volunteer program is flexible to accommodate your schedule, whether you can spare a few hours a week or wish to make a more significant commitment. You'll receive training and ongoing support to ensure you feel confident and empowered in your role.                    </p>
+                        <p>But the rewards of volunteering in aged care go far beyond the tasks you perform. You'll forge meaningful connections with residents and staff alike, creating bonds that enrich both your life and theirs. Your efforts will bring smiles, laughter, and a sense of belonging to those we serve.</p>
+                        <p>Join us in creating a nurturing and vibrant community where seniors thrive and feel cherished. Apply now and become a vital part of our mission to provide compassionate care and companionship to those in need. Together, we can make every day brighter for our beloved seniors. Let's make a difference, one heartfelt moment at a time!</p>
+                        <div class="buttonHolder">
+                            <button type="submit" class="RSVPD"><b>RSVP'd Users</b></button>
+                        </div>
+                    </div>
+                    <div class="rightSide">
+                        <div class="detailsBox">
+                            <h4>Categories</h4>
+                            <p>Tag1 with symbol</p>
+                            <p>Tag2 with symbol</p>
+                            <p>Tag3 with symbol</p>
+                            <h4>Time Commitment</h4>
+                            <p>Regular - more than 6 months</p>
+                            <h4>Time Required</h4>
+                            <p>We ask for a minimum of 3 hours per week, with a maximum of 10 hours for those who are able.</p>
+                            <h4>Suitable for</h4>
+                            <p>Experienced volunteers, Young Adults aged 18-25 </p>
+                            <h4>Training</h4>
+                            <p>Training is provided before beginning the program</p>
+                            <h4>Requirements</h4>
+                            <p>National Police Certificate</p>
+                            <h4>Location</h4>
+                            <p>Suburb, State, Country</p>
+                            <img src="images_assets/Map Example.PNG" alt="" class="map">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="volunteerHold">
+                    <p class="RSVPCount">4 RSVP'd Volunteers</p>
+                    <div class="RSVPVolunteer">
+                        <b>User First and Last Name</b>
+                        <br>
+                        <p>theirEmail@gmail.com</p>
+                        <div class="removeHolder">
+                            <button type="submit" class="remove">Remove</button>
+                        </div>
+                    </div>
+                    <div class="RSVPVolunteer">
+                        <br>
+                        <b>User First and Last Name</b>
+                        <p>theirEmail@gmail.com</p>
+                        <div class="removeHolder">
+                            <button type="submit" class="remove">Remove</button>
+                        </div>
+                    </div>
+                    <div class="RSVPVolunteer">
+                        <b>User First and Last Name</b>
+                        <br>
+                        <p>theirEmail@gmail.com</p>
+                        <div class="removeHolder">
+                            <button type="submit" class="remove">Remove</button>
+                        </div>
+                    </div>
+                    <div class="RSVPVolunteer">
+                        <b>User First and Last Name</b>
+                        <br>
+                        <p>theirEmail@gmail.com</p>
+                        <div class="removeHolder">
+                            <button type="submit" class="remove">Remove</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <button type="submit" class="backButton">Back</button>
+        </div>
+
+        <!-- footer -->
+        <div class="footer">
+            <p>Edit Users</p>
+            <p>Edit Organisations</p>
+            <p>Admin</p>
+            <p>Volunteer Opportunities</p>
+            <p>Find Organisations</p>
+        </div>
+
+    </body>
+</html>

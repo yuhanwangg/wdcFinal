@@ -3,10 +3,13 @@ body {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
+.content {
+    margin-top: 150px; /* Increase this value if the header height is more than 60px */
+}
+
 h1 {
     padding-left: 175px;
     padding-right: 175px;
-    padding-top: 130px;
 }
 
 header {

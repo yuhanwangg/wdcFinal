@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Organisation</title>
+    <link rel="stylesheet" href="organisationsJoinedUsers.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="UpdatesOrganisations.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+</head>
+
+<body>
+
+    <!-- nav bar -->
+    <header>
+        <img class="logo" src="images_assets/logo.png" alt="logo">
+        <ul class="navbar">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Volunteer Opportunities</a></li>
+            <li><a href="#">Updates</a></li>
+            <li><a href="#">Joined Volunteers</a></li>
+        </ul>
+        <div class="profileMenu">
+            <a href="#">
+                <div class="profile">
+                    <p>Name</p>
+                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg">
+                </div>
+            </a>
+            <div class="bx bx-menu" id="menu-icon"></div>
+        </div>
+    </header>
+
+    <div class="contentWrapper">
+
+        <h1>Joined Volunteers</h1>
+
+
+        <!-- Branch boxes and post updates -->
+        <div class="boxes">
+            <div class="dropdown">
+                <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
+                <select class="dropbtn">
+                    <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
+                    <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
+                    <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
+                    <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
+                    <!-- <a href="#" onclick="chooseBranch(this)" selected>Branch Name 1</a>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 2</a>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 3</a>
+                      <a href="#" onclick="chooseBranch(this)">Branch Name 4</a> -->
+                </select>
+            </div>
+
+            <!-- vue updates the number of posts and number of pages-->
+            <div class="joinedVolunteers">
+                <!-- <div class="postsPages"> -->
+                <div id="numberOfVolunteers">
+                    <!-- <div id="numberOfPosts"> -->
+                    <!-- <p id="numPosts">0 Posts</p> -->
+                    <p id="numVolunteers">6 Volunteers</p>
+                    <p id="pageNum">Page 1/1</p>
+                </div>
+            </div>
+
+            <!-- <div class="posts"> -->
+            <div class="volunteers">
+                <!-- User box, filled using AJAX, should be empty <p> tags -->
+                <div class="UserBox">
+                    <p class="Name">User First Name, User Last Name</p>
+                    <div class="lastLine">
+                        <p>theiremail@gmail.com</p>
+                        <button onclick="goToEditUser()">Remove</button>
+                    </div>
+                </div>
+                <!-- User box, filled using AJAX, should be empty <p> tags -->
+                <div class="UserBox">
+                    <p class="Name">User First Name, User Last Name</p>
+                    <div class="lastLine">
+                        <p>theiremail@gmail.com</p>
+                        <button onclick="goToEditUser()">Remove</button>
+                    </div>
+                </div>
+
+                <!-- User box, filled using AJAX, should be empty <p> tags -->
+                <div class="UserBox">
+                    <p class="Name">User First Name, User Last Name</p>
+                    <div class="lastLine">
+                        <p>theiremail@gmail.com</p>
+                        <button onclick="goToEditUser()">Remove</button>
+                    </div>
+                </div>
+
+                <div class="UserBox">
+                    <p class="Name">User First Name, User Last Name</p>
+                    <div class="lastLine">
+                        <p>theiremail@gmail.com</p>
+                        <button onclick="goToEditUser()">Remove</button>
+                    </div>
+                </div>
+
+                <div class="UserBox">
+                    <p class="Name">User First Name, User Last Name</p>
+                    <div class="lastLine">
+                        <p>theiremail@gmail.com</p>
+                        <button onclick="goToEditUser()">Remove</button>
+                    </div>
+                </div>
+
+                <div class="UserBox">
+                    <p class="Name">User First Name, User Last Name</p>
+                    <div class="lastLine">
+                        <p>theiremail@gmail.com</p>
+                        <button onclick="goToEditUser()">Remove</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="nextPageButtons">
+            <button class="previous" onclick="backPage()">Previous Page</button>
+            <button class="next" onclick="nextPage()">Next Page</button>
+        </div>
+    </div>
+
+    <!-- footer -->
+
+    <div class="footer">
+        <p>Home</p>
+        <p>Volunteer Opportunites</p>
+        <p>Updates</p>
+        <p>Contact Us</p>
+        <p>Joined Volunteers</p>
+        <p id="logoutFooter">Logout</p>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 body {
     /* we are using Inter font, but there are fallbacks listed */
     font-family: 'Inter', Arial, Helvetica, sans-serif;
+    width: 100%;
 }
 
 header {
@@ -23,6 +24,10 @@ header {
 }
 
 .navbar a {
+    color: black;
+}
+
+.navbar li {
     list-style-type: none;
     text-decoration: none;
     color: black;
@@ -32,9 +37,6 @@ header {
     margin: 0px 30px;
 }
 
-.navbar a.active {
-    color: #4ABDAC;
-}
 
 .navbar a:hover {
     color: #F7B733;
@@ -82,12 +84,14 @@ header {
     transition: .3s;
 }
 
-.logo {
+.logoNav {
     max-width: 100px;
     margin-right: 3px;
+    transform: translateX(100px);
 }
 
 h1 {
+    padding-top: 100px;
     padding-left: 175px;
     padding-right: 175px;
 }
@@ -219,5 +223,59 @@ input[type=submit]:active {
     .UserBox {
         margin-left: auto;
         margin-right: auto;
+    }
+}
+
+@media (max-width: 1280px) {
+    header {
+        padding: 14px 2%;
+        transition: .2s;
+    }
+
+    .navbar a {
+        padding: 5px 0;
+        margin: 0px 20px;
+    }
+}
+
+@media (max-width: 1090px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 110%;
+        right: -100%;
+        width: 270px;
+        height: 29vh;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-radius: 10px;
+        transition: all .3s ease;
+    }
+
+
+    .navbar a {
+        display: block;
+        margin: 12px 0;
+        padding: 10px 25px;
+        transition: all .3s ease;
+        color: black;
+    }
+
+    .navbar a:hover {
+        color: #F7B733;
+        transform: translateY(2px);
+    }
+
+    .navbar a.active {
+        color: #4ABDAC;
+    }
+
+    .navbar.open {
+        right: 2%;
     }
 }

@@ -14,7 +14,6 @@ header {
     width: 100%;
     top: 0;
     right: 0;
-    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -28,6 +27,10 @@ header {
 }
 
 .navbar a {
+    color: black;
+}
+
+.navbar li {
     list-style-type: none;
     text-decoration: none;
     color: black;
@@ -99,7 +102,7 @@ header {
     align-items: end;
     text-align: center;
     vertical-align: middle;
-    line-height: 30px;
+    line-height: 10px;
 }
 
 .profile img {
@@ -108,9 +111,10 @@ header {
     margin-left: 10px;
 }
 
-.logo {
+header .logo {
     max-width: 100px;
     margin-right: 3px;
+    transform: translateX(100px);
 }
 
 .contentWrapper {
@@ -384,4 +388,58 @@ button {
         justify-content: flex-start;
     }
 
+}
+
+@media (max-width: 1280px) {
+    header {
+        padding: 14px 2%;
+        transition: .2s;
+    }
+
+    .navbar a {
+        padding: 5px 0;
+        margin: 0px 20px;
+    }
+}
+
+@media (max-width: 1090px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 110%;
+        right: -100%;
+        width: 270px;
+        height: 29vh;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-radius: 10px;
+        transition: all .3s ease;
+    }
+
+
+    .navbar a {
+        display: block;
+        margin: 12px 0;
+        padding: 10px 25px;
+        transition: all .3s ease;
+        color: black;
+    }
+
+    .navbar a:hover {
+        color: #F7B733;
+        transform: translateY(2px);
+    }
+
+    .navbar a.active {
+        color: #4ABDAC;
+    }
+
+    .navbar.open {
+        right: 2%;
+    }
 }

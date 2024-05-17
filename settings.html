@@ -1,75 +1,100 @@
 <!-- sign up: User -->
 
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <title>Settings</title>
-        <link rel="stylesheet" href="settings.css">
-        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-    </head>
+<head>
+    <title>Settings</title>
+    <link rel="stylesheet" href="settings.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
-    <body>
-        <!-- nav bar -->
+</head>
 
-        <h1>Settings</h1>
+<body>
 
-        <div class="box">
-            <b>Change details</b>
+    <!-- nav bar -->
 
-            <div class = "userInfo">
-                <p>Email</p>
-                <input type="text" placeholder="New Email">
-                <input type="text" placeholder="Confirm New Email">
-            </div>
-
-            <div class = "userInfo">
-                <p>Name</p>
-                <input type="text" placeholder="First Name">
-                <input type="text" placeholder="Last Name">
-            </div>
-
-            <div class = "userInfo">
-                <p>Reset Password</p>
-                <input type="text" placeholder="Current Password">
-                <input type="text" placeholder="New Password">
-                <input type="text" placeholder="Confirm New Password">
-            </div>
-
-
-            <div class = "userInfo">
-                <p>Location</p>
-                <input type="text" placeholder="Suburb">
-                <input type="text" placeholder="State">
-                <input type="text" placeholder="Postcode">
-                <input type="text" placeholder="Country">
-            </div>
-
-            <div class = "checkAndSave">
-                <div class = "checkContainer">
-                   <input type="checkbox" id = "emailBox">
-                    <label for="emailBox">Opt out of email notifications</label>
+    <header>
+        <img class="logo" src="images_assets/logo.png" alt="logo">
+        <ul class="navbar">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Volunteer Opportunities</a></li>
+            <li><a href="#">Find Organisations</a></li>
+            <li><a href="#">RSVP'd</a></li>
+            <li><a href="#">Updates</a></li>
+        </ul>
+        <div class="profileMenu">
+            <a href="#">
+                <div class="profile">
+                    <p>Name</p>
+                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg">
                 </div>
-                <button class = "saveButton">Save</button>
-            </div>
-
-            <hr>
-
-            <b>Delete account</b>
-
-            <div class = "userInfo">
-                <input type="text" placeholder="Email">
-                <input type="text" placeholder="Password">
-            </div>
-
-
-            <button class = "deleteButton">Delete Account</button>
-
+            </a>
+            <div class="bx bx-menu" id="menu-icon"></div>
         </div>
 
-        <!-- footer -->
+    </header>
 
-    </body>
+    <h1>Settings</h1>
+
+    <div class="box">
+        <b>Change details</b>
+
+        <div class="userInfo">
+            <p>Email</p>
+            <input type="text" placeholder="New Email">
+            <input type="text" placeholder="Confirm New Email">
+        </div>
+
+        <div class="userInfo">
+            <p>Name</p>
+            <input type="text" placeholder="First Name">
+            <input type="text" placeholder="Last Name">
+        </div>
+
+        <div class="userInfo">
+            <p>Reset Password</p>
+            <input type="text" placeholder="Current Password">
+            <input type="text" placeholder="New Password">
+            <input type="text" placeholder="Confirm New Password">
+        </div>
+
+
+        <div class="userInfo">
+            <p>Location</p>
+            <input type="text" placeholder="Suburb">
+            <input type="text" placeholder="State">
+            <input type="text" placeholder="Postcode">
+            <input type="text" placeholder="Country">
+        </div>
+
+        <div class="checkAndSave">
+            <div class="checkContainer">
+                <input type="checkbox" id="emailBox">
+                <label for="emailBox">Opt out of email notifications</label>
+            </div>
+            <button class="saveButton">Save</button>
+        </div>
+
+        <hr>
+
+        <b>Delete account</b>
+
+        <div class="userInfo">
+            <input type="text" placeholder="Email">
+            <input type="text" placeholder="Password">
+        </div>
+
+
+        <button class="deleteButton">Delete Account</button>
+
+    </div>
+
+    <!-- footer -->
+
+</body>
 
 </html>

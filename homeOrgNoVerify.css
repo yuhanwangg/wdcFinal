@@ -206,7 +206,7 @@ header {
     padding: 5px 15px;
 }
 
-#rightArrow {
+.rightArrow {
     color: black;
     font-size: 50px;
     margin-top: 10px;

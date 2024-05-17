@@ -1,49 +1,68 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <title>Admin - Users</title>
-        <link rel="stylesheet" href="AdminUsers.css">
-        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src = "AdminUsers.js"></script>
+<html lang="en">
 
-    </head>
+<head>
+    <title>Admin - Users</title>
+    <link rel="stylesheet" href="AdminUsers.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="AdminUsers.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
-    <body>
-        <div class="contentWrapper">
-            <!-- nav bar -->
+</head>
 
-            <h1>Edit Users</h1>
-
-            <!-- search bar -->
-            <div class="searchBar">
-                <input type="text" placeholder="First Name">
-                <input type="text" placeholder="Last Name">
-                <input type="text" placeholder="Email">
-                <input type="submit">
-            </div>
-
-            <!-- User box, filled using AJAX, should be empty <p> tags -->
-            <div class="UserBox">
-                <p class="Name">User First Name, User Last Name</p>
-                <div class = "lastLine" >
-                    <p>theiremail@gmail.com</p>
-                    <button onclick="goToEditUser()">Edit</button>
+<body>
+    <header>
+        <img class="logo" src="images_assets/logo.png" alt="logo">
+        <ul class="navbar">
+            <li><a href="#">Edit Users</a></li>
+            <li><a href="#">Edit Organisations</a></li>
+            <li><a href="#">Admin</a></li>
+        </ul>
+        <div class="profileMenu">
+            <a href="#">
+                <div class="profile">
+                    <p>Name</p>
+                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg">
                 </div>
+            </a>
+            <div class="bx bx-menu" id="menu-icon"></div>
+        </div>
+    </header>
+    <div class="contentWrapper">
+        <!-- nav bar -->
+        <h1>Edit Users</h1>
+
+        <!-- search bar -->
+        <div class="searchBar">
+            <input type="text" placeholder="First Name">
+            <input type="text" placeholder="Last Name">
+            <input type="text" placeholder="Email">
+            <input type="submit">
+        </div>
+
+        <!-- User box, filled using AJAX, should be empty <p> tags -->
+        <div class="UserBox">
+            <p class="Name">User First Name, User Last Name</p>
+            <div class="lastLine">
+                <p>theiremail@gmail.com</p>
+                <button onclick="goToEditUser()">Edit</button>
             </div>
         </div>
+    </div>
 
 
-        <!-- footer -->
-        <div class="footer">
-            <p>Edit Users</p>
-            <p>Edit Organisations</p>
-            <p>Admin</p>
-            <p>Volunteer Opportunities</p>
-            <p>Find Organisations</p>
-            <p id="logoutFooter">Logout</p>
-        </div>
+    <!-- footer -->
+    <div class="footer">
+        <p>Edit Users</p>
+        <p>Edit Organisations</p>
+        <p>Admin</p>
+        <p>Volunteer Opportunities</p>
+        <p>Find Organisations</p>
+        <p id="logoutFooter">Logout</p>
+    </div>
 
-    </body>
+</body>
 
 </html>

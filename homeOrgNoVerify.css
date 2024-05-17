@@ -99,6 +99,27 @@ header {
     transition: .3s;
 }
 
+.profileMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.profile img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
 .logo {
     max-width: 100px;
     margin-right: 3px;
@@ -139,8 +160,9 @@ header {
 .topContent {
     display: flex;
     justify-content: space-between;
-
-    padding: 125px 175px 75px 175px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 125px 175px 0px 175px;
 }
 
 /* pre-verified */
@@ -258,6 +280,7 @@ form {
 .welcome {
     display: flex;
     justify-content: space-between;
+    flex-wrap: nowrap;
     width: 100%;
     padding: 125px 175px 75px 175px;
 }
@@ -309,4 +332,51 @@ form {
     height: 165px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+
+@media (max-width: 1280px) {
+    header {
+        padding: 14px 2%;
+        transition: .2s;
+    }
+
+    .navbar a {
+        padding: 5px 0;
+        margin: 0px 20px;
+    }
+
+}
+
+@media (max-width: 1090px) {
+
+    .profile {
+        margin-right: 10px;
+    }
+
+    .topContent {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-left: 10%;
+    }
+
+    .dropbtn {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .welcome {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        padding-left: 0px;
+        margin-left: 10%;
+    }
+
+    .buttonList {
+        margin-top: 20px;
+        margin-left: 10%;
+    }
+
 }

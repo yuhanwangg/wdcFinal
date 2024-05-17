@@ -99,6 +99,27 @@ header {
     transition: .3s;
 }
 
+.profileMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.profile img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
 .logo {
     max-width: 100px;
     margin-right: 3px;
@@ -131,7 +152,7 @@ header {
 .dropdown {
     position: relative;
 }
-
+s
 .title {
     width: 50%;
 }
@@ -139,19 +160,22 @@ header {
 .top {
     display: flex;
     justify-content: space-between;
-
-    padding: 125px 175px 0px 175px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 125px 175px 0px 175px;
 }
 
 .topContent {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
     /* padding-right: 175px;
     padding-left: 175px;
     padding-top: 125px;
     padding-bottom: 100px; */
 
-    padding: 50px 175px 100px 175px;
+    margin: 50px 175px 100px 175px;
 }
 
 
@@ -162,6 +186,7 @@ header {
 
 .leftContent {
     margin-right: 20px;
+    width: 50%;
 }
 
 .rightContent {
@@ -224,7 +249,7 @@ header {
 }
 
 /* FINDING */
-#findLocal {
+#quickLinks {
     padding-left: 175px;
     padding-right: 175px;
     padding-top: 10px;
@@ -238,10 +263,11 @@ header {
     width: 100%;
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
-    padding-top: 50px;
-    padding-right: 175px;
-    padding-left: 175px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding: 50px;
+    flex-wrap: wrap;
 }
 
 
@@ -253,6 +279,7 @@ header {
     outline-style: solid;
     width: 550px;
     height: 375px;
+    margin-top: 36px;
 }
 
 #find h3 {
@@ -278,6 +305,7 @@ header {
 .welcome {
     display: flex;
     justify-content: space-between;
+    flex-wrap: nowrap;
     width: 100%;
     padding: 125px 175px 75px 175px;
 }
@@ -329,4 +357,120 @@ header {
     height: 165px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+@media (max-width:1300px) {
+    .update img {
+        display: none;
+    }
+}
+
+@media (max-width: 1280px) {
+    header {
+        padding: 14px 2%;
+        transition: .2s;
+    }
+
+    .navbar a {
+        padding: 5px 0;
+        margin: 0px 20px;
+    }
+
+}
+
+@media (max-width: 1090px) {
+    #menu-icon {
+        display: block;
+        transition: .4s;
+    }
+
+    .top {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-left: 10%;
+    }
+
+    .dropbtn {
+        margin-top: 30px;
+    }
+
+    .topContent {
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: 100%;
+        margin-left: 10%;
+    }
+
+    .topContent h2 {
+        text-align: center;
+    }
+
+    .rightContent {
+        width: 75%;
+        margin-left: 0px;
+        border-style: none;
+    }
+
+    .profile {
+        margin-right: 10px;
+    }
+
+    .findLocal {
+        margin-top: 36px;
+    }
+
+    .findOpp {
+        margin-right: 0px;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 110%;
+        right: -100%;
+        width: 270px;
+        height: 29vh;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-radius: 10px;
+        transition: all .3s ease;
+    }
+
+    .navbar a {
+        display: block;
+        margin: 12px 0;
+        padding: 10px 25px;
+        transition: all .3s ease;
+        color: black;
+    }
+
+    .navbar a:hover {
+        color: #F7B733;
+        transform: translateY(2px);
+    }
+
+    .navbar a.active {
+        color: #4ABDAC;
+    }
+
+    .navbar.open {
+        right: 2%;
+    }
+}
+
+@media (max-width:1000px) {
+    .welcome {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        padding-left: 0px;
+        margin-left: 10%;
+    }
+
+    .buttonList {
+        margin-top: 20px;
+        margin-left: 10%;
+    }
 }

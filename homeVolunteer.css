@@ -37,6 +37,7 @@ header {
 
 .navbar {
     display: flex;
+    align-items: baseline;
 }
 
 .navbar a {
@@ -99,6 +100,27 @@ header {
     transition: .3s;
 }
 
+.profileMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.profile img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
 .logo {
     max-width: 100px;
     margin-right: 3px;
@@ -109,12 +131,9 @@ header {
 .topContent {
     display: flex;
     justify-content: space-between;
-    /* padding-right: 175px;
-    padding-left: 175px;
-    padding-top: 125px;
-    padding-bottom: 100px; */
-
-    padding: 125px 175px 100px 175px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 125px 175px 0px 175px;
 }
 
 
@@ -125,6 +144,7 @@ header {
 
 .leftContent {
     margin-right: 20px;
+    width: 50%;
 }
 
 .rightContent {
@@ -187,7 +207,7 @@ header {
 }
 
 /* FINDING */
-#findLocal {
+#findLocalTitle {
     display: flex;
     padding-left: 175px;
     padding-right: 175px;
@@ -208,10 +228,11 @@ header {
     width: 100%;
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
-    padding-top: 50px;
-    padding-right: 175px;
-    padding-left: 175px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding: 50px;
+    flex-wrap: wrap;
 }
 
 
@@ -223,6 +244,7 @@ header {
     outline-style: solid;
     width: 550px;
     height: 375px;
+    margin-top: 36px;
 }
 
 #find h3 {
@@ -274,9 +296,9 @@ header {
     overflow: hidden;
     display: flex;
     justify-content: space-between;
-    padding-left: 175px;
-    padding-right: 175px;
-    padding-top: 10px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 10px 175px 0px 175px;
 }
 
 #why p {
@@ -358,4 +380,123 @@ header {
     height: 165px;
     align-items: center;
     flex-wrap: wrap;
+}
+
+@media (max-width:1300px) {
+    .update img {
+        display: none;
+    }
+
+}
+
+@media (max-width: 1280px) {
+    header {
+        padding: 14px 2%;
+        transition: .2s;
+    }
+
+    .navbar a {
+        padding: 5px 0;
+        margin: 0px 20px;
+    }
+
+    .desc {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    #why {
+        flex-direction: column;
+        flex-wrap: wrap;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    #why div {
+        margin-top: 20px;
+
+    }
+
+    #findLocalTitle {
+        padding-top: 10%;
+        padding-left: 10%;
+        padding-right: 10%;
+        text-align: center;
+    }
+
+    .bottom {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+}
+
+@media (max-width: 1090px) {
+    #menu-icon {
+        display: block;
+        transition: .4s;
+    }
+
+    .profile {
+        margin-right: 10px;
+    }
+
+    .topContent {
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-left: 10%;
+    }
+
+    .topContent h2 {
+        text-align: center;
+    }
+
+    .rightContent {
+        width: 75%;
+        margin-left: 0px;
+        border-style: none;
+    }
+
+    .findLocal {
+        margin-top: 36px;
+    }
+
+    .findOpp {
+        margin-right: 0px;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 110%;
+        right: -100%;
+        width: 270px;
+        height: 29vh;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-radius: 10px;
+        transition: all .3s ease;
+    }
+
+    .navbar a {
+        display: block;
+        margin: 12px 0;
+        padding: 10px 25px;
+        transition: all .3s ease;
+        color: black;
+    }
+
+    .navbar a:hover {
+        color: #F7B733;
+        transform: translateY(2px);
+    }
+
+    .navbar a.active {
+        color: #4ABDAC;
+    }
+
+    .navbar.open {
+        right: 2%;
+    }
 }

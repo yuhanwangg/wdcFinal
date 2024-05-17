@@ -181,7 +181,7 @@ input[type=submit]:active {
     justify-content: space-between;
     padding-left: 175px;
     padding-right: 175px;
-    margin-top: 110px;
+    margin-top: 30px;
     height: 165px;
     align-items: center;
     flex-wrap: wrap;
@@ -262,5 +262,11 @@ input[type=submit]:active {
 
     .navbar.open {
         right: 2%;
+    }
+
+    .footer {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
     }
 }

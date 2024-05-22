@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Admin - Admin</title>
+    <link rel="stylesheet" href="stylesheets/AdminSuccessCreated.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="javascripts/AdminSuccessCreated.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+</head>
+
+<body>
+    <header>
+        <img class="logo" src="images_assets/logo.png" alt="logo">
+        <ul class="navbar">
+            <li><a href="#">Edit Users</a></li>
+            <li><a href="#">Edit Organisations</a></li>
+            <li><a href="#">Admin</a></li>
+        </ul>
+        <div class="profileMenu">
+            <a href="#">
+                <div class="profile">
+                    <p>Name</p>
+                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg">
+                </div>
+            </a>
+            <div class="bx bx-menu" id="menu-icon"></div>
+        </div>
+    </header>
+    <div class="contentWrapper">
+        <!-- nav bar -->
+        <!-- their email changes with Vue -->
+        <div class="successBox">
+            <p>Successfully created! Expect an email to their account, their_email@gmail.com shortly confirming.</p>
+        </div>
+
+        <button onclick="goToAdminCreate()">Continue back to Admin Page</button>
+
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        <p>Edit Users</p>
+        <p>Edit Organisations</p>
+        <p>Admin</p>
+        <p id="logoutFooter">Logout</p>
+    </div>
+
+</body>
+
+</html>

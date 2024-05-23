@@ -118,6 +118,13 @@ input[type=submit]:active {
     outline: auto;
 }
 
+.errorInput {
+    display: none;
+    margin-left: auto;
+    color:#FC4A1A;
+    display: flex;
+    align-self: flex-end;
+}
 
 .box {
     display: flex;

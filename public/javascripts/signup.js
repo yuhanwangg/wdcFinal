@@ -50,81 +50,95 @@ if (document.getElementsByClassName("userButton")[0].style.outline == "auto") {
     who = 1;
 }
 
+var message = document.getElementsByClassName("errorInput")[0];
+
 //checking for user inputs
 if (who == 0) {
 
     //email
     if (document.getElementById("userEmail").value === "") {
-        alert("Please enter an email");
-        document.getElementById("userEmail").style.color = "red";
+        message.style.display = "block";
+        message.textContent = "Please enter an email";
         return;
     }
 
     if (document.getElementById("userEmailConfirm").value === "") {
-        alert("Please enter a confirmation email");
+        message.style.display = "block";
+        message.textContent = "Please enter a confirmation email";
         return;
     }
 
     if (document.getElementById("userEmail").value != document.getElementById("userEmailConfirm").value) {
-        alert("Please ensure the email addresses entered match");
+        message.style.display = "block";
+        message.textContent = "Please ensure the email addresses entered match";
         return;
     }
 
     //name
     if (document.getElementById("firstName").value === "" || document.getElementById("lastName").value === "") {
-        alert("Please enter your name");
+        message.style.display = "block";
+        message.textContent = "Please enter your name";
         return;
     }
 
     //password
     if (document.getElementById("password").value === "") {
-        alert("Please enter a password");
+        message.style.display = "block";
+        message.textContent = "Please enter a password";
         return;
     }
 
     if (document.getElementById("passwordConfirm").value === "") {
-        alert("Please enter a confirmation password");
+        message.style.display = "block";
+        message.textContent = "Please a confirmation password";
         return;
     }
 
     if (document.getElementById("password").value != document.getElementById("passwordConfirm").value) {
-        alert("Please ensure the passwords entered match");
+        message.style.display = "block";
+        message.textContent = "Please ensure the entered passwords match";
         return;
     }
 
     //dob
     if (document.getElementById("dateOfBirth").value === "") {
-        alert("Please enter your date of birth");
+        message.style.display = "block";
+        message.textContent = "Please enter your date of birth";
         return;
     }
 
     var regex = /^\d{2}\/\d{2}\/\d{4}$/;
 
     if (!regex.test(document.getElementById("dateOfBirth").value)) {
-        alert("Please enter the date of birth in the format --/--/----.");
+        message.style.display = "block";
+        message.textContent = "Please enter the date of birth in the format --/--/----";
         return;
       }
 
     //location
     if (document.getElementById("suburb").value === "") {
-        alert("Please enter a suburb");
+        message.style.display = "block";
+        message.textContent = "Please enter a suburb";
         return;
     }
 
     if (document.getElementById("state").value === "") {
-        alert("Please enter a state");
+        message.style.display = "block";
+        message.textContent = "Please enter a state";
         return;
     }
 
     var regex2 = /^\d+$/;
 
     if (document.getElementById("postcode").value === "" || !regex2.test(document.getElementById("postcode").value)) {
-        alert("Please enter a postcode (numbers only)");
+        message.style.display = "block";
+        message.textContent = "Please enter a postcode (numbers only)";
         return;
     }
 
     if (document.getElementById("country").value === "") {
-        alert("Please enter a country");
+        message.style.display = "block";
+        message.textContent = "Please enter a country";
         return;
     }
 
@@ -137,63 +151,73 @@ if (who == 1) {
 
         //email
         if (document.getElementById("userEmail").value === "") {
-            alert("Please enter an email");
-            document.getElementById("userEmail").style.color = "red";
+            message.style.display = "block";
+            message.textContent = "Please enter an email";
             return;
         }
 
         if (document.getElementById("userEmailConfirm").value === "") {
-            alert("Please enter a confirmation email");
+            message.style.display = "block";
+            message.textContent = "Please enter a confirmation email";
             return;
         }
 
         if (document.getElementById("userEmail").value != document.getElementById("userEmailConfirm").value) {
-            alert("Please ensure the email addresses entered match");
+            message.style.display = "block";
+            message.textContent = "Please ensure the email addresses entered match";
             return;
         }
 
         //company name
         if (document.getElementById("companyName").value === "") {
-            alert("Please enter your name");
+            message.style.display = "block";
+            message.textContent = "Please enter your company's name";
             return;
         }
 
         //password
         if (document.getElementById("password").value === "") {
-            alert("Please enter a password");
+            message.style.display = "block";
+            message.textContent = "Please enter a password";
             return;
         }
 
         if (document.getElementById("passwordConfirm").value === "") {
-            alert("Please enter a confirmation password");
+            message.style.display = "block";
+            message.textContent = "Please enter a confirmation password";
             return;
         }
 
         if (document.getElementById("password").value != document.getElementById("passwordConfirm").value) {
-            alert("Please ensure the passwords entered match");
+            message.style.display = "block";
+            message.textContent = "Please ensure the entered passwords match";
             return;
         }
 
         //location
         if (document.getElementById("suburb").value === "") {
-            alert("Please enter a suburb");
+            message.style.display = "block";
+            message.textContent = "Please enter a suburb";
             return;
         }
 
         if (document.getElementById("state").value === "") {
-            alert("Please enter a state");
+            message.style.display = "block";
+            message.textContent = "Please enter an state";
             return;
         }
 
         var regex2 = /^\d+$/;
 
         if (document.getElementById("postcode").value === "" || !regex2.test(document.getElementById("postcode").value)) {
-            alert("Please enter a postcode (numbers only)");
+            message.style.display = "block";
+            message.textContent = "Please enter a postcode (numbers only)";
             return;
         }
 
         if (document.getElementById("country").value === "") {
-            alert("Please enter country");
+            message.style.display = "block";
+            message.textContent = "Please enter a country";
             return;
         }
 
@@ -201,6 +225,4 @@ if (who == 1) {
 
 }
 
-
-//redirect to signed in home page based on user or organisation
 }

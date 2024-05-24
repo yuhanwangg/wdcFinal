@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="stylesheets/settingsUser.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="javascripts/settingsUser.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
@@ -45,30 +46,30 @@
 
         <div class="userInfo">
             <p>Email</p>
-            <input type="text" placeholder="New Email">
-            <input type="text" placeholder="Confirm New Email">
+            <input type="text" id = "email" placeholder="New Email">
+            <input type="text" id = "emailConfirm" placeholder="Confirm New Email">
         </div>
 
         <div class="userInfo">
             <p>Name</p>
-            <input type="text" placeholder="First Name">
-            <input type="text" placeholder="Last Name">
+            <input type="text" id = "firstName" placeholder="First Name">
+            <input type="text" id = "lastName" placeholder="Last Name">
         </div>
 
         <div class="userInfo">
             <p>Reset Password</p>
-            <input type="text" placeholder="Current Password">
-            <input type="text" placeholder="New Password">
-            <input type="text" placeholder="Confirm New Password">
+            <input type="text" id = "password" placeholder="Current Password">
+            <input type="text" id = "newPassword" placeholder="New Password">
+            <input type="text" id = "newPasswordConfirm" placeholder="Confirm New Password">
         </div>
 
 
         <div class="userInfo">
             <p>Location</p>
-            <input type="text" placeholder="Suburb">
-            <input type="text" placeholder="State">
-            <input type="text" placeholder="Postcode">
-            <input type="text" placeholder="Country">
+            <input type="text" id = "suburb" placeholder="Suburb">
+            <input type="text" id = "state" placeholder="State">
+            <input type="text" id = "postcode" placeholder="Postcode">
+            <input type="text" id = "country" placeholder="Country">
         </div>
 
         <div class="checkAndSave">
@@ -76,7 +77,7 @@
                 <input type="checkbox" id="emailBox">
                 <label for="emailBox">Opt out of email notifications</label>
             </div>
-            <button class="saveButton">Save</button>
+            <button class="saveButton" onclick = "saveDetails();">Save</button>
         </div>
 
         <hr>
@@ -89,7 +90,7 @@
         </div>
 
 
-        <button class="deleteButton">Delete Account</button>
+        <button class="deleteButton" onclick = "deleteAccount();">Delete Account</button>
 
     </div>
 

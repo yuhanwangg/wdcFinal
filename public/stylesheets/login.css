@@ -12,6 +12,11 @@ a {
     text-decoration: none;
 }
 
+.passwordForgot {
+    color:#4ABDAC;
+    text-decoration: none;
+}
+
 header {
     position: fixed;
     margin: 0;

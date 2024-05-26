@@ -64,6 +64,7 @@ CREATE TABLE `Branch` (
   `postcode` varchar(10) DEFAULT NULL,
   `country` varchar(255) DEFAULT NULL,
   `orgID` int NOT NULL,
+  `instated` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`branchID`),
   KEY `orgID` (`orgID`),
   CONSTRAINT `Branch_ibfk_1` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`)
@@ -154,6 +155,7 @@ CREATE TABLE `Organisations` (
   `orgSite` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
+  `description` varchar(750) DEFAULT NULL,
   PRIMARY KEY (`orgID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -260,4 +262,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-24 14:46:20
+-- Dump completed on 2024-05-26  9:40:18

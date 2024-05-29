@@ -67,7 +67,8 @@ CREATE TABLE `Branch` (
   `instated` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`branchID`),
   KEY `orgID` (`orgID`),
-  CONSTRAINT `Branch_ibfk_1` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`)
+  CONSTRAINT `Branch_ibfk_1` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`),
+  CONSTRAINT `fk_organisation_branches` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -92,6 +93,10 @@ CREATE TABLE `FollowedBranches` (
   `branchID` int DEFAULT NULL,
   KEY `userID` (`userID`),
   KEY `branchID` (`branchID`),
+  KEY `idx_branchID` (`branchID`),
+  KEY `idx_userID` (`userID`),
+  CONSTRAINT `fk_branches_followed` FOREIGN KEY (`branchID`) REFERENCES `FollowedBranches` (`branchID`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_branches_followed` FOREIGN KEY (`userID`) REFERENCES `FollowedBranches` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `FollowedBranches_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`),
   CONSTRAINT `FollowedBranches_ibfk_2` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -129,6 +134,8 @@ CREATE TABLE `Opportunities` (
   `branchID` int DEFAULT NULL,
   PRIMARY KEY (`oppID`),
   KEY `branchID` (`branchID`),
+  KEY `idx_branchID` (`branchID`),
+  CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,
   CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -181,6 +188,10 @@ CREATE TABLE `RSVPD` (
   `oppID` int DEFAULT NULL,
   KEY `userID` (`userID`),
   KEY `oppID` (`oppID`),
+  KEY `idx_userID` (`userID`),
+  KEY `idx_oppID` (`oppID`),
+  CONSTRAINT `fk_opportunity_rsvpd` FOREIGN KEY (`oppID`) REFERENCES `RSVPD` (`oppID`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_rsvpd` FOREIGN KEY (`userID`) REFERENCES `RSVPD` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `RSVPD_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`),
   CONSTRAINT `RSVPD_ibfk_2` FOREIGN KEY (`oppID`) REFERENCES `Opportunities` (`oppID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -209,6 +220,7 @@ CREATE TABLE `Updates` (
   `branchID` int DEFAULT NULL,
   PRIMARY KEY (`updateID`),
   KEY `branchID` (`branchID`),
+  CONSTRAINT `fk_branch_updates` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE,
   CONSTRAINT `Updates_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -262,4 +274,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-26  9:40:18
+-- Dump completed on 2024-05-29  5:12:17

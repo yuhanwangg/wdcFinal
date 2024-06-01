@@ -219,6 +219,7 @@ CREATE TABLE `Updates` (
   `updateName` varchar(255) DEFAULT NULL,
   `updateMsg` varchar(500) DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `dateCreated` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`updateID`),
   KEY `branchID` (`branchID`),
   CONSTRAINT `fk_branch_updates` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE,
@@ -276,4 +277,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-31  7:23:58
+-- Dump completed on 2024-06-01 10:21:05

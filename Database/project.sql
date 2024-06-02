@@ -163,6 +163,7 @@ CREATE TABLE `Organisations` (
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `description` varchar(750) DEFAULT NULL,
+  `imgPath` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`orgID`),
   UNIQUE KEY `orgName` (`orgName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -277,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-01 10:21:05
+-- Dump completed on 2024-06-02  5:39:58

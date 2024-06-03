@@ -3,137 +3,134 @@
 
 <head>
     <title>Find Organisations - guest</title>
+    <link rel="stylesheet" href="stylesheets/main.css">
     <link rel="stylesheet" href="stylesheets/findOrganisations.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/guestHeader.js"></script>
 </head>
 
 <body>
     <!-- nav bar -->
-    <header>
-        <img class="logoNav" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Volunteer Opportunities</a></li>
-            <li><a href="#">Find Organisations</a></li>
-        </ul>
-        <div class="nav_buttons">
-            <a href="#">Sign Up</a>
-            <a href="#" class="userLogIn"><i class="ri-user-fill"></i>Log In</a>
-            <div class="bx bx-menu" id="menu-icon"></div>
+    <div id="app">
+        <header-component>
+        </header-component>
+        <h1>Volunteer Organisations</h1>
+
+        <!-- search bar ALSO NEED TO ADD DROP DOWN IMPLEMENTATION-->
+        <div class="searchBar">
+            <input type="text" placeholder="Categories">
+            <input type="text" placeholder="Location">
+            <input type="text" placeholder="Organisation Name">
+            <input type="submit">
         </div>
 
-    </header>
+        <!-- User box, filled using AJAX, should be empty <p> tags -->
+        <div class="UserBox">
+            <div class="contentLeft">
+                <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
+                <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
+                    change in the world through volunteering. Our organization serves as a platform for individuals from
+                    all
+                    walks of life to come together and contribute their time, skills, and resources to meaningful
+                    causes.
+                    Volunteer things. We do those. Yeah.</p>
+            </div>
+            <div class="logoJoin">
+                <img src="images_assets/vlogo.png" class="logo" alt="logo">
+                <button>Join</button>
+            </div>
+        </div>
 
-    <h1>Volunteer Organisations</h1>
+        <div class="UserBox">
+            <div class="contentLeft">
+                <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
+                <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
+                    change in the world through volunteering. Our organization serves as a platform for individuals from
+                    all
+                    walks of life to come together and contribute their time, skills, and resources to meaningful
+                    causes.
+                    Volunteer things. We do those. Yeah.</p>
+            </div>
+            <div class="logoJoin">
+                <img src="images_assets/vlogo.png" class="logo" alt="logo">
+                <button>Join</button>
+            </div>
+        </div>
 
-    <!-- search bar ALSO NEED TO ADD DROP DOWN IMPLEMENTATION-->
-    <div class="searchBar">
-        <input type="text" placeholder="Categories">
-        <input type="text" placeholder="Location">
-        <input type="text" placeholder="Organisation Name">
-        <input type="submit">
+        <div class="UserBox">
+            <div class="contentLeft">
+                <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
+                <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
+                    change in the world through volunteering. Our organization serves as a platform for individuals from
+                    all
+                    walks of life to come together and contribute their time, skills, and resources to meaningful
+                    causes.
+                    Volunteer things. We do those. Yeah.</p>
+            </div>
+            <div class="logoJoin">
+                <img src="images_assets/vlogo.png" class="logo" alt="logo">
+                <button>Join</button>
+            </div>
+        </div>
+
+        <div class="UserBox">
+            <div class="contentLeft">
+                <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
+                <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
+                    change in the world through volunteering. Our organization serves as a platform for individuals from
+                    all
+                    walks of life to come together and contribute their time, skills, and resources to meaningful
+                    causes.
+                    Volunteer things. We do those. Yeah.</p>
+            </div>
+            <div class="logoJoin">
+                <img src="images_assets/vlogo.png" class="logo" alt="logo">
+                <button>Join</button>
+            </div>
+        </div>
+
+        <div class="UserBox">
+            <div class="contentLeft">
+                <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
+                <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
+                    change in the world through volunteering. Our organization serves as a platform for individuals from
+                    all
+                    walks of life to come together and contribute their time, skills, and resources to meaningful
+                    causes.
+                    Volunteer things. We do those. Yeah.</p>
+            </div>
+            <div class="logoJoin">
+                <img src="images_assets/vlogo.png" class="logo" alt="logo">
+                <button>Join</button>
+            </div>
+        </div>
+
+        <div class="UserBox">
+            <div class="contentLeft">
+                <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
+                <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
+                    change in the world through volunteering. Our organization serves as a platform for individuals from
+                    all
+                    walks of life to come together and contribute their time, skills, and resources to meaningful
+                    causes.
+                    Volunteer things. We do those. Yeah.</p>
+            </div>
+            <div class="logoJoin">
+                <img src="images_assets/vlogo.png" class="logo" alt="logo">
+                <button>Join</button>
+            </div>
+        </div>
+
+        <p class="pageNo">Page 1/42</p>
+
+        <!-- footer -->
+        <footer-component></footer-component>
+
     </div>
-
-    <!-- User box, filled using AJAX, should be empty <p> tags -->
-    <div class="UserBox">
-        <div class="contentLeft">
-            <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
-            <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
-                change in the world through volunteering. Our organization serves as a platform for individuals from all
-                walks of life to come together and contribute their time, skills, and resources to meaningful causes.
-                Volunteer things. We do those. Yeah.</p>
-        </div>
-        <div class="logoJoin">
-            <img src="images_assets/vlogo.png" class="logo" alt="logo">
-            <button>Join</button>
-        </div>
-    </div>
-
-    <div class="UserBox">
-        <div class="contentLeft">
-            <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
-            <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
-                change in the world through volunteering. Our organization serves as a platform for individuals from all
-                walks of life to come together and contribute their time, skills, and resources to meaningful causes.
-                Volunteer things. We do those. Yeah.</p>
-        </div>
-        <div class="logoJoin">
-            <img src="images_assets/vlogo.png" class="logo" alt="logo">
-            <button>Join</button>
-        </div>
-    </div>
-
-    <div class="UserBox">
-        <div class="contentLeft">
-            <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
-            <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
-                change in the world through volunteering. Our organization serves as a platform for individuals from all
-                walks of life to come together and contribute their time, skills, and resources to meaningful causes.
-                Volunteer things. We do those. Yeah.</p>
-        </div>
-        <div class="logoJoin">
-            <img src="images_assets/vlogo.png" class="logo" alt="logo">
-            <button>Join</button>
-        </div>
-    </div>
-
-    <div class="UserBox">
-        <div class="contentLeft">
-            <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
-            <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
-                change in the world through volunteering. Our organization serves as a platform for individuals from all
-                walks of life to come together and contribute their time, skills, and resources to meaningful causes.
-                Volunteer things. We do those. Yeah.</p>
-        </div>
-        <div class="logoJoin">
-            <img src="images_assets/vlogo.png" class="logo" alt="logo">
-            <button>Join</button>
-        </div>
-    </div>
-
-    <div class="UserBox">
-        <div class="contentLeft">
-            <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
-            <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
-                change in the world through volunteering. Our organization serves as a platform for individuals from all
-                walks of life to come together and contribute their time, skills, and resources to meaningful causes.
-                Volunteer things. We do those. Yeah.</p>
-        </div>
-        <div class="logoJoin">
-            <img src="images_assets/vlogo.png" class="logo" alt="logo">
-            <button>Join</button>
-        </div>
-    </div>
-
-    <div class="UserBox">
-        <div class="contentLeft">
-            <a href="link.com" class="organisationName"><b>Organisation Name</b></a>
-            <p>Founded on the principles of compassion, collaboration, and commitment, we strive to create positive
-                change in the world through volunteering. Our organization serves as a platform for individuals from all
-                walks of life to come together and contribute their time, skills, and resources to meaningful causes.
-                Volunteer things. We do those. Yeah.</p>
-        </div>
-        <div class="logoJoin">
-            <img src="images_assets/vlogo.png" class="logo" alt="logo">
-            <button>Join</button>
-        </div>
-    </div>
-
-    <p class="pageNo">Page 1/42</p>
-
-    <!-- footer -->
-    <div class="footer">
-        <p>Home</p>
-        <p>Volunteer Opportunites</p>
-        <p>Find Organisations</p>
-        <p>Contact Us</p>
-        <p>Sign up</p>
-        <p>Login</p>
-    </div>
-
 
 
 </body>

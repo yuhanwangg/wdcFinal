@@ -3,7 +3,7 @@ function saveOrganisationInfoConfirm() {
     if (saveLabelShowing === false) {
         var confirmSave = document.createElement('div');
         confirmSave.id = 'saveSuccess';
-        confirmSave.innerHTML ='<p>Organisation information saved!</p>';
+        confirmSave.innerHTML = '<p>Organisation information saved!</p>';
 
         var parent = document.querySelector('.contentWrapper');
         parent.appendChild(confirmSave);
@@ -46,5 +46,5 @@ function checkDeleteOrganisatoin() {
 }
 
 function backToOrganisations() {
-    window.location.href="AdminOrganisation.html";
+    window.location.href = "AdminOrganisation.html";
 }

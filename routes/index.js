@@ -21,7 +21,7 @@ connection.connect(function (err) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('homeGuest', { title: 'homeGuest' });
+  res.redirect('/home'); // Redirect to /home
 });
 
 /* GET user count from database */
@@ -38,5 +38,17 @@ router.get('/userCount', function (req, res, next) {
   });
 });
 
+// GET most recent posts
+router.get('/recentPosts', function (req, res, next) {
+  const query = 'SELECT * FROM Opportunities ORDER BY dates DESC LIMIT 3'; // Change the limit as needed
+  connection.query(query, function (error, results, fields) {
+    if (error) {
+      console.error('Error querying database: ' + error.stack);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    res.json(results);
+  });
+});
 
 module.exports = router;

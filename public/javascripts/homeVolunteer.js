@@ -8,3 +8,24 @@ document.addEventListener("DOMContentLoaded", function () {
         menu.classList.toggle('bx-x');
     }
 });
+
+// get the top few posts
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app',
+        data: {
+            recentPosts: []
+        },
+        mounted() {
+            // Fetch recent posts from server
+            axios.get('/recentPosts')
+                .then(response => {
+                    console.log("successfully loaded post!");
+                    this.recentPosts = response.data;
+                })
+                .catch(error => {
+                    console.error('Error fetching recent posts:', error);
+                });
+        }
+    });
+});

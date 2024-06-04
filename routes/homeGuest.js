@@ -3,7 +3,7 @@ const router = express.Router();
 var path = require('path');
 var mysql = require('mysql');
 
-router.get("/home", (req, res, next) => {
+router.get("/", (req, res, next) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'homeGuest.html'));
 });
 

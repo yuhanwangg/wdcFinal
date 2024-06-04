@@ -2,6 +2,27 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var router = express.Router();
 router.use(bodyParser.json());
+
+var nodemailer = require('nodemailer')
+//what was generated for me
+let transporter = nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  auth: {
+      user: 'jarrell59@ethereal.email',
+      pass: '4uzZM9pnpW37DrVVUc'
+  }
+});
+//lecture
+// let transporter = nodemailer.createTransport({
+//   host: 'smtp.ethereal.email',
+//   port: 587,
+//   auth: {
+//     user: 'winona68@ethereal.email',
+//     pass: 'D5HA5uuYjQTyne1HG6'
+//   }
+// })
+
 var adminIdCounter = 1;
 
 /* GET home page. */
@@ -876,5 +897,16 @@ router.post('/createNewPost',function(req, res, next) {
   });
 });
 
+router.post('/email', function(req, res, next){
+  let info = transporter.sendMail({
+    from: "winona68@ethereal.email", //sender address
+    to: req.body.recipient, //list of recievers
+    subject: req.body.subject, //subject line
+    text: req.body.text, //plain text body
+    html: req.body.text //html body
+  })
+  res.send()
+
+});
 
 module.exports = router;

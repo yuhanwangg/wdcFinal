@@ -174,7 +174,7 @@ input[type=submit]:active, button:active {
     outline: auto;
 }
 
-#incorrectInfo, #notFilled{
+#incorrectInfo, #notFilled, #emailTaken{
     margin-left: 175px;
     margin-right: 175px;
     margin-top: 10px;
@@ -185,7 +185,7 @@ input[type=submit]:active, button:active {
     text-align: center;
 }
 
-#incorrectInfo p, #notFilled p{
+#incorrectInfo p, #notFilled p, #emailTaken p{
     color: white;
 }
 
@@ -244,7 +244,7 @@ input[type=submit]:active, button:active {
         padding: 0px;
     }
 
-    #incorrectInfo{
+    #incorrectInfo, #notFilled, #emailTaken{
         margin-left: 0;
         margin-right: 0;
     }

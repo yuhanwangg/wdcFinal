@@ -12,7 +12,7 @@
 
 </head>
 
-<body>
+<body onload = "loadInfo()">
 
     <header>
         <img class="logo" src="images_assets/logo.png" alt="logo">
@@ -37,26 +37,30 @@
         <h1>Edit Users</h1>
 
         <!-- search bar -->
-        <div class="searchBar">
+        <!-- <div class="searchBar">
             <input type="text" placeholder="First Name">
             <input type="text" placeholder="Last Name">
             <input type="text" placeholder="Email">
             <input type="submit">
-        </div>
+        </div> -->
 
         <!-- User box, filled using something (AJAX?), should be empty <p> tags -->
         <div id="UserEdit">
             <div class="changeTextInputs">
-                <input type="text" placeholder="Current First Name">
-                <input type="text" placeholder="Current Last Name">
-                <input type="text" placeholder="Current Email">
+                <input id="firstNameInput" type="text" placeholder="Current First Name">
+                <input id="lastNameInput" type="text" placeholder="Current Last Name">
+                <input id="emailInput" type="text" placeholder="Current Email">
             </div>
             <div class="SaveDeleteButtons">
                 <button onclick="checkDeleteUser()">Delete User</button>
                 <input type="submit" value="Save" onclick="saveUserInfoConfirm()">
             </div>
         </div>
+
+        <button id = "backToSearch" onclick="backToUsers()">Back To Search</button>
     </div>
+
+
 
     <!-- footer -->
     <div class="footer">

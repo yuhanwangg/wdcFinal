@@ -251,6 +251,20 @@ button:active {
     flex-flow: wrap;
 }
 
+#notFound {
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-top: 10px;
+    background-color: #F7B733;
+    border-radius: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+#notFound p{
+    color: white;
+}
 .footer {
     background-color: #D1EEE5;
     display: flex;
@@ -271,6 +285,11 @@ button:active {
         padding-left: 15px;
         padding-right: 15px;
         line-height: 45px;
+    }
+
+    #notFound{
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .searchBar input,

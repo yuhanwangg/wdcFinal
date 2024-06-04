@@ -3,12 +3,15 @@
 
 <head>
     <title>Admin - Users</title>
+    <!-- vue script -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
     <link rel="stylesheet" href="stylesheets/AdminUsers.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="javascripts/AdminUsers.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <script src="javascripts/AdminUsers.js" defer></script> <!-- Use defer attribute -->
 
 </head>
 
@@ -30,28 +33,35 @@
             <div class="bx bx-menu" id="menu-icon"></div>
         </div>
     </header>
-    <div class="contentWrapper">
+    <div id="app" class="contentWrapper">
         <!-- nav bar -->
         <h1>Edit Users</h1>
 
         <!-- search bar -->
         <div class="searchBar">
-            <input type="text" placeholder="First Name">
-            <input type="text" placeholder="Last Name">
-            <input type="text" placeholder="Email">
-            <input type="submit">
+            <input id="firstNameInput" type="text" placeholder="First Name">
+            <input id="lastNameInput" type="text" placeholder="Last Name">
+            <input id="emailInput" type="text" placeholder="Email">
+            <input onclick="findUser()" type="submit">
         </div>
 
-        <!-- User box, filled using AJAX, should be empty <p> tags -->
-        <div class="UserBox">
-            <p class="Name">User First Name, User Last Name</p>
-            <div class="lastLine">
-                <p>theiremail@gmail.com</p>
-                <button onclick="goToEditUser()">Edit</button>
+        <!-- User box, filled using AJAX/vue, should be empty <p> tags -->
+        <div v-if="searchedForUser && userDetailsShowing && !notFoundShowing">
+            <div v-for="user in userInfo" class="UserBox" >
+                <p class="Name">{{ user.firstName }}, {{ user.lastName }}</p>
+                <div class="lastLine">
+                    <p>{{ user.email }}</p>
+                    <button @click="goToEditUser(user.userID)">Edit</button>
+                </div>
             </div>
         </div>
-    </div>
 
+        <!-- could not find user box -->
+        <div id="notFound" v-if="notFoundShowing && searchedForUser && !userDetailsShowing">
+            <p>{{ notFoundMsg }}</p>
+        </div>
+
+    </div>
 
     <!-- footer -->
     <div class="footer">

@@ -254,6 +254,21 @@ input[type=submit]:active {
     font-size: 1em;
 }
 
+#notFound {
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-top: 10px;
+    background-color: #F7B733;
+    border-radius: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+#notFound p{
+    color: white;
+}
+
 /*
 .UserEdit .SaveDeleteButtons button {
     align-self:flex-start;
@@ -278,6 +293,11 @@ input[type=submit]:active {
         padding-left: 15px;
         padding-right: 15px;
         line-height: 45px;
+    }
+
+    #notFound{
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .searchBar input,

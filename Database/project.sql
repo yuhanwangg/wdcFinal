@@ -46,6 +46,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
+INSERT INTO `Admin` VALUES (1,'Georgia','McLeod','georgiaEmail@gmail.com','admin1');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,6 +79,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
+INSERT INTO `Branch` VALUES (1,'Norwood Branch','Norwood','SA','5067','Australia',1,0),(2,'Melbourne Branch','Melbourne','VIC','5067','Australia',1,1),(3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,6 +177,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png');
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,6 +237,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
+INSERT INTO `Updates` VALUES (1,'Rescheduled ','All events are going to be moved ahead by 1 day! Sorry for the inconvenience!',2,'June 4, 2024 at 10:01 AM'),(2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM');
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,7 +269,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'georgia','mcl','2004','Norwood','SA','5067','Australia','emailgeorgia','mypassword');
+INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','mypassword');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -278,4 +282,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-02  5:39:58
+-- Dump completed on 2024-06-04  0:35:35

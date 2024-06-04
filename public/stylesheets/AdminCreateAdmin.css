@@ -170,8 +170,51 @@ input[type=submit] {
 
 }
 
-input[type=submit]:active {
+input[type=submit]:active, button:active {
     outline: auto;
+}
+
+#incorrectInfo, #notFilled{
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-top: 10px;
+    background-color: #F7B733;
+    border-radius: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+#incorrectInfo p, #notFilled p{
+    color: white;
+}
+
+.successBox {
+    border-radius: 20px;
+    background-color: #EDEDED;
+    margin-left: 175px;
+    margin-right: 175px;
+    padding: 10px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#continue {
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-top: 60px;
+    border-radius: 20px;
+    border: none;
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #FC4A1A;
+    color: white;
+    text-indent: 0px;
+    height: 2.5em;
 }
 
 .footer {
@@ -199,6 +242,11 @@ input[type=submit]:active {
 
     h2 {
         padding: 0px;
+    }
+
+    #incorrectInfo{
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .footer {

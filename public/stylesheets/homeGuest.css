@@ -71,7 +71,7 @@
 .volunteerTodayButton button:hover {
     background-color: #ed4618;
     transition: .2s;
-    transform: translateY(2px);
+    /* transform: translateY(5px); */
 }
 
 /* FIND LOCAL VOLUNTEERING OPPORTUNITIES */
@@ -236,7 +236,7 @@
     padding: 25px;
 }
 
-.signUpNow {
+#signUpNow {
     display: flex;
     justify-content: center;
 }
@@ -245,7 +245,7 @@
     margin: 100px 175px 100px 175px;
 }
 
-.signUpNow button {
+#signUpNow button {
     font-size: 25px;
     font-weight: 500;
     padding: 15px;
@@ -255,7 +255,7 @@
     color: white;
 }
 
-.signUpNow button:hover {
+#signUpNow button:hover {
     background-color: #ed4618;
     transition: .2s;
     transform: translateY(2px);

@@ -12,7 +12,9 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="javascripts/guestHeader.js"></script>
+    <script src="javascripts/homeGuest.js"></script>
 </head>
 
 <body>
@@ -27,7 +29,7 @@
                         <h1>Make your mark,</h1>
                         <h1>Volunteer with heart.</h1>
                     </div>
-                    <div class="volunteerTodayButton"><button>Volunteer Today</button></div>
+                    <div class="volunteerTodayButton" @click="volunButton"><button>Volunteer Today</button></div>
                 </div>
                 <!--
                     <div class="replacementText">
@@ -109,9 +111,12 @@
         </div>
         <div class="bottom">
             <div class="bottomText">
-                <h2>So, what are you waiting for? Join the [user count] volunteering with us today!</h2>
+                <h2>So, what are you waiting for? Join the <span id="userCount">{{ userCount }}</span> volunteering with
+                    us today!</h2>
             </div>
-            <div class="signUpNow"><button>Sign up now</button></div>
+            <div id="signUpNow">
+                <button @click="signUp">Sign up now</button>
+            </div>
 
         </div>
 

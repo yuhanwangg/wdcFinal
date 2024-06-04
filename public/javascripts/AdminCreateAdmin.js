@@ -25,9 +25,6 @@ function createAdmin() {
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
 
-    const text = "Dear " + firstName + " " + lastName + ",<br><br> you are now an Admin for Heart!<br><br> Your account details are as follows: <br><br><b> First Name: </b>" + firstName + "<br><br><b>Last Name: </b>" + lastName + " <br><br><b>Email: </b>" + email + "<br><br><b> Password: </b>" + password + "<br><br> Please do not share these details with anyone. <br><br>Thank you for joining our program! <br><br> Kind regards, <br><br> The Heart Admin Team";
-    const subject = "New Admin Confirmation";
-
     //check that there is info in all the boxes
     if (email.trim() && emailConfirm.trim() && firstName.trim() && lastName.trim() && password.trim() && passwordConfirm.trim()) {
 
@@ -118,6 +115,9 @@ function showIncorrectInfoMsg(){
 }
 
 function showSuccessMsg(firstName, lastName, email, password) {
+    const text = "Dear " + firstName + " " + lastName + ",<br><br> You are now an Admin for Heartfelt Helpers!<br><br> Your account details are as follows: <br><br><b> First Name: </b>" + firstName + "<br><br><b>Last Name: </b>" + lastName + " <br><br><b>Email: </b>" + email + "<br><br><b> Password: </b>" + password + "<br><br> Please do not share these details with anyone. <br><br>Thank you for joining our program! <br><br> Kind regards, <br><br> The Heartfelt Helpers Admin Team";
+    const subject = "New Admin Confirmation";
+
     //create a pop up success box and back button
     console.log("we are HEREEEEEE");
     var createBox = document.getElementsByClassName('createAdmin')[0];
@@ -165,7 +165,7 @@ function showSuccessMsg(firstName, lastName, email, password) {
     };
     xhttp2.open("POST", "/email", true);
     xhttp2.setRequestHeader("Content-type", "application/json");
-    xhttp2.send(JSON.stringify({ recipient: email, subject: subject, text: text}));
+    xhttp2.send(JSON.stringify({ email: email, subject: subject, text: text}));
 }
 
 function showEmailTakenMsg() {

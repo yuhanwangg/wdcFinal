@@ -70,6 +70,21 @@ function loadInfo() {
 
             var orgDescriptionInput = document.getElementById("orgDescription");
             orgDescriptionInput.value = info.description;
+
+            const descTextarea = document.getElementById('orgDescription');
+            const descCount = document.querySelector('.descCount');
+            const max = 750;
+
+
+            function updateCharacterCount() {
+                const remaining = max - descTextarea.value.length;
+                descCount.textContent = remaining;
+            }
+
+            updateCharacterCount();
+
+
+            descTextarea.onkeyup = updateCharacterCount;
         }
     };
     xhttp.open("POST", "/orgInfo", true);

@@ -318,4 +318,18 @@ document.addEventListener('DOMContentLoaded', function() {
     window.getBranches = getBranches;
     window.getPosts = getPosts;
     window.getOrgLogo = getOrgLogo;
+
+    const descTextarea = document.getElementById('postMessage');
+    const descCount = document.querySelector('.descCount');
+    const max = 750;
+
+
+    function updateCharacterCount() {
+        const remaining = max - descTextarea.value.length;
+        descCount.textContent = remaining;
+    }
+
+    updateCharacterCount();
+
+    descTextarea.onkeyup = updateCharacterCount;
 });

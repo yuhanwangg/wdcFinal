@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const vueinst = new Vue({
         el: "#app",
         data: {
-            orgName: null,
+            orgName: '',
             logoPath: null,
             branches: [],
             oldPosts: [],
@@ -89,7 +89,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 xhttp1.setRequestHeader("Content-type", "application/json");
                 xhttp1.send(JSON.stringify({ branchID: vueinst.selectedBranchID, orgID: orgID, updateName:updateTitleInput, updateMsg: updateMessageInput, dateCreated: formattedDate }));
 
-                },
+
+                //send the new post to all users following the branch
+                var xhttp2 = new XMLHttpRequest();
+                var text = vueinst.orgName + " " + vueinst.selectedBranchName + " has posted the new update below: <br><br>" + "<b>Title: " + updateTitleInput + "</b><br><br>Message: " + updateMessageInput + "<br><br>Kind regards, <br><br>Heartfelt Helpers";
+                var subject = "New Update from " + vueinst.orgName + " " + vueinst.selectedBranchName;
+                xhttp2.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // console.log("emailed successfully!")
+                    }
+                };
+                xhttp2.open("POST", "/emailUpdate", true);
+                xhttp2.setRequestHeader("Content-type", "application/json");
+                xhttp2.send(JSON.stringify({ branchID: vueinst.selectedBranchID, subject: subject, text: text}));
+            },
 
             nextPage() {
                 vueinst.currPage++;
@@ -190,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.readyState == 4 && this.status == 200) {
                 //set the vue value userInfo to be the JSON
                 //console.log(JSON.parse(this.responseText));
-                vueinst.orgName = JSON.parse(this.responseText);
+                vueinst.orgName = JSON.parse(this.responseText).orgName;
 
             } else if (this.status === 404) {
                 //console.log("went into 404 else statement, couldn't find the org's name");

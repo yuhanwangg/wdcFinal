@@ -900,4 +900,45 @@ router.post('/email', function(req, res, next){
 
 });
 
+router.post('/emailUpdate', function(req, res, next){
+  //find the email list
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function(err,connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!")
+      res.sendStatus(500);
+      return;
+    }
+    console.log("connected to pool");
+    //this is the query which i can change
+    var query = "SELECT email FROM User WHERE userID IN (SELECT userID FROM FollowedBranches WHERE branchID = ?);";
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, [req.body.branchID], function(err1, rows, fields) {
+
+      //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+      connection.release();
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length > 0) {
+        // Extract email addresses from the result rows
+        const emailList = rows.map(row => row.email);
+        // Organization found, send back the details
+        let info = transporter.sendMail({
+          from: "heartfelthelpers@outlook.com", //sender address
+          to: emailList.join(','), //list of recievers
+          subject: req.body.subject, //subject line
+          text: req.body.text, //plain text body
+          html: req.body.text //html body
+        })
+      }
+      return;
+    });
+  });
+});
+
 module.exports = router;

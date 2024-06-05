@@ -74,7 +74,7 @@ function findOrganisation() {
 
             //create button
             var editButton = document.createElement('button');
-            editButton.onclick = function() {
+            editButton.onclick = function () {
                 goToEditOrganisation(orgDetails.orgID);
             };
 
@@ -101,7 +101,7 @@ function findOrganisation() {
             // fetchCurrBranches();
 
         }
-        else if (this.status === 404){
+        else if (this.status === 404) {
             //console.log("went into 404 else statement");
             //console.log("the value of notFoundShowing = " + notFoundShowing);
             //send in a error message saying not found
@@ -109,7 +109,7 @@ function findOrganisation() {
                 //console.log("not found is not showing");
                 var notFoundMsg = document.createElement('div');
                 notFoundMsg.id = 'notFound';
-                notFoundMsg.innerHTML ='<p>The organisation with these details cannot be found</p>';
+                notFoundMsg.innerHTML = '<p>The organisation with these details cannot be found</p>';
                 var parent = document.querySelector('.contentWrapper');
                 parent.appendChild(notFoundMsg);
                 notFoundShowing = true;
@@ -179,12 +179,12 @@ function fetchBranchRequests() {
                 var buttons = document.createElement('div');
 
                 var accept = document.createElement('button');
-                accept.onclick = function() { branchRequestAccept(request.branchName, accept, inputedName, inputedEmail); };
+                accept.onclick = function () { branchRequestAccept(request.branchName, accept, inputedName, inputedEmail); };
                 accept.innerText = "Accept \u2713";
                 accept.className = "accept";
 
                 var reject = document.createElement('button');
-                reject.onclick = function() { branchRequestReject(request.branchName, reject, inputedName, inputedEmail); };
+                reject.onclick = function () { branchRequestReject(request.branchName, reject, inputedName, inputedEmail); };
                 reject.innerText = "Reject \u2715";
                 reject.className = "reject";
 
@@ -218,7 +218,7 @@ function fetchBranchRequests() {
 
 }
 
-function fetchCurrBranches () {
+function fetchCurrBranches() {
     const inputedName = document.getElementById('orgName');
     const inputedEmail = document.getElementById('orgEmail');
     //get the current branch
@@ -254,7 +254,7 @@ function fetchCurrBranches () {
                 name.innerText = branch.branchName;
 
                 var remove = document.createElement('button');
-                remove.onclick = function() { branchRemove(branch.branchName, remove, inputedName, inputedEmail); };
+                remove.onclick = function () { branchRemove(branch.branchName, remove, inputedName, inputedEmail); };
                 remove.innerText = "Remove";
                 remove.className = "remove";
 
@@ -286,11 +286,9 @@ function goToEditOrganisation(orgId) {
     const orgName = document.getElementById('orgName').value;
     const orgEmail = document.getElementById('orgEmail').value;
     //console.log(orgName + orgEmail);
-    window.location.href="AdminEditOrganisations.html?orgName=" + encodeURIComponent(orgName) + "&orgEmail=" + encodeURIComponent(orgEmail) + "&orgID=" + orgId;
+    window.location.href = "AdminEditOrganisations.html?orgName=" + encodeURIComponent(orgName) + "&orgEmail=" + encodeURIComponent(orgEmail) + "&orgID=" + orgId;
 }
 
-function branchRequestAccept(branchName, button, orgName, orgEmail) {
-    //console.log(branchName + "  " + orgName.value +  " " + orgEmail.value);
 function branchRequestAccept(branchName, button, orgName, orgEmail) {
     //console.log(branchName + "  " + orgName.value +  " " + orgEmail.value);
     //remove from branch requests
@@ -304,7 +302,7 @@ function branchRequestAccept(branchName, button, orgName, orgEmail) {
     //add to the current branches
     var newBranch = document.createElement('div');
     newBranch.className = 'nameAndButtons';
-    newBranch.innerHTML = '<p>' +branchName + '</p><button class="remove" onclick="branchRemove(${branchName}, this, ${orgName}, ${orgEmail})">Remove</button>';
+    newBranch.innerHTML = '<p>' + branchName + '</p><button class="remove" onclick="branchRemove(${branchName}, this, ${orgName}, ${orgEmail})">Remove</button>';
     var newLine = document.createElement('hr');
 
     var parent = document.querySelector('.allCurrentBranches');
@@ -315,12 +313,12 @@ function branchRequestAccept(branchName, button, orgName, orgEmail) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-        //console.log("added successfully!")
+            //console.log("added successfully!")
         }
     };
     xhttp.open("POST", "/instantiateBranch", true);
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify({ branchName: branchName, orgName: orgName.value, orgEmail: orgEmail.value}));
+    xhttp.send(JSON.stringify({ branchName: branchName, orgName: orgName.value, orgEmail: orgEmail.value }));
 }
 
 function branchRequestReject(branchName, button, orgName, orgEmail) {
@@ -336,12 +334,12 @@ function branchRequestReject(branchName, button, orgName, orgEmail) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-        //console.log("removed successfully!")
+            //console.log("removed successfully!")
         }
     };
     xhttp.open("POST", "/removeBranch", true);
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify({ branchName: branchName, orgName: orgName.value, orgEmail: orgEmail.value}));
+    xhttp.send(JSON.stringify({ branchName: branchName, orgName: orgName.value, orgEmail: orgEmail.value }));
 }
 
 function branchRemove(branchName, button, orgName, orgEmail) {
@@ -362,5 +360,5 @@ function branchRemove(branchName, button, orgName, orgEmail) {
     };
     xhttp.open("POST", "/removeBranch", true);
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify({ branchName: branchName, orgName: orgName.value, orgEmail: orgEmail.value}));
+    xhttp.send(JSON.stringify({ branchName: branchName, orgName: orgName.value, orgEmail: orgEmail.value }));
 }

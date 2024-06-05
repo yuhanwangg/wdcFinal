@@ -4,7 +4,45 @@ var urlParams = new URLSearchParams(window.location.search);
 // Retrieve individual parameters
 var userID = urlParams.get('userID');
 
+
+var urlParams = new URLSearchParams(window.location.search);
+
+// Retrieve individual parameters
+var userID = urlParams.get('userID');
+
 var saveLabelShowing = false;
+
+function loadInfo() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // //console.log(xhttp.responseText);
+            //parse it correctly (it comes back as an array, but we are only using the one row)
+            let info = JSON.parse(this.responseText)[0];
+            if (info) {
+                //console.log("it parsed through the details!");
+            }
+            else {
+                //console.log("did not parsed through the details!")
+            }
+
+            //update the text input placeholder values
+            var firstNameInput = document.getElementById("firstNameInput");
+            firstNameInput.placeholder = info.firstName;
+
+            var lastNameInput = document.getElementById("lastNameInput");
+            lastNameInput.placeholder = info.lastName;
+
+            var emailInput = document.getElementById("emailInput");
+            emailInput.value = info.email;
+        }
+    };
+    xhttp.open("POST", "/userInfo", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify({ userID: userID }));
+}
+
+
 
 function loadInfo() {
     var xhttp = new XMLHttpRequest();
@@ -56,7 +94,7 @@ function saveUserInfoConfirm() {
         if (saveLabelShowing === false) {
             var confirmSave = document.createElement('div');
             confirmSave.id = 'saveSuccess';
-            confirmSave.innerHTML ='<p>User information saved!</p>';
+            confirmSave.innerHTML = '<p>User information saved!</p>';
 
             var parent = document.querySelector('.contentWrapper');
             var button = document.getElementById('backToSearch');
@@ -82,6 +120,30 @@ function saveUserInfoConfirm() {
     }
 }
 
+var parent = document.querySelector('.contentWrapper');
+var button = document.getElementById('backToSearch');
+parent.insertBefore(confirmSave, button);
+saveLabelShowing = true;
+        }
+
+//hide everything else
+userEditElement.classList.add('hidden');
+
+//save the info in database
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+        //console.log("changed successfully!")
+    }
+};
+xhttp.open("POST", "/saveUserInfo", true);
+xhttp.setRequestHeader("Content-type", "application/json");
+xhttp.send(JSON.stringify({ userID: userID, newFirstName: newFirstName, newLastName: newLastName, newEmail: newEmail }));
+    } else {
+    //console.error("Element with ID 'UserEdit' not found.");
+}
+}
+
 
 function deleteUser() {
     //remove the text box and replace with a single box confirming with a back button
@@ -103,7 +165,7 @@ function deleteUser() {
     };
     xhttp.open("POST", "/deleteUser", true);
     xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify({ userID: userID}));
+    xhttp.send(JSON.stringify({ userID: userID }));
 }
 
 function checkDeleteUser() {
@@ -129,5 +191,5 @@ function checkDeleteUser() {
 }
 
 function backToUsers() {
-    window.location.href="AdminUsers.html";
+    window.location.href = "AdminUsers.html";
 }

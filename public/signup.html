@@ -5,9 +5,12 @@
 
 <head>
     <title>Sign up</title>
+    <link rel="stylesheet" href="stylesheets/main.css">
     <link rel="stylesheet" href="stylesheets/signup.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/guestHeader.js"></script>
     <script src="javascripts/signup.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -15,90 +18,73 @@
 </head>
 
 <body onload="selectUser()">
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Volunteer Opportunities</a></li>
-            <li><a href="#">Find Organisations</a></li>
-        </ul>
-        <div class="nav_buttons">
-            <a href="#">Sign Up</a>
-            <a href="#" class="userLogIn"><i class="ri-user-fill"></i>Log In</a>
-            <div class="bx bx-menu" id="menu-icon"></div>
+    <div id="app">
+        <header-component>
+        </header-component>
+        <!-- nav bar -->
+
+        <h1 class="title">Sign up</h1>
+
+        <div class="box">
+
+            <div class="signUpSelect">
+                <p>I am signing up as a: </p>
+                <button class="userButton" onclick="selectUser()">User</button>
+                <button class="organisationButton" onclick="selectOrg()">Organisation</button>
+            </div>
+
+            <div class="userInfo">
+                <p>Email</p>
+                <input type="text" placeholder="Email" id="userEmail">
+                <input type="text" placeholder="Confirm Email" id="userEmailConfirm">
+            </div>
+
+            <div class="userInfo userField">
+                <p>Name</p>
+                <input type="text" placeholder="First Name" id="firstName">
+                <input type="text" placeholder="Last Name" id="lastName">
+            </div>
+
+            <div class="userInfo orgField">
+                <p>Company Name</p>
+                <input type="text" placeholder="Name" id="companyName">
+            </div>
+
+            <div class="userInfo">
+                <p>Set Password</p>
+                <input type="text" placeholder="Enter Password" id="password">
+                <input type="text" placeholder="Confirm Password" id="passwordConfirm">
+            </div>
+
+            <div class="userInfo userField">
+                <p>Date of Birth</p>
+                <input type="text" placeholder="--/--/----" id="dateOfBirth">
+            </div>
+
+            <div class="userInfo">
+                <p>Location</p>
+                <input type="text" placeholder="Suburb" id="suburb">
+                <input type="text" placeholder="State" id="state">
+                <input type="text" placeholder="Postcode" id="postcode">
+                <input type="text" placeholder="Country" id="country">
+            </div>
+
+            <p class="errorInput"></p>
+
+            <button class="signUpButton" onclick="sendInfo()">Sign up</button>
+
+            <div class="orDivider">
+                <p>or</p>
+            </div>
+
+            <button class="googleButton">Sign up with Google</button>
+
         </div>
 
-    </header>
-    <!-- nav bar -->
-
-    <h1>Sign up</h1>
-
-    <div class="box">
-
-        <div class="signUpSelect">
-            <p>I am signing up as a: </p>
-            <button class="userButton" onclick="selectUser()">User</button>
-            <button class="organisationButton" onclick="selectOrg()">Organisation</button>
-        </div>
-
-        <div class="userInfo">
-            <p>Email</p>
-            <input type="text" placeholder="Email" id="userEmail">
-            <input type="text" placeholder="Confirm Email" id="userEmailConfirm">
-        </div>
-
-        <div class="userInfo userField">
-            <p>Name</p>
-            <input type="text" placeholder="First Name" id="firstName">
-            <input type="text" placeholder="Last Name" id="lastName">
-        </div>
-
-        <div class="userInfo orgField">
-            <p>Company Name</p>
-            <input type="text" placeholder="Name" id="companyName">
-        </div>
-
-        <div class="userInfo">
-            <p>Set Password</p>
-            <input type="text" placeholder="Enter Password" id="password">
-            <input type="text" placeholder="Confirm Password" id="passwordConfirm">
-        </div>
-
-        <div class="userInfo userField">
-            <p>Date of Birth</p>
-            <input type="text" placeholder="--/--/----" id="dateOfBirth">
-        </div>
-
-        <div class="userInfo">
-            <p>Location</p>
-            <input type="text" placeholder="Suburb" id="suburb">
-            <input type="text" placeholder="State" id="state">
-            <input type="text" placeholder="Postcode" id="postcode">
-            <input type="text" placeholder="Country" id="country">
-        </div>
-
-        <p class = "errorInput"></p>
-
-        <button class="signUpButton" onclick="sendInfo()">Sign up</button>
-
-        <div class="orDivider">
-            <p>or</p>
-        </div>
-
-        <button class="googleButton">Sign up with Google</button>
+        <!-- footer -->
+        <footer-component></footer-component>
 
     </div>
-
-    <!-- footer -->
-    <div class="footer">
-        <p>Home</p>
-        <p>Volunteer Opportunites</p>
-        <p>Find Organisations</p>
-        <p>Contact Us</p>
-        <p>Sign up</p>
-        <p>Login</p>
-    </div>
-
 </body>
 
 </html>

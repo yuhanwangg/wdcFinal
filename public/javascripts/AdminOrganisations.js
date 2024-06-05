@@ -291,6 +291,8 @@ function goToEditOrganisation(orgId) {
 
 function branchRequestAccept(branchName, button, orgName, orgEmail) {
     //console.log(branchName + "  " + orgName.value +  " " + orgEmail.value);
+function branchRequestAccept(branchName, button, orgName, orgEmail) {
+    //console.log(branchName + "  " + orgName.value +  " " + orgEmail.value);
     //remove from branch requests
     var entireBranchRequest = button.parentElement.parentElement;
     var hrElement = entireBranchRequest.nextElementSibling;

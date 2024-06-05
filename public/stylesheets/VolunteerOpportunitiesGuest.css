@@ -4,154 +4,70 @@ body {
 }
 
 .contentWrapper {
-    min-height:100vh;
-}
-
-
-header {
-    position: fixed;
-    margin: 0;
-    width: 100%;
-    top: 0;
-    right: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: white;
-    padding: 20px 5%;
-}
-
-.navbar {
-    display: flex;
-}
-
-.navbar a {
-    list-style-type: none;
-    text-decoration: none;
-    color: black;
-    font-size: 0.9rem;
-    cursor: pointer;
-    padding: 5px 0;
-    margin: 0px 30px;
-}
-
-.navbar a.active {
-    color: #4ABDAC;
-}
-
-.navbar a:hover {
-    color: #F7B733;
-    transition: .3s;
-}
-
-.userLogIn {
-    display: flex;
-    align-items: center;
-}
-
-.user i {
-    font-size: 0.9rem;
-    margin-right: 20px;
-}
-
-.ri-user-fill {
-    color: #4ABDAC;
-    margin-right: 5px;
-}
-
-#menu-icon {
-    font-size: 25px;
-    color: black;
-    cursor: pointer;
-    z-index: 10001;
-    display: none;
-}
-
-.nav_buttons {
-    display: flex;
-    align-items: center;
-}
-
-.nav_buttons a {
-    text-decoration: none;
-    font-size: 0.9rem;
-    margin-right: 25px;
-    margin-left: 10px;
-    color: black
-}
-
-.nav_buttons a:hover {
-    color: #4ABDAC;
-    transition: .3s;
-}
-
-.logo {
-    max-width: 100px;
-    margin-right: 3px;
-    margin-left: 150px;
+    padding-top: 50px;
+    min-height: 100vh;
 }
 
 .title {
     padding-top: 4.8%;
 }
 
-.searchBar{
-    background-color:#4ABDAC;
+.searchBar {
+    background-color: #4ABDAC;
     height: 55px;
-    line-height:55px;
-    padding-left:175px;
-    padding-right:175px;
-    margin:auto;
+    line-height: 55px;
+    padding-left: 175px;
+    padding-right: 175px;
+    margin: auto;
 }
 
 .searchBar input {
-    border-radius:20px;
-    width:20%;
+    border-radius: 20px;
+    width: 20%;
     height: 2em;
     text-indent: 15px;
-    border:none;
+    border: none;
     margin-right: 10px;
 }
 
 input[type=submit] {
-    width:15%;
-    background-color:#FC4A1A;
-    color:white;
-    text-indent:0px;
-    margin:auto;
-    height:2em;
+    width: 15%;
+    background-color: #FC4A1A;
+    color: white;
+    text-indent: 0px;
+    margin: auto;
+    height: 2em;
 }
 
 input[type=submit]:active {
-    outline:auto;
+    outline: auto;
 }
 
 .searchCount {
     font-size: 0.83rem;
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     justify-content: flex-start;
     padding-left: 15%;
 }
 
 .pageCount {
     font-size: 0.83rem;
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     justify-content: right;
     padding-right: 15%;
 }
 
 .organisationName {
-    color:#4ABDAC;
+    color: #4ABDAC;
     margin: 0;
     padding: 0.5em;
 }
 
 .logoJoin {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
     height: 120px;
@@ -160,8 +76,8 @@ input[type=submit]:active {
 }
 
 .contentLeft {
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
 }
 
 .miniLogo {
@@ -171,14 +87,14 @@ input[type=submit]:active {
 }
 
 .opportunityBox {
-    display:flex;
-    flex-direction:row;
+    display: flex;
+    flex-direction: row;
     justify-content: flex-start;
-    border-radius:20px;
-    margin-left:175px;
-    margin-right:175px;
-    margin-top:20px;
-    padding:10px;
+    border-radius: 20px;
+    margin-left: 175px;
+    margin-right: 175px;
+    margin-top: 20px;
+    padding: 10px;
     border-color: #d7d7d7;
     border-width: 1px;
     border-style: solid;
@@ -195,55 +111,42 @@ input[type=submit]:active {
 }
 
 .opportunityTag {
-    border-radius:5px;
-    background-color:#BABABA;
-    border:none;
+    border-radius: 5px;
+    background-color: #BABABA;
+    border: none;
     width: 55px;
-    height:20px;
+    height: 20px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight:bold;
-    font-size:1em;
+    font-weight: bold;
+    font-size: 1em;
     margin-bottom: 5px;
     margin-right: 5px;
 }
 
 .opportunityBox .Name {
-    font-weight:700;
-    font-size:large;
+    font-weight: 700;
+    font-size: large;
     padding-bottom: 1em;
 }
 
 .nextButton {
-    border-radius:20px;
-    width:6%;
+    border-radius: 20px;
+    width: 6%;
     height: 2em;
     text-indent: 15px;
-    border:none;
-    background-color:#4ABDAC;
-    color:white;
-    text-indent:0px;
-    margin:auto;
-    height:2em;
+    border: none;
+    background-color: #4ABDAC;
+    color: white;
+    text-indent: 0px;
+    margin: auto;
+    height: 2em;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     float: right;
     margin-right: 14%;
     margin-top: 1%;
-}
-
-.footer {
-    background-color:#D1EEE5;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-left:175px;
-    padding-right:175px;
-    margin-top:110px;
-    height:165px;
-    align-items: center;
-    flex-wrap:wrap;
 }

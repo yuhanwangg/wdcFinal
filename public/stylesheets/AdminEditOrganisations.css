@@ -184,6 +184,7 @@ button:active {
     margin-top: 75px;
     padding: 10px;
     /* display:none; */
+    /* display:none; */
 }
 
 .changeTextInputs {
@@ -313,7 +314,7 @@ button:active {
     text-align: center;
 }
 
-#backToSearch{
+#backToSearch {
     margin-top: 10px;
     border-radius: 20px;
     margin-left: 175px;
@@ -328,7 +329,7 @@ button:active {
 }
 
 .hidden {
-    display:none;
+    display: none;
 }
 
 @media only screen and (max-width:900px) {
@@ -339,7 +340,7 @@ button:active {
         line-height: 45px;
     }
 
-    #backToSearch{
+    #backToSearch {
         margin-left: 0px;
     }
 

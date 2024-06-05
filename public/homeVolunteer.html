@@ -56,7 +56,7 @@
                         </div>
                         <div class="logoJoin">
                             <img :src="post.thumbnail" alt="logo" class="updateLogo">
-                            <p>{{ new Date(post.dates).toLocaleDateString() }}</p>
+                            <p>{{ post.dates }}</p>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,8 @@
         </div>
         <div id="takeCare">
             <div class="desc">
-                <h2>You've joined [insert number] of people making a mark on this world.</h2>
+                <h2>You've joined <span id="userCount">{{ userCount }}</span> of people making a mark on this world.
+                </h2>
                 <p>Volunteering is difficult, we understand that. But remember, sometimes times can be tough and you
                     need a
                     break. If you
@@ -139,6 +140,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <div class="bottom">
             <div class="contactTitle">

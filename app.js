@@ -28,9 +28,9 @@ var dbConnectionPool = mysql.createPool({
 
 var app = express();
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     console.log("I created connection pool");
-    req.pool=dbConnectionPool;
+    req.pool = dbConnectionPool;
     next();
 });
 

@@ -47,7 +47,7 @@
                     <div v-for="post in recentPosts" :key="post.oppID" class="opportunityBox">
                         <div class="contentLeft">
                             <a :href="post.link" class="programName"><b>{{ post.oppName }}</b></a>
-                            <p class="orgasnisationName">{{ post.organisationName }}</p>
+                            <p class="organisationName">{{ post.organisationName }} - {{ post.branchName }}</p>
                             <div class="tags">
                                 <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{
                                     tag.trim() }}</span>
@@ -56,76 +56,9 @@
                         </div>
                         <div class="logoJoin">
                             <img :src="post.thumbnail" alt="logo" class="updateLogo">
+                            <p>{{ new Date(post.dates).toLocaleDateString() }}</p>
                         </div>
                     </div>
-                    <!-- <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="logo" class="updateLogo">
-                        </div>
-                    </div>
-
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="logo" class="updateLogo">
-                        </div>
-                    </div>
-
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="logo" class="updateLogo">
-                        </div>
-                    </div> -->
                 </div>
             </div>
 
@@ -133,60 +66,19 @@
                 <h2>Updates of your joined
                     Communities</h2>
                 <div class="updatesList">
-                    <div class="update">
+                    <div v-for="update in recentUpdates" :key="update.updateID" class="update">
                         <div class="postInfo">
-                            <a href=#>
-                                <p class="title">Important Update Name</p>
+                            <a :href="'/update/' + update.updateID">
+                                <p class="title">{{ update.updateName }}</p>
                             </a>
                             <div class="extraDetails">
-                                <p>Organiation Name</p>
-                                <p>Date Posted</p>
+                                <p>{{ update.orgName }} — {{ update.branchName }}</p>
+                                <p>{{ new Date(update.dateCreated).toLocaleDateString() }}</p>
                             </div>
-                            <p>This is a new update about something that is important to their users!
-                                Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                is just to show that it spans around 3 lines for a desktop computer.
-                            </p>
+                            <p>{{ update.updateMsg }}</p>
                         </div>
-                        <a href="#">
-                            <img class="updateLogo" src="exampleLogo.png" alt="Company logo">
-                        </a>
-                    </div>
-
-                    <div class="update">
-                        <div class="postInfo">
-                            <a href=#>
-                                <p class="title">Important Update Name</p>
-                            </a>
-                            <div class="extraDetails">
-                                <p>Organiation Name</p>
-                                <p>Date Posted</p>
-                            </div>
-                            <p>This is a new update about something that is important to their users!
-                                Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                is just to show that it spans around 3 lines for a desktop computer.
-                            </p>
-                        </div>
-                        <a href="#">
-                            <img class="updateLogo" src="exampleLogo.png" alt="Company logo">
-                        </a>
-                    </div>
-
-                    <div class="update">
-                        <div class="postInfo">
-                            <a href=#>
-                                <p class="title">Important Update Name</p>
-                            </a>
-                            <div class="extraDetails">
-                                <p>Organiation Name</p>
-                                <p>Date Posted</p>
-                            </div>
-                            <p>This is a new update about something that is important to their users!
-                                Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                is just to show that it spans around 3 lines for a desktop computer.
-                            </p>
-                        </div>
-                        <a href="#">
-                            <img class="updateLogo" src="exampleLogo.png" alt="Company logo">
+                        <a :href="'/update/' + update.updateID">
+                            <img class="updateLogo" :src="update.imgPath" alt="Company logo">
                         </a>
                     </div>
                 </div>

@@ -46,6 +46,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
+INSERT INTO `Admin` VALUES (3,'Bob','Johnson','bjohnson@example.com','admin789'),(4,'Emily','Brown','ebrown@example.com','admin101'),(5,'Michael','Davis','mdavis@example.com','admin202');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +79,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
-INSERT INTO `Branch` VALUES (1,'Main Branch','Anytown','State','12345','Country',1,1);
+INSERT INTO `Branch` VALUES (1,'Main Branch','Anytown','State','12345','Country',1,1),(2,'North Branch','Northville','State','54321','Country',1,1),(3,'South Branch','Southville','State','67890','Country',1,1),(4,'West Branch','Westville','State','09876','Country',1,1),(5,'East Branch','Eastville','State','13579','Country',1,1);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,7 +110,7 @@ CREATE TABLE `FollowedBranches` (
 
 LOCK TABLES `FollowedBranches` WRITE;
 /*!40000 ALTER TABLE `FollowedBranches` DISABLE KEYS */;
-INSERT INTO `FollowedBranches` VALUES (1,1);
+INSERT INTO `FollowedBranches` VALUES (1,1),(1,1),(1,2),(1,4),(2,1),(3,3),(4,2),(1,1),(1,2),(1,4),(2,1),(3,3),(4,2);
 /*!40000 ALTER TABLE `FollowedBranches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,7 +149,7 @@ CREATE TABLE `Opportunities` (
 
 LOCK TABLES `Opportunities` WRITE;
 /*!40000 ALTER TABLE `Opportunities` DISABLE KEYS */;
-INSERT INTO `Opportunities` VALUES (1,'Volunteer at Food Bank','Food, Charity','123 Main St, Anytown','3 hours per week','Anyone can volunteer','Training provided on site','None','path/to/image.jpg','Help sort and pack food items','Volunteering','2024-06-15 to 2024-06-30',1),(2,'Environmental Cleanup Day','Environment, Conservation','456 Elm St, Othertown','Full day event','Suitable for outdoorsy individuals','Safety training required','Must bring own gloves and boots','path/to/image.jpg','Help clean up local parks and waterways','Volunteering','2024-07-10',1),(3,'Tutoring Program','Education, Tutoring','789 Oak St, Anycity','1 hour per week','Suitable for educators or students','Training provided','Must have teaching experience','path/to/image.jpg','Provide tutoring to underprivileged children','Volunteering','Ongoing',1);
+INSERT INTO `Opportunities` VALUES (1,'Volunteer at Food Bank','Food, Charity','123 Main St, Anytown','3 hours per week','Anyone can volunteer','Training provided on site','None','path/to/image.jpg','Help sort and pack food items','Volunteering','2024-06-15 to 2024-06-30',1),(2,'Environmental Cleanup Day','Environment, Conservation','456 Elm St, Othertown','Full day event','Suitable for outdoorsy individuals','Safety training required','Must bring own gloves and boots','path/to/image.jpg','Help clean up local parks and waterways','Volunteering','2024-07-10',1),(3,'Tutoring Program','Education, Tutoring','789 Oak St, Anycity','1 hour per week','Suitable for educators or students','Training provided','Must have teaching experience','path/to/image.jpg','Provide tutoring to underprivileged children','Volunteering','Ongoing',1),(4,'Community Garden Project','Gardening, Community','456 Main St, Northville','Flexible','No experience necessary','On-site training','None','path/to/image.jpg','Help maintain a community garden','Volunteering','Ongoing',4),(5,'Animal Shelter Volunteer','Animals, Shelter','789 Elm St, Southville','Flexible','Suitable for animal lovers','Training provided','Must be comfortable with animals','path/to/image.jpg','Assist with animal care and adoption','Volunteering','Ongoing',5);
 /*!40000 ALTER TABLE `Opportunities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +179,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (1,'Charity XYZ','http://charityxyz.org','contact@charityxyz.org','orgpassword','We are a charitable organization dedicated to helping those in need.','path/to/image.jpg');
+INSERT INTO `Organisations` VALUES (1,'Charity XYZ','http://charityxyz.org','contact@charityxyz.org','orgpassword','We are a charitable organization dedicated to helping those in need.','path/to/image.jpg'),(2,'Environmental Group','http://environmentgroup.org','contact@environmentgroup.org','org456','We are dedicated to preserving and protecting the environment.','path/to/image.jpg'),(3,'Education Foundation','http://educationfoundation.org','contact@educationfoundation.org','org789','We provide educational opportunities and resources to underprivileged communities.','path/to/image.jpg'),(4,'Community Services','http://communityservices.org','contact@communityservices.org','org101','We offer a variety of community services and support programs.','path/to/image.jpg'),(5,'Animal Rescue','http://animalrescue.org','contact@animalrescue.org','org202','We rescue and care for animals in need of homes.','path/to/image.jpg');
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,6 +210,7 @@ CREATE TABLE `RSVPD` (
 
 LOCK TABLES `RSVPD` WRITE;
 /*!40000 ALTER TABLE `RSVPD` DISABLE KEYS */;
+INSERT INTO `RSVPD` VALUES (1,1),(1,2),(2,3),(3,4),(4,5);
 /*!40000 ALTER TABLE `RSVPD` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +240,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-INSERT INTO `Updates` VALUES (1,'Important Update','This is an important update message.',1,'2024-06-02');
+INSERT INTO `Updates` VALUES (1,'Important Update','This is an important update message.',1,'2024-06-02'),(2,'New Volunteer Program','We are excited to launch our new volunteer program.',1,'2024-06-03'),(3,'Fundraising Event Success','Thanks to everyone who participated in our fundraising event. We raised $5000!',1,'2024-06-04'),(4,'Community Outreach','Join us for a community outreach program this weekend.',1,'2024-06-05'),(5,'Environmental Initiative','Our latest environmental initiative was a great success!',1,'2024-06-06'),(6,'Annual Report Published','Our annual report for 2023 is now available online.',1,'2024-06-07'),(7,'Volunteer Recognition','Congratulations to our volunteers who were recognized at the recent awards ceremony.',1,'2024-06-08'),(8,'New Partnership Announced','We are pleased to announce a new partnership with Green Earth Organization.',1,'2024-06-09'),(9,'Upcoming Event','Don\'t miss our upcoming event next month!',1,'2024-06-10');
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,7 +272,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'georgia','mcl','2004','Norwood','SA','5067','Australia','emailgeorgia','mypassword'),(2,'Jane','Doe','2000-01-01','Anytown','State','12345','Country','janedoe@example.com','user123');
+INSERT INTO `User` VALUES (1,'georgia','mcl','2004','Norwood','SA','5067','Australia','emailgeorgia','mypassword'),(2,'Jane','Doe','2000-01-01','Anytown','State','12345','Country','janedoe@example.com','user123'),(3,'Emma','Johnson','1998-05-15','Downtown','NY','10001','USA','emma@example.com','emma123'),(4,'David','Williams','1990-09-20','Midtown','CA','90210','USA','david@example.com','david123'),(5,'Sophia','Brown','1985-02-10','Uptown','TX','77001','USA','sophia@example.com','sophia123'),(6,'James','Jones','1982-11-30','Suburbia','WA','98101','USA','james@example.com','james123');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -283,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04  6:46:29
+-- Dump completed on 2024-06-05  4:12:35

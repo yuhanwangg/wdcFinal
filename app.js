@@ -2,6 +2,7 @@ var express = require('express');
 var mysql = require('mysql');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
@@ -16,7 +17,20 @@ var loginRouter = require('./routes/logIn');
 const { readFileSync } = require('fs');
 const { validateHeaderName } = require('http');
 
+//connect to RDBMS in express
+var mysql = require('mysql');
+var dbConnectionPool = mysql.createPool({
+    host: 'localhost',
+    database: 'WDCProject'
+});
+
 var app = express();
+
+app.use(function (req, res, next) {
+    console.log("I created connection pool");
+    req.pool = dbConnectionPool;
+    next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());

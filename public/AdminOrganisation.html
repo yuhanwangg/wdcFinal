@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--  -->
 
 <head>
     <title>Admin - Organisations</title>
@@ -9,6 +10,7 @@
     <script src="javascripts/AdminOrganisations.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
 
 </head>
 
@@ -37,41 +39,40 @@
 
         <!-- search bar -->
         <div class="searchBar">
-            <input type="text" placeholder="Organisation Name">
-            <input type="text" placeholder="Email">
-            <input type="submit">
+            <input id="orgName" type="text" placeholder="Organisation Name">
+            <input id="orgEmail" type="text" placeholder="Email">
+            <input onclick="findOrganisation()" type="submit">
         </div>
 
+        <div class="orgBox">
+            <!-- Organisation box, filled using AJAX, should be empty -->
+            <!-- <div class="organisationBox">
+                <p class="name">redCross</p>
+                <p>redCross@gmail.com</p>
+                <div class="paragraphAndButton">
+                    <p>Their bio that spans multiple lines.
+                        Its very very very very long, and it really
+                        does span multiple lines, this just takes a
+                        while to write multiple lines. Something about
+                        how great they are and what you can do to make
+                        an impact. They are really important to the
+                        world, and your local community. Everyone loves
+                        organisation Name. With them you will be satisfied
+                        in how you are helping the world, all it takes is
+                        just one person to make a difference. Join us today
+                        and you wont regret it. We promise!</p>
+                    <button onclick="goToEditOrganisation()">Edit</button>
+                </div>
 
-        <!-- Organisation box, filled using AJAX, should be empty <p> tags -->
-        <div class="organisationBox">
-            <p class="name">Organisation Name</p>
-            <p>theirEmail@gmail.com</p>
-            <div class="paragraphAndButton">
-                <p>Their bio that spans multiple lines.
-                    Its very very very very long, and it really
-                    does span multiple lines, this just takes a
-                    while to write multiple lines. Something about
-                    how great they are and what you can do to make
-                    an impact. They are really important to the
-                    world, and your local community. Everyone loves
-                    organisation Name. With them you will be satisfied
-                    in how you are helping the world, all it takes is
-                    just one person to make a difference. Join us today
-                    and you wont regret it. We promise!</p>
-                <button onclick="goToEditOrganisation()">Edit</button>
-            </div>
+            </div>-->
         </div>
-
         <div class="branches">
             <!-- Branch requests -->
-            <div class="branchRequests">
-                <h2>Branch Requests</h2>
+            <!-- <div class="branchRequests"> -->
+            <!-- <h2>Branch Requests</h2>
                 <hr>
 
-                <!-- this part is added in AJAX, each has the branch name, buttons, and hr tag below -->
                 <div class="allRequests">
-                    <!-- These wouldn't exist until there are requests -->
                     <div class="nameAndButtons">
                         <p>Branch name 6</p>
                         <div>
@@ -105,17 +106,15 @@
                         </div>
                     </div>
                     <hr>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
 
             <!-- All current Branches -->
-            <div class="currentBranches">
-                <h2>Current Branches</h2>
+            <!-- <div class="currentBranches"> -->
+            <!-- <h2>Current Branches</h2>
                 <hr>
 
-                <!-- this part is added in AJAX, each has the branch name, buttons, and hr tag below -->
                 <div class="allCurrentBranches">
-                    <!-- These wouldn't exist until there are branches -->
                     <div class="nameAndButtons">
                         <p>Branch name 1</p>
                         <button class="remove" onclick="branchRemove(this)">Remove</button>
@@ -145,8 +144,8 @@
                         <button class="remove" onclick="branchRemove(this)">Remove</button>
                     </div>
                     <hr>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
         </div>
     </div>
 

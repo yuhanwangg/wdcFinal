@@ -3,16 +3,19 @@
 
 <head>
     <title>Organisation</title>
+    <!-- vue script -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
     <link rel="stylesheet" href="stylesheets/UpdatesOrganisations.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="javascripts/UpdatesOrganisations.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <script src="javascripts/UpdatesOrganisations.js" defer></script>
 
 </head>
 
-<body>
+<body onload="getOrgName(); getOrgLogo(); getBranches()">
 
     <!-- nav bar -->
     <header>
@@ -34,7 +37,7 @@
         </div>
     </header>
 
-    <div class="contentWrapper">
+    <div id="app" class="contentWrapper">
 
         <h1>Updates</h1>
 
@@ -43,102 +46,53 @@
         <div class="boxes">
             <div class="dropdown">
                 <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
-                <select class="dropbtn">
-                    <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
-                    <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
-                    <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
-                    <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
-                    <!-- <a href="#" onclick="chooseBranch(this)" selected>Branch Name 1</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 2</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 3</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 4</a> -->
-                </select>
+                <select class="dropbtn" @change="choseBranch($event)">
+                    <option v-for="(branch, index) in branches" v-bind:value="branch.branchID"
+                        v-bind:selected="index === 0">{{ branch.branchName}}</option>
             </div>
+            </select>
+        </div>
 
-            <!-- vue updates the number of posts and number of pages-->
-            <div class="postsPages">
-                <h2>New Post</h2>
-                <div id="numberOfPosts">
-                    <p id="numPosts">0 Posts</p>
-                    <p id="pageNum">Page 1/1</p>
-                </div>
+        <!-- vue updates the number of posts and number of pages-->
+        <div class="postsPages">
+            <h2>New Post</h2>
+            <div id="numberOfPosts">
+                <p id="numPosts">{{ numPosts }} Posts</p>
+                <p id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
             </div>
+        </div>
 
-            <div class="posts">
+        <div class="posts">
 
-                <div class="newPost">
-                    <input type="text" placeholder="Update Title">
-                    <textarea maxlength="500" rows="3" placeholder="Update Message"></textarea>
-                    <input type="submit" onclick="post()" value="Post">
+            <div class="newPost">
+                <input type="text" placeholder="Update Title">
+                <textarea id="postMessage" maxlength="500" rows="3" placeholder="Update Message"></textarea>
+                <div class="charLeft">
+                    <p>Characters left: <span class="descCount">750</span></p>
                 </div>
-                <!-- these are posts that are created using ajax -->
-                <div class="allPosts">
-                    <!-- <div class="oldPosts">
-                            <div class="postInfo">
-                                <p class="title">Important Update Name</p>
-                                <div class="extraDetails">
-                                    <p>Organiation Name</p>
-                                    <p>Date Posted</p>
-                                </div>
-                                <p>This is a new update about something that is important to their users!
-                                    Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                    is just to show that it spans around 3 lines for a desktop computer.
-                                </p>
-                            </div>
-                            <img class="logo" src="exampleLogo.png" alt="Company logo">
+                <input type="submit" @click="post()" value="Post">
+            </div>
+            <!-- these are posts that are created using ajax -->
+            <div class="allPosts">
+                <!-- load all the current posts using vue -->
+                <div v-for="(post, index) in oldPosts.slice(sliceStart, sliceEnd)" class="oldPosts">
+                    <div class="postInfo">
+                        <p class="title">{{ post.updateName}}</p>
+                        <div class="extraDetails">
+                            <p>{{ orgName }}</p>
+                            <p>{{ post.dateCreated }}</p>
                         </div>
-
-                        <div class="oldPosts">
-                            <div class="postInfo">
-                                <p class="title">Important Update Name</p>
-                                <div class="extraDetails">
-                                    <p>Organiation Name</p>
-                                    <p>Date Posted</p>
-                                </div>
-                                <p>This is a new update about something that is important to their users!
-                                    Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                    is just to show that it spans around 3 lines for a desktop computer.
-                                </p>
-                            </div>
-                            <img class="logo" src="exampleLogo.png" alt="Company logo">
-                        </div>
-
-                        <div class="oldPosts">
-                            <div class="postInfo">
-                                <p class="title">Important Update Name</p>
-                                <div class="extraDetails">
-                                    <p>Organiation Name</p>
-                                    <p>Date Posted</p>
-                                </div>
-                                <p>This is a new update about something that is important to their users!
-                                    Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                    is just to show that it spans around 3 lines for a desktop computer.
-                                </p>
-                            </div>
-                            <img class="logo" src="exampleLogo.png" alt="Company logo">
-                        </div>
-
-                        <div class="oldPosts">
-                            <div class="postInfo">
-                                <p class="title">Important Update Name</p>
-                                <div class="extraDetails">
-                                    <p>Organiation Name</p>
-                                    <p>Date Posted</p>
-                                </div>
-                                <p>This is a new update about something that is important to their users!
-                                    Dont go anywhere, more exciting info is coming soon! Very very soon this
-                                    is just to show that it spans around 3 lines for a desktop computer.
-                                </p>
-                            </div>
-                            <img class="logo" src="exampleLogo.png" alt="Company logo">
-                        </div>-->
+                        <p>{{ post.updateMsg }}</p>
+                    </div>
+                    <img class="logo" v-bind:src="logoPath" alt="Company logo">
                 </div>
             </div>
         </div>
-        <div class="nextPageButtons">
-            <button class="previous" onclick="backPage()">Previous Page</button>
-            <button class="next" onclick="nextPage()">Next Page</button>
-        </div>
+    </div>
+    <div class="nextPageButtons">
+        <button class="previous" @click="backPage()">Previous Page</button>
+        <button class="next" @click="nextPage()">Next Page</button>
+    </div>
     </div>
 
     <!-- footer -->

@@ -183,6 +183,7 @@ button:active {
     margin-right: 175px;
     margin-top: 75px;
     padding: 10px;
+    /* display:none; */
 }
 
 .changeTextInputs {
@@ -312,12 +313,34 @@ button:active {
     text-align: center;
 }
 
+#backToSearch {
+    margin-top: 10px;
+    border-radius: 20px;
+    margin-left: 175px;
+    background-color: #FC4A1A;
+    color: white;
+    border: none;
+    width: auto;
+    height: 34.5px;
+    align-self: flex-end;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
 @media only screen and (max-width:900px) {
     .searchBar {
         height: auto;
         padding-left: 15px;
         padding-right: 15px;
         line-height: 45px;
+    }
+
+    #backToSearch {
+        margin-left: 0px;
     }
 
     .searchBar input,

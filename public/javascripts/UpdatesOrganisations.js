@@ -1,219 +1,335 @@
-var currentPageNumber = 0;
+/*global Vue*/
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
+// var currentPageNumber = 0;
+// Retrieve the orgID from session token
+// var orgID = req.session.orgID;
+//
+//THIS IS TEMPORARY UNTIL SESSION TOKENS ARE WORKING
+var orgID = 1;
 
-// function showBranchOptions() {
-//     document.getElementById("myDropdown").classList.toggle("show");
-// }
+document.addEventListener('DOMContentLoaded', function () {
 
-// Close the dropdown menu if the user clicks outside of it
-// window.onclick = function(event) {
-//     if (!event.target.matches('.dropbtn')) {
-//         var dropdowns = document.getElementsByClassName("dropdown-content");
-//         var i;
-//         for (i = 0; i < dropdowns.length; i++) {
-//         var openDropdown = dropdowns[i];
-//         if (openDropdown.classList.contains('show')) {
-//             openDropdown.classList.remove('show');
-//         }
-//         }
-//     }
-// }
+    // Initialize Vue instance after the DOM is fully loaded
+    const vueinst = new Vue({
+        el: "#app",
+        data: {
+            orgName: '',
+            logoPath: null,
+            branches: [],
+            oldPosts: [],
+            selectedBranchName: null,
+            selectedBranchID: 0,
+            numPosts: 0,
+            currPage: 1,
+            numPages: 1,
+            sliceStart: 0,
+            sliceEnd: 4
+        },
+        methods: {
+            choseBranch(event) {
+                this.selectedBranchID = event.target.value;
+                // //console.log("in the methods, the selected branch name is " + this.selectedBranchName);
+                getPosts();
+            },
 
-// function chooseBranch(branch) {
-//     var branchName = branch.textContent;
-//     var dropDown = document.querySelector(".dropbtn");
-//     dropDown.innerText = branchName + " ▼";
-//     document.getElementById("myDropdown").classList.remove("show");
-// }
+            post() {
+
+                var updateTitleInput = document.querySelector('.newPost input[type="text"]').value;
+                var updateMessageInput = document.querySelector('.newPost textarea').value;
+
+                var currentDate = new Date();
+                // Format the date and time as desired (e.g., "May 9, 2024 10:30 AM")
+                var formattedDate = currentDate.toLocaleString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+
+                var xhttp1 = new XMLHttpRequest();
+                xhttp1.onreadystatechange = function () {
+                    //console.log("xhttp1 called");
+                    if (this.readyState == 4 && this.status == 200) {
+                        //set the vue value userInfo to be the JSON
+                        //console.log(JSON.parse(this.responseText));
+                        //set the vue value to have the JSON array of posts, reverse it so that the most recent (id > value) is at the front
+                        vueinst.oldPosts = JSON.parse(this.responseText).reverse();
+
+                        vueinst.numPosts = vueinst.oldPosts.length;
+                        vueinst.numPages = Math.ceil(vueinst.numPosts / 4);
+                        if (vueinst.numPages === 0) {
+                            vueinst.numPages = 1;
+                        }
+
+                        var allPosts = document.querySelectorAll('.oldPosts');
+                        // Calculate the start and end index of posts to display
+                        var startIndex = (vueinst.currPage - 1) * 4;
+                        var endIndex = vueinst.currPage * 4;
+
+                        //if there are more than 4 posts, display the next page button
+                        //console.log("There are " + vueinst.oldPosts.length)
+                        if (vueinst.oldPosts.length > 4) {
+                            var nextPageButton = document.querySelector('.next');
+                            nextPageButton.style.display = 'block';
+                        }
+
+                    } else if (this.status === 404) {
+                        //console.log("went into 404 else statement, couldn't find the branch");
+                    }
+
+                    else {
+                        //console.log ("failed");
+                    }
+                };
+
+                xhttp1.open("POST", "/createNewPost");
+                // //console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + vueinst.selectedBranchName + " " + orgID + " " + updateTitleInput + " " + updateMessageInput + " " + formattedDate);
+                xhttp1.setRequestHeader("Content-type", "application/json");
+                xhttp1.send(JSON.stringify({ branchID: vueinst.selectedBranchID, orgID: orgID, updateName: updateTitleInput, updateMsg: updateMessageInput, dateCreated: formattedDate }));
 
 
-function post() {
+                //send the new post to all users following the branch
+                var xhttp2 = new XMLHttpRequest();
+                var text = vueinst.orgName + " " + vueinst.selectedBranchName + " has posted the new update below: <br><br>" + "<b>Title: " + updateTitleInput + "</b><br><br>Message: " + updateMessageInput + "<br><br>Kind regards, <br><br>Heartfelt Helpers";
+                var subject = "New Update from " + vueinst.orgName + " " + vueinst.selectedBranchName;
+                xhttp2.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // console.log("emailed successfully!")
+                    }
+                };
+                xhttp2.open("POST", "/emailUpdate", true);
+                xhttp2.setRequestHeader("Content-type", "application/json");
+                xhttp2.send(JSON.stringify({ branchID: vueinst.selectedBranchID, subject: subject, text: text }));
+            },
 
-    var updateTitleInput = document.querySelector('.newPost input[type="text"]').value;
-    var updateMessageInput = document.querySelector('.newPost textarea').value;
+            nextPage() {
+                vueinst.currPage++;
+                //currentPageNumber++;
+                // Calculate the start and end index of posts to display
+                var startIndex = (vueinst.currPage - 1) * 4;
+                var endIndex = vueinst.currPage * 4;
 
-    var oldPostsContainer = document.querySelector('.allPosts');
+                //show only the next 4
+                vueinst.sliceStart = startIndex;
+                vueinst.sliceEnd = endIndex;
 
-    var newPost = document.createElement('div');
-    newPost.className = 'oldPosts';
-    var newPostContent = document.createElement('div');
-    newPostContent.className = 'postInfo';
+                // Hide or show the Next and previous Page button based on whether there are more posts to display
+                var nextPageButton = document.querySelector('.next');
+                var previousPageButton = document.querySelector('.previous');
+                //console.log("the endIndex is " + endIndex + " the post length is " + vueinst.numPosts);
+                if (endIndex >= vueinst.numPosts) {
+                    nextPageButton.style.display = 'none';
+                    if (startIndex != 0) {
+                        previousPageButton.style.display = 'block';
+                    }
+                } else {
+                    nextPageButton.style.display = 'block';
+                    if (startIndex != 0) {
+                        previousPageButton.style.display = 'block';
+                    }
+                }
 
-    var updateName = document.createElement('p');
-    updateName.className = 'title';
-    updateName.innerText = updateTitleInput;
 
-    var extraDetailsText = document.createElement('div');
-    extraDetailsText.className = 'extraDetails';
 
-    var OrganisationName = document.createElement('p');
-    OrganisationName.innerText = "Organiation Name";
+                // Hide the "New Post" and the branch selector box if it's not the first page
+                var newPostBox = document.querySelector('.newPost');
+                var newPostTitle = document.querySelector('h2');
+                var branchSelector = document.querySelector('.dropdown');
+                if (vueinst.currPage !== 0) {
+                    newPostBox.classList.add('hidden');
+                    newPostTitle.classList.add('hidden');
+                    branchSelector.classList.add('hidden');
+                } else {
+                    newPostBox.classList.remove('hidden');
+                    newPostTitle.classList.remove('hidden');
+                    branchSelector.classList.remove('hidden');
+                }
 
-    var currentDate = new Date();
-    // Format the date and time as desired (e.g., "May 9, 2024 10:30 AM")
-    var formattedDate = currentDate.toLocaleString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
+            },
+
+            backPage() {
+                //ensure that you don't go back to a non-existant page
+                if (vueinst.currPage > 0) {
+                    vueinst.currPage--;
+
+                    //currentPageNumber++;
+                    // Calculate the start and end index of posts to display
+                    var startIndex = (vueinst.currPage - 1) * 4;
+                    var endIndex = vueinst.currPage * 4;
+
+                    //show only the next 4
+                    vueinst.sliceStart = startIndex;
+                    vueinst.sliceEnd = endIndex;
+
+                    // Hide or show the Next and previous Page buttons based on whether there are more posts to display
+                    var nextPageButton = document.querySelector('.next');
+                    var previousPageButton = document.querySelector('.previous');
+                    if (startIndex === 0) {
+                        previousPageButton.style.display = 'none';
+                        nextPageButton.style.display = 'block';
+                    }
+                    else if (endIndex < vueinst.numPosts) {
+                        previousPageButton.style.display = 'block';
+                        nextPageButton.style.display = 'block';
+                    }
+
+
+
+                    // Hide the "New Post" and the branch selector box if it's not the first page
+                    var newPostBox = document.querySelector('.newPost');
+                    var newPostTitle = document.querySelector('h2');
+                    var branchSelector = document.querySelector('.dropdown');
+                    //console.log("IN THE BACK PAGE: currPage is " + vueinst.currPage);
+                    if (vueinst.currPage !== 1) {
+                        newPostBox.classList.add('hidden');
+                        newPostTitle.classList.add('hidden');
+                        branchSelector.classList.add('hidden');
+                    } else {
+                        newPostBox.classList.remove('hidden');
+                        newPostTitle.classList.remove('hidden');
+                        branchSelector.classList.remove('hidden');
+                    }
+                }
+            }
+        }
     });
-    var postDate = document.createElement('p');
-    postDate.innerText = formattedDate;
 
-    extraDetailsText.appendChild(OrganisationName);
-    extraDetailsText.appendChild(postDate);
+    function getOrgName() {
+        var xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function () {
+            //console.log("xhttp1 called");
+            if (this.readyState == 4 && this.status == 200) {
+                //set the vue value userInfo to be the JSON
+                //console.log(JSON.parse(this.responseText));
+                vueinst.orgName = JSON.parse(this.responseText).orgName;
 
-
-    var updateInfo = document.createElement('p');
-    updateInfo.innerText = updateMessageInput;
-
-
-    newPostContent.appendChild(updateName);
-    newPostContent.appendChild(extraDetailsText);
-    newPostContent.appendChild(updateInfo);
-
-    newPost.appendChild(newPostContent);
-    var logo = document.createElement('img');
-    logo.className = 'logo';
-    logo.src = "exampleLogo.png";
-    logo.alt = "Company logo";
-
-    newPost.appendChild(logo);
-
-    oldPostsContainer.insertBefore(newPost, oldPostsContainer.firstChild);
-
-    // Convert NodeList to an array for easier manipulation
-    var allPosts = document.querySelectorAll('.oldPosts');
-    var postsArray = Array.from(allPosts);
-
-    // Hide posts beyond the 4th index
-    for (let i = 4; i < postsArray.length; i++) {
-        postsArray[i].style.display = 'none';
+            } else if (this.status === 404) {
+                //console.log("went into 404 else statement, couldn't find the org's name");
+            }
+        };
+        xhttp1.open("GET", "/getOrgName?orgID=" + orgID, true);
+        xhttp1.send();
     }
 
-    //if there are more than 4 posts, display the next page button
-    if (allPosts.length > 4) {
-        var nextPageButton = document.querySelector('.next');
-        nextPageButton.style.display = 'block';
+    function getOrgLogo() {
+        var xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function () {
+            //console.log("xhttp1 called");
+            if (this.readyState == 4 && this.status == 200) {
+                //set the vue value userInfo to be the JSON
+                //console.log(JSON.parse(this.responseText).imgPath);
+                vueinst.logoPath = JSON.parse(this.responseText).imgPath;
+                //console.log("The logopath is assigned to be ", vueinst.logoPath);
+
+            } else if (this.status === 404) {
+                //console.log("went into 404 else statement, couldn't find the org's name");
+            }
+        };
+        xhttp1.open("GET", "/getOrgLogo?orgID=" + orgID, true);
+        xhttp1.send();
     }
 
-    //change the number of posts
-    var postNumber = document.querySelector('#numPosts');
-    postNumber.innerText = allPosts.length + " Posts";
+    function getBranches() {
+        //console.log("WE ARE RIGHT HERE!!! went into get branches function");
 
-    //change the page number
-    var pageNumber = document.querySelector('#pageNum');
-    pageNumber.innerText = "Page " + (currentPageNumber + 1) + "/" + Math.ceil(allPosts.length/4);
-}
+        //get the user details
+        var xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function () {
+            //console.log("xhttp1 called");
+            if (this.readyState == 4 && this.status == 200) {
+                //set the vue value userInfo to be the JSON
+                //console.log(JSON.parse(this.responseText));
+                vueinst.branches = JSON.parse(this.responseText);
 
-function nextPage() {
-    currentPageNumber++;
+                if (vueinst.branches.length > 0) {
+                    vueinst.selectedBranchName = vueinst.branches[0].branchName;
+                    vueinst.selectedBranchID = vueinst.branches[0].branchID;
+                    //console.log("BOUT TO GET POSTS");
+                    getPosts();
+                }
 
-    // Hide the "New Post" box if it's not the first page
-    var newPostBox = document.querySelector('.newPost');
-    var newPostTitle = document.querySelector('h2');
-    if (currentPageNumber !== 0) {
-        newPostBox.classList.add('hidden');
-        newPostTitle.classList.add('hidden');
-    } else {
-        newPostBox.classList.remove('hidden');
-        newPostTitle.classList.remove('hidden');
-
+            } else if (this.status === 404) {
+                //console.log("went into 404 else statement, couldn't find the org's branches");
+            }
+        };
+        xhttp1.open("GET", "/getBranches?orgID=" + orgID, true);
+        xhttp1.send();
     }
 
-    var allPosts = document.querySelectorAll('.oldPosts');
-    var postsArray = Array.from(allPosts);
+    function getPosts() {
 
-    //load in new updates from next page
-    //postsarray will be from the SQL
-    // var oldPosts = postsArray;
-    //hide all posts that aren't on the page
-    for (let i = 0; i < postsArray.length; i++) {
-        postsArray[i].style.display = 'none';
+        //console.log("WE ARE RIGHT HERE!!! went into get Posts function");
+        // //console.log("the selected branch is" + vueinst.selectedBranchName);
+
+        //get the user details
+        var xhttp1 = new XMLHttpRequest();
+        xhttp1.onreadystatechange = function () {
+            //console.log("xhttp1 called");
+            if (this.readyState == 4 && this.status == 200) {
+                //set the vue value userInfo to be the JSON
+                //console.log(JSON.parse(this.responseText));
+                //set the vue value to have the JSON array of posts, reverse it so that the most recent (id > value) is at the front
+                vueinst.oldPosts = JSON.parse(this.responseText).reverse();
+
+                vueinst.numPosts = vueinst.oldPosts.length;
+                vueinst.numPages = Math.ceil(vueinst.numPosts / 4);
+                if (vueinst.numPages === 0) {
+                    vueinst.numPages = 1;
+                }
+
+                //if there are more than 4 posts, display the next page button
+                if (vueinst.oldPosts.length > 4) {
+                    var nextPageButton1 = document.querySelector('.next');
+                    nextPageButton1.style.display = 'block';
+                }
+
+                // Hide or show the Next and previous Page button based on whether there are more posts to display
+                var startIndex = (vueinst.currPage - 1) * 4;
+                var endIndex = vueinst.currPage * 4;
+                var nextPageButton = document.querySelector('.next');
+                var previousPageButton = document.querySelector('.previous');
+                //console.log("the endIndex is " + endIndex + " the post length is " + vueinst.numPosts);
+                if (endIndex >= vueinst.numPosts) {
+                    nextPageButton.style.display = 'none';
+                    if (startIndex != 0) {
+                        previousPageButton.style.display = 'block';
+                    }
+                } else {
+                    nextPageButton.style.display = 'block';
+                    if (startIndex != 0) {
+                        previousPageButton.style.display = 'block';
+                    }
+                }
+
+            } else if (this.status === 404) {
+                //console.log("went into 404 else statement, couldn't find the branch");
+            }
+
+            else {
+                //console.log ("failed");
+            }
+        };
+        xhttp1.open("GET", "/oldPosts?branchID=" + vueinst.selectedBranchID + "&orgID=" + orgID, true);
+        xhttp1.send();
+    }
+    window.getOrgName = getOrgName;
+    window.getBranches = getBranches;
+    window.getPosts = getPosts;
+    window.getOrgLogo = getOrgLogo;
+
+    const descTextarea = document.getElementById('postMessage');
+    const descCount = document.querySelector('.descCount');
+    const max = 750;
+
+
+    function updateCharacterCount() {
+        const remaining = max - descTextarea.value.length;
+        descCount.textContent = remaining;
     }
 
-    // Calculate the start and end index of posts to display
-    var startIndex = currentPageNumber * 4;
-    var endIndex = (currentPageNumber + 1) * 4;
+    updateCharacterCount();
 
-    // Display posts within the calculated range
-    for (let i = startIndex; i < endIndex && i < allPosts.length; i++) {
-        allPosts[i].style.display = 'block';
-    }
-
-    // Hide or show the Next Page button based on whether there are more posts to display
-    var nextPageButton = document.querySelector('.next');
-    var previousPageButon = document.querySelector('.previous');
-    if (endIndex >= allPosts.length) {
-        nextPageButton.style.display = 'none';
-        if (startIndex != 0) {
-            previousPageButon.style.display = 'block';
-        }
-    } else {
-        nextPageButton.style.display = 'block';
-        if (startIndex != 0) {
-            previousPageButon.style.display = 'block';
-        }
-    }
-
-    //change the page number
-    var pageNumber = document.querySelector('#pageNum');
-    pageNumber.innerText = "Page " + (currentPageNumber + 1) + "/" + Math.ceil(allPosts.length/4);
-}
-
-function backPage() {
-    //ensure that you don't go back to a non-existant page
-    if (currentPageNumber > 0) {
-        currentPageNumber--;
-
-        //remove everything (except for current Branch selector) and load new updates from array of updates
-        var allPosts = document.querySelectorAll('.oldPosts');
-        var postsArray = Array.from(allPosts);
-
-        //load in new updates from next page
-        //postsarray will be from the SQL
-        // var oldPosts = postsArray;
-        //hide all posts that aren't on the page
-        for (let i = 0; i < postsArray.length; i++) {
-            postsArray[i].style.display = 'none';
-        }
-
-        var startIndex = currentPageNumber * 4;
-        var endIndex = (currentPageNumber + 1) * 4;
-
-        //show the 4 visible posts on the page
-        for (let i = startIndex; i < endIndex && i < allPosts.length; i++) {
-            postsArray[i].style.display = 'block';
-        }
-
-        var newPostBox = document.querySelector('.newPost');
-        var newPostTitle = document.querySelector('h2');
-        if (currentPageNumber === 0) {
-            newPostBox.classList.remove('hidden');
-            newPostTitle.classList.remove('hidden');
-        } else {
-            newPostBox.classList.add('hidden');
-            newPostTitle.classList.add('hidden');
-        }
-
-        // Hide or show the Next Page and the Previous page button based on whether there are more posts to display
-        var nextPageButton = document.querySelector('.next');
-        var previousPageButon = document.querySelector('.previous');
-        if (startIndex === 0) {
-            previousPageButon.style.display = 'none';
-            nextPageButton.style.display = 'block';
-        }
-        else if (endIndex < allPosts.length) {
-            previousPageButon.style.display = 'block';
-            nextPageButton.style.display = 'block';
-        }
-    }
-
-    //change the page number
-    var pageNumber = document.querySelector('#pageNum');
-    pageNumber.innerText = "Page " + (currentPageNumber + 1) + "/" + Math.ceil(allPosts.length/4);
-}
+    descTextarea.onkeyup = updateCharacterCount;
+});

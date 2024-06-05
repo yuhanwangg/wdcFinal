@@ -36,7 +36,8 @@ CREATE TABLE `Admin` (
   `lastName` varchar(50) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`adminID`)
+  PRIMARY KEY (`adminID`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,6 +79,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
+INSERT INTO `Branch` VALUES (1,'Norwood Branch','Norwood','SA','5067','Australia',1,0),(2,'Melbourne Branch','Melbourne','VIC','5067','Australia',1,1),(3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,6 +93,7 @@ DROP TABLE IF EXISTS `FollowedBranches`;
 CREATE TABLE `FollowedBranches` (
   `userID` int DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `emailSubscribed` tinyint NOT NULL DEFAULT '1',
   KEY `userID` (`userID`),
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
@@ -175,6 +178,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png');
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,41 +235,9 @@ CREATE TABLE `Updates` (
 --
 -- Dumping data for table `Updates`
 --
-
-LOCK TABLES `Updates` WRITE;
-/*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `User`
---
-
-DROP TABLE IF EXISTS `User`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `User` (
-  `userID` int NOT NULL,
-  `firstName` varchar(50) DEFAULT NULL,
-  `lastName` varchar(50) DEFAULT NULL,
-  `DOB` varchar(20) DEFAULT NULL,
-  `suburb` varchar(50) DEFAULT NULL,
-  `state` varchar(100) DEFAULT NULL,
-  `postcode` varchar(50) DEFAULT NULL,
-  `country` varchar(100) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `User`
---
-
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'georgia','mcl','2004','Norwood','SA','5067','Australia','emailgeorgia','mypassword');
+INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','mypassword');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -278,4 +250,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-02  5:39:58
+-- Dump completed on 2024-06-05  2:01:10

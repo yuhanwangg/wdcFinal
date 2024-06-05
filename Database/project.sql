@@ -93,6 +93,7 @@ DROP TABLE IF EXISTS `FollowedBranches`;
 CREATE TABLE `FollowedBranches` (
   `userID` int DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `emailSubscribed` tinyint NOT NULL DEFAULT '1',
   KEY `userID` (`userID`),
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
@@ -282,4 +283,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04  2:51:40
+-- Dump completed on 2024-06-05  2:01:10

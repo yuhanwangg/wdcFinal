@@ -912,7 +912,7 @@ router.post('/emailUpdate', function(req, res, next){
     }
     console.log("connected to pool");
     //this is the query which i can change
-    var query = "SELECT email FROM User WHERE userID IN (SELECT userID FROM FollowedBranches WHERE branchID = ?);";
+    var query = "SELECT email FROM User WHERE userID IN (SELECT userID FROM FollowedBranches WHERE branchID = ? AND emailSubscribed = 1);";
     //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
     connection.query(query, [req.body.branchID], function(err1, rows, fields) {
 

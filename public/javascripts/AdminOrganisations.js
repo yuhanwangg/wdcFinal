@@ -302,7 +302,7 @@ function branchRequestAccept(branchName, button, orgName, orgEmail) {
     //add to the current branches
     var newBranch = document.createElement('div');
     newBranch.className = 'nameAndButtons';
-    newBranch.innerHTML = '<p>' + branchName + '</p><button class="remove" onclick="branchRemove(${branchName}, this, ${orgName}, ${orgEmail})">Remove</button>';
+    newBranch.innerHTML = `<p>${branchName}</p> <button class="remove" onclick="branchRemove('${branchName}', this, '${orgName.value}', '${orgEmail.value}')">Remove</button>`;
     var newLine = document.createElement('hr');
 
     var parent = document.querySelector('.allCurrentBranches');

@@ -2,18 +2,17 @@
 <html lang="en">
 
 <head>
-    <title>Admin - Edit Users</title>
-    <link rel="stylesheet" href="stylesheets/AdminEditUsers.css">
+    <title>Admin - Edit Organisations</title>
+    <link rel="stylesheet" href="stylesheets/AdminEditOrganisations.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="javascripts/AdminEditUsers.js"></script>
+    <script src="javascripts/AdminEditOrganisations.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
 </head>
 
-<body onload="loadInfo()">
-
+<body onload="loadInfo(); getOrgId();">
     <header>
         <img class="logo" src="images_assets/logo.png" alt="logo">
         <ul class="navbar">
@@ -34,40 +33,36 @@
     <div class="contentWrapper">
         <!-- nav bar -->
 
-        <h1>Edit Users</h1>
+        <h1>Edit Organisations</h1>
 
-        <!-- search bar -->
-        <!-- <div class="searchBar">
-        <!-- <div class="searchBar">
-            <input type="text" placeholder="First Name">
-            <input type="text" placeholder="Last Name">
+        <!-- search bar
+        <div class="searchBar">
+            <input type="text" placeholder="Organisation Name">
             <input type="text" placeholder="Email">
             <input type="submit">
         </div> -->
-    </div> -->
 
-    <!-- User box, filled using something (AJAX?), should be empty <p> tags -->
-    <div id="UserEdit">
-        <div class="changeTextInputs">
-            <input id="firstNameInput" type="text" placeholder="Current First Name">
-            <input id="lastNameInput" type="text" placeholder="Current Last Name">
-            <input id="emailInput" type="text" placeholder="Current Email">
-            <input id="firstNameInput" type="text" placeholder="Current First Name">
-            <input id="lastNameInput" type="text" placeholder="Current Last Name">
-            <input id="emailInput" type="text" placeholder="Current Email">
+        <!-- Oranisation edit box, filled using something (Vue?), placeholder changes -->
+        <div class="organisationEdit">
+            <div class="changeTextInputs">
+                <input id="orgName" type="text" placeholder="Current Organisation Name">
+                <input id="orgEmail" type="text" placeholder="Current Organisation Email">
+                <!-- when the input is changed, e.g. onInput updateCharacterCount() -->
+                <textarea id="orgDescription"
+                    maxlength="750">Their bio that spans multiple lines. Its very very very very long, and it really does span multiple lines, this just takes a while to write multiple lines. Something about how great they are and what you can do to make an impact. They are really important to the world, and your local community. Everyone loves organisation Name. With them you will be satisfied in how you are helping the world, all it takes is just one person to make a difference. Join us today and you wont regret it. We promise!"</textarea>
+                <div class="charLeft">
+                    <p>Characters left: <span class="descCount">750</span></p>
+                </div>
+                <!-- <div id="characterCount">0/750</div>  -->
+            </div>
+            <div class="SaveDeleteButtons">
+                <button onclick="checkDeleteOrganisatoin()">Delete Organisation</button>
+                <input type="submit" onclick="saveOrganisationInfoConfirm()" value="Save">
+            </div>
         </div>
-        <div class="SaveDeleteButtons">
-            <button onclick="checkDeleteUser()">Delete User</button>
-            <input type="submit" value="Save" onclick="saveUserInfoConfirm()">
-        </div>
+
+        <button id="backToSearch" onclick="backToOrganisations()">Back To Search</button>
     </div>
-
-    <button id="backToSearch" onclick="backToUsers()">Back To Search</button>
-    </div>
-
-
-
-
 
     <!-- footer -->
     <div class="footer">
@@ -76,7 +71,6 @@
         <p>Admin</p>
         <p id="logoutFooter">Logout</p>
     </div>
-
 
 </body>
 

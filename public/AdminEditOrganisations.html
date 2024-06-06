@@ -12,7 +12,7 @@
 
 </head>
 
-<body onload = "loadInfo(); getOrgId();">
+<body onload="loadInfo(); getOrgId();">
     <header>
         <img class="logo" src="images_assets/logo.png" alt="logo">
         <ul class="navbar">
@@ -36,26 +36,24 @@
         <h1>Edit Organisations</h1>
 
         <!-- search bar
-        <!-- search bar
         <div class="searchBar">
             <input type="text" placeholder="Organisation Name">
             <input type="text" placeholder="Email">
             <input type="submit">
         </div> -->
-        </div> -->
 
         <!-- Oranisation edit box, filled using something (Vue?), placeholder changes -->
         <div class="organisationEdit">
             <div class="changeTextInputs">
-                <input id = "orgName" type="text" placeholder="Current Organisation Name">
-                <input id = "orgEmail" type="text" placeholder="Current Organisation Email">
+                <input id="orgName" type="text" placeholder="Current Organisation Name">
+                <input id="orgEmail" type="text" placeholder="Current Organisation Email">
                 <!-- when the input is changed, e.g. onInput updateCharacterCount() -->
-                <textarea id = "orgDescription"
+                <textarea id="orgDescription"
                     maxlength="750">Their bio that spans multiple lines. Its very very very very long, and it really does span multiple lines, this just takes a while to write multiple lines. Something about how great they are and what you can do to make an impact. They are really important to the world, and your local community. Everyone loves organisation Name. With them you will be satisfied in how you are helping the world, all it takes is just one person to make a difference. Join us today and you wont regret it. We promise!"</textarea>
                 <div class="charLeft">
                     <p>Characters left: <span class="descCount">750</span></p>
                 </div>
-                    <!-- <div id="characterCount">0/750</div>  -->
+                <!-- <div id="characterCount">0/750</div>  -->
             </div>
             <div class="SaveDeleteButtons">
                 <button onclick="checkDeleteOrganisatoin()">Delete Organisation</button>
@@ -63,7 +61,7 @@
             </div>
         </div>
 
-        <button id = "backToSearch" onclick="backToOrganisations()">Back To Search</button>
+        <button id="backToSearch" onclick="backToOrganisations()">Back To Search</button>
     </div>
 
     <!-- footer -->

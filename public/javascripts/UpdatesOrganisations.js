@@ -7,7 +7,7 @@
 //THIS IS TEMPORARY UNTIL SESSION TOKENS ARE WORKING
 var orgID = 1;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize Vue instance after the DOM is fully loaded
     const vueinst = new Vue({
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 xhttp1.open("POST", "/createNewPost");
                 // //console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + vueinst.selectedBranchName + " " + orgID + " " + updateTitleInput + " " + updateMessageInput + " " + formattedDate);
                 xhttp1.setRequestHeader("Content-type", "application/json");
-                xhttp1.send(JSON.stringify({ branchID: vueinst.selectedBranchID, orgID: orgID, updateName:updateTitleInput, updateMsg: updateMessageInput, dateCreated: formattedDate }));
+                xhttp1.send(JSON.stringify({ branchID: vueinst.selectedBranchID, orgID: orgID, updateName: updateTitleInput, updateMsg: updateMessageInput, dateCreated: formattedDate }));
 
 
                 //send the new post to all users following the branch
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 };
                 xhttp2.open("POST", "/emailUpdate", true);
                 xhttp2.setRequestHeader("Content-type", "application/json");
-                xhttp2.send(JSON.stringify({ branchID: vueinst.selectedBranchID, subject: subject, text: text}));
+                xhttp2.send(JSON.stringify({ branchID: vueinst.selectedBranchID, subject: subject, text: text }));
             },
 
             nextPage() {

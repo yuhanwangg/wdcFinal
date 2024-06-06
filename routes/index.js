@@ -114,7 +114,6 @@ router.get('/recentUpdates', (req, res) => {
   });
 });
 
-
 router.post('/addAdmin', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { first_name, last_name, email, password } = req.body;

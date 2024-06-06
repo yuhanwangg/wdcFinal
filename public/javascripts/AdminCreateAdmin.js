@@ -29,7 +29,7 @@ function createAdmin() {
     if (email.trim() && emailConfirm.trim() && firstName.trim() && lastName.trim() && password.trim() && passwordConfirm.trim()) {
 
         //check that the emails match and the passwords match
-        if (email ===  emailConfirm && password === passwordConfirm) {
+        if (email === emailConfirm && password === passwordConfirm) {
             // console.log("emails and passwords match!")
             var xhttp = new XMLHttpRequest();
 
@@ -58,7 +58,7 @@ function createAdmin() {
 }
 
 function goToAdminCreate() {
-    window.location.href="AdminCreateAdmin.html";
+    window.location.href = "AdminCreateAdmin.html";
 }
 
 function showNotAllFilledMsg() {
@@ -80,7 +80,7 @@ function showNotAllFilledMsg() {
         // error message, they don't align
         var filledMsg = document.createElement('div');
         filledMsg.id = 'notFilled';
-        filledMsg.innerHTML ='<p>All fields must be filled</p>';
+        filledMsg.innerHTML = '<p>All fields must be filled</p>';
 
         var parent = document.querySelector('.contentWrapper');
         parent.appendChild(filledMsg);
@@ -88,7 +88,7 @@ function showNotAllFilledMsg() {
     }
 }
 
-function showIncorrectInfoMsg(){
+function showIncorrectInfoMsg() {
     //if the email taken box is showing, remove it
     if (emailTaken === true) {
         var emailTakenBox = document.getElementById('emailTaken');
@@ -106,7 +106,7 @@ function showIncorrectInfoMsg(){
         // error message, they don't align
         var incorrectInfoMsg = document.createElement('div');
         incorrectInfoMsg.id = 'incorrectInfo';
-        incorrectInfoMsg.innerHTML ='<p>The emails and/or passwords do not match </p>';
+        incorrectInfoMsg.innerHTML = '<p>The emails and/or passwords do not match </p>';
 
         var contentParent = document.querySelector('.contentWrapper');
         contentParent.appendChild(incorrectInfoMsg);
@@ -165,7 +165,7 @@ function showSuccessMsg(firstName, lastName, email, password) {
     };
     xhttp2.open("POST", "/email", true);
     xhttp2.setRequestHeader("Content-type", "application/json");
-    xhttp2.send(JSON.stringify({ email: email, subject: subject, text: text}));
+    xhttp2.send(JSON.stringify({ email: email, subject: subject, text: text }));
 }
 
 function showEmailTakenMsg() {
@@ -186,7 +186,7 @@ function showEmailTakenMsg() {
         // error message, they don't align
         var emailTakenMsg = document.createElement('div');
         emailTakenMsg.id = 'emailTaken';
-        emailTakenMsg.innerHTML ='<p>This email is already being used by another admin</p>';
+        emailTakenMsg.innerHTML = '<p>This email is already being used by another admin</p>';
 
         var contentParent = document.querySelector('.contentWrapper');
         contentParent.appendChild(emailTakenMsg);

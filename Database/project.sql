@@ -36,7 +36,8 @@ CREATE TABLE `Admin` (
   `lastName` varchar(50) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`adminID`)
+  PRIMARY KEY (`adminID`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,7 +47,6 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES (1,'georgia','skye','newAdminEmail@gmail.com','f'),(2,'lana','smith','someEmail@gmail.com','e');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -65,10 +65,11 @@ CREATE TABLE `Branch` (
   `postcode` varchar(10) DEFAULT NULL,
   `country` varchar(255) DEFAULT NULL,
   `orgID` int NOT NULL,
-  `instantiated` tinyint(1) DEFAULT '0',
+  `instated` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`branchID`),
   KEY `orgID` (`orgID`),
-  CONSTRAINT `Branch_ibfk_1` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`) ON DELETE CASCADE
+  CONSTRAINT `Branch_ibfk_1` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`) ON DELETE CASCADE,
+  CONSTRAINT `fk_organisation_branches` FOREIGN KEY (`orgID`) REFERENCES `Organisations` (`orgID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,7 +79,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
-INSERT INTO `Branch` VALUES (1,'Norwood Branch','Norwood','SA','5067','Australia',2,1),(2,'Melbourne Branch','Melbourne','VIC','5067','Australia',2,1),(4,'Adelaide Branch','Adelaide','SA','5000','Australia',2,1);
+INSERT INTO `Branch` VALUES (1,'Norwood Branch','Norwood','SA','5067','Australia',1,0),(2,'Melbourne Branch','Melbourne','VIC','5067','Australia',1,1),(3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,10 +93,15 @@ DROP TABLE IF EXISTS `FollowedBranches`;
 CREATE TABLE `FollowedBranches` (
   `userID` int DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `emailSubscribed` tinyint NOT NULL DEFAULT '1',
   KEY `userID` (`userID`),
   KEY `branchID` (`branchID`),
-  CONSTRAINT `FollowedBranches_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`),
-  CONSTRAINT `FollowedBranches_ibfk_2` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
+  KEY `idx_branchID` (`branchID`),
+  KEY `idx_userID` (`userID`),
+  CONSTRAINT `fk_branches_followed` FOREIGN KEY (`branchID`) REFERENCES `FollowedBranches` (`branchID`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_branches_followed` FOREIGN KEY (`userID`) REFERENCES `FollowedBranches` (`userID`) ON DELETE CASCADE,
+  CONSTRAINT `FollowedBranches_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`) ON DELETE CASCADE,
+  CONSTRAINT `FollowedBranches_ibfk_2` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -131,6 +137,8 @@ CREATE TABLE `Opportunities` (
   `branchID` int DEFAULT NULL,
   PRIMARY KEY (`oppID`),
   KEY `branchID` (`branchID`),
+  KEY `idx_branchID` (`branchID`),
+  CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,
   CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -170,7 +178,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (2,'redCross','redCross.com','redCross@gmail.com','redCrossPassword','Their bio that spans multiple lines. Its very very very very long, and it really does span multiple lines, this just takes a while to write multiple lines. Something about how great they are and what you can do to make an impact. They are really important to the world, and your local community. Everyone loves organisation Name. With them you will be satisfied in how you are helping the world, all it takes is just one person to make a difference. Join us today and you wont regret it. We promise!\"','images_assets/brand exmaple.jpeg'),(3,'fancyOrganisation','theirSite.com','email@gmail.com','password','a description','images_assets/brand exmaple.jpeg');
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png');
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,8 +194,12 @@ CREATE TABLE `RSVPD` (
   `oppID` int DEFAULT NULL,
   KEY `userID` (`userID`),
   KEY `oppID` (`oppID`),
-  CONSTRAINT `RSVPD_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`),
-  CONSTRAINT `RSVPD_ibfk_2` FOREIGN KEY (`oppID`) REFERENCES `Opportunities` (`oppID`)
+  KEY `idx_userID` (`userID`),
+  KEY `idx_oppID` (`oppID`),
+  CONSTRAINT `fk_opportunity_rsvpd` FOREIGN KEY (`oppID`) REFERENCES `RSVPD` (`oppID`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_rsvpd` FOREIGN KEY (`userID`) REFERENCES `RSVPD` (`userID`) ON DELETE CASCADE,
+  CONSTRAINT `RSVPD_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`) ON DELETE CASCADE,
+  CONSTRAINT `RSVPD_ibfk_2` FOREIGN KEY (`oppID`) REFERENCES `Opportunities` (`oppID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -215,6 +227,7 @@ CREATE TABLE `Updates` (
   `dateCreated` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`updateID`),
   KEY `branchID` (`branchID`),
+  CONSTRAINT `fk_branch_updates` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE,
   CONSTRAINT `Updates_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -225,7 +238,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-INSERT INTO `Updates` VALUES (4,'rescheduling','all events are rescheduled',1,'June 1, 2024 at 7:15 PM'),(8,'rescheduling','test 2, had ID = 8',1,'June 1, 2024 at 7:15 PM'),(10,'rescheduling','test 1, had ID = 10',1,'June 1, 2024 at 7:15 PM'),(11,'rescheduling','test 3, had ID = 11',1,'June 1, 2024 at 7:15 PM'),(12,'test','norwood test',1,'June 2, 2024 at 11:50 AM'),(13,'test','norwood test',1,'June 2, 2024 at 11:52 AM'),(14,'test','norwood test',1,'June 2, 2024 at 11:54 AM'),(15,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(16,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(17,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(18,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(19,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(20,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(21,'test Norwood','test Norwood',1,'June 2, 2024 at 12:04 PM'),(22,'lkn','lkn',1,'June 2, 2024 at 12:12 PM'),(23,'lkn','lkn',1,'June 2, 2024 at 12:12 PM'),(24,'hi','ad',1,'June 2, 2024 at 12:35 PM'),(25,'hi pt 2','aoidjoaifjioajf',1,'June 2, 2024 at 12:48 PM'),(26,'hi pt 3','aoidjoaifjioajf',1,'June 2, 2024 at 12:48 PM'),(27,'','',1,'June 2, 2024 at 1:04 PM'),(28,'leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',1,'June 2, 2024 at 1:14 PM'),(29,'the first post','oiajoidjfaoidjojfaijdf',2,'June 2, 2024 at 1:20 PM'),(30,'the first post','oiajoidjfaoidjojfaijdf',2,'June 2, 2024 at 1:20 PM'),(31,'the first post','oiajoidjfaoidjojfaijdf',2,'June 2, 2024 at 1:20 PM'),(32,'the first post','oiajoidjfaoidjojfaijdf',2,'June 2, 2024 at 1:20 PM'),(33,'the first post','oiajoidjfaoidjojfaijdf',2,'June 2, 2024 at 1:20 PM'),(34,'the first post','oiajoidjfaoidjojfaijdf',2,'June 2, 2024 at 1:20 PM'),(35,'test','test',2,'June 2, 2024 at 3:07 PM');
+INSERT INTO `Updates` VALUES (1,'Rescheduled ','All events are going to be moved ahead by 1 day! Sorry for the inconvenience!',2,'June 4, 2024 at 10:01 AM'),(2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM');
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,7 +270,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (2,'georgia','mcleod','23 oct','melbourne','VIC','5000','Australia','theiremail@gmail.com','theirPassword'),(3,'georgia','mcleod','24 oct','perth','WA','5000','Australia','theiremail@gmail.com',' theirPassword');
+INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','mypassword');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -270,4 +283,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-03  7:06:01
+-- Dump completed on 2024-06-05  2:01:10

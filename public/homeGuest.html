@@ -54,14 +54,14 @@
         </div>
 
         <div id="find">
-            <a href="#">
-                <div class="findOpp">
+            <a href="/opportunities">
+                <div class="findOpp" @click="volunButton">
                     <img class="oppImg" src="images_assets/helpers.jpeg" alt="oppImg">
                     <h3 class="opportunities">Volunteering Opportunities</h3>
                 </div>
             </a>
-            <a href="#">
-                <div class="findLocal">
+            <a href="/organisations">
+                <div class="findLocal" @click="organButton">
                     <img class="orgImg" src="images_assets/organisations.jpeg" alt="orgImg">
                     <h3 class="organisations">Volunteer Organisations</h3>
                 </div>
@@ -111,7 +111,8 @@
         </div>
         <div class="bottom">
             <div class="bottomText">
-                <h2>So, what are you waiting for? Join the <span id="userCount">{{ userCount }}</span> volunteering with
+                <h2>So, what are you waiting for? Join the <span id="userCount">{{ userCount }}</span> heartful people
+                    volunteering with
                     us today!</h2>
             </div>
             <div id="signUpNow">

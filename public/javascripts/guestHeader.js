@@ -40,30 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
     `
     });
 
-    new Vue({
-        el: '#app',
-        data: {
-            userCount: 0 // Initialize userCount in Vue data
-        },
-        mounted() {
-            // Fetch userCount from server on component mount
-            axios.get('/userCount')
-                .then(response => {
-                    this.userCount = response.data.count;
-                })
-                .catch(error => {
-                    console.error('Error fetching user count:', error);
-                });
-        },
-        methods: {
-            signUp() {
-                navigateTo("/signUp");
-            },
-            volunButton() {
-                navigateTo("/opportunities");
-            }
-        }
-    });
 });
 
 function navigateTo(location) {

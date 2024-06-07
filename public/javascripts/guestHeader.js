@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { class: "userLogIn", source: "", icon: "ri-user-fill", name: "Log in", url: "/logIn" },
     ]
 
-    let sessionToken = req.session.userType;
+    let sessionToken = req.session.userType; // build on this
 
 
     Vue.component('header-component', {

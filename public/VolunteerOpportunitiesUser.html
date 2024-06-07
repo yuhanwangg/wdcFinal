@@ -1,35 +1,23 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <title>Volunteer Opportunites</title>
-        <link rel="stylesheet" href="stylesheets/VolunteerOpportunitiesUser.css">
-        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src = "javascripts/VolunteerOpportunitiesUser.js"></script>
+<html lang="en">
 
-    </head>
+<head>
+    <title>Volunteer Opportunites</title>
+    <link rel="stylesheet" href="stylesheets/VolunteerOpportunitiesUser.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/guestHeader.js"></script>
+    <script src="javascripts/VolunteerOpportunitiesUser.js"></script>
 
-    <body>
+</head>
+
+<body>
+    <div id="app">
+        <header-component>
+        </header-component>
         <div class="contentWrapper">
-            <!-- nav bar -->s
-            <header>
-                <img class="logo" src="images_assets/logo.png" alt="logo">
-                <ul class="navbar">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#"><mark>Volunteer Opportunities</mark></a></li>
-                    <li><a href="#">Find Organisations</a></li>
-                    <li><a href="#">RSVP'd</a></li>
-                    <li><a href="#">Updates</a></li>
-                </ul>
-                <div class="profileMenu">
-                    <a href="#">
-                        <div class="profile">
-                            <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                        </div>
-                    </a>
-                    <div class="bx bx-menu" id="menu-icon"></div>
-                </div>
-            </header>
 
             <!-- Page Title -->
             <h1 class="title">Volunteer Opportunites</h1>
@@ -48,8 +36,8 @@
 
             <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
             <div class="opportunityBox">
-                <div class = "contentLeft">
-                    <a href = "link.com" class="organisationName"><b>Program Name</b></a>
+                <div class="contentLeft">
+                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
                     <p>Organisation Name</p>
                     <div class="tags">
                         <span class="opportunityTag">Tag 1</span>
@@ -62,14 +50,14 @@
                         this looks so good with multiple lines. Click for more info!
                     </p>
                 </div>
-                <div class = "logoJoin">
-                    <img src = "exampleLogo.png" alt="" class = "miniLogo">
+                <div class="logoJoin">
+                    <img src="exampleLogo.png" alt="" class="miniLogo">
                 </div>
             </div>
 
             <div class="opportunityBox">
-                <div class = "contentLeft">
-                    <a href = "link.com" class="organisationName"><b>Program Name</b></a>
+                <div class="contentLeft">
+                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
                     <p>Organisation Name</p>
                     <div class="tags">
                         <span class="opportunityTag">Tag 1</span>
@@ -82,14 +70,14 @@
                         this looks so good with multiple lines. Click for more info!
                     </p>
                 </div>
-                <div class = "logoJoin">
-                    <img src = "exampleLogo.png" alt="" class = "miniLogo">
+                <div class="logoJoin">
+                    <img src="exampleLogo.png" alt="" class="miniLogo">
                 </div>
             </div>
 
             <div class="opportunityBox">
-                <div class = "contentLeft">
-                    <a href = "link.com" class="organisationName"><b>Program Name</b></a>
+                <div class="contentLeft">
+                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
                     <p>Organisation Name</p>
                     <div class="tags">
                         <span class="opportunityTag">Tag 1</span>
@@ -102,14 +90,14 @@
                         this looks so good with multiple lines. Click for more info!
                     </p>
                 </div>
-                <div class = "logoJoin">
-                    <img src = "exampleLogo.png" alt="" class = "miniLogo">
+                <div class="logoJoin">
+                    <img src="exampleLogo.png" alt="" class="miniLogo">
                 </div>
             </div>
 
             <div class="opportunityBox">
-                <div class = "contentLeft">
-                    <a href = "link.com" class="organisationName"><b>Program Name</b></a>
+                <div class="contentLeft">
+                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
                     <p>Organisation Name</p>
                     <div class="tags">
                         <span class="opportunityTag">Tag 1</span>
@@ -122,14 +110,14 @@
                         this looks so good with multiple lines. Click for more info!
                     </p>
                 </div>
-                <div class = "logoJoin">
-                    <img src = "exampleLogo.png" alt="" class = "miniLogo">
+                <div class="logoJoin">
+                    <img src="exampleLogo.png" alt="" class="miniLogo">
                 </div>
             </div>
 
             <div class="opportunityBox">
-                <div class = "contentLeft">
-                    <a href = "link.com" class="organisationName"><b>Program Name</b></a>
+                <div class="contentLeft">
+                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
                     <p>Organisation Name</p>
                     <div class="tags">
                         <span class="opportunityTag">Tag 1</span>
@@ -142,8 +130,8 @@
                         this looks so good with multiple lines. Click for more info!
                     </p>
                 </div>
-                <div class = "logoJoin">
-                    <img src = "exampleLogo.png" alt="" class = "miniLogo">
+                <div class="logoJoin">
+                    <img src="exampleLogo.png" alt="" class="miniLogo">
                 </div>
             </div>
 
@@ -151,17 +139,12 @@
 
             <button class="nextButton" type="submit">Next Page</button>
 
-            <!-- footer -->
-
-            <div class="footer">
-                <p>Home</p>
-                <p>Volunteer Opportunites</p>
-                <p>Updates</p>
-                <p>Contact Us</p>
-                <p>Logout</p>
-            </div>
 
         </div>
-    </body>
+
+        <footer-component></footer-component>
+
+    </div>
+</body>
 
 </html>

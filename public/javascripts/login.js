@@ -23,13 +23,15 @@ function login() {
                     //redirect to relevant home page
                     var response = JSON.parse(this.responseText);
 
-                    if (response.userType === 'volunteer') {
-                        window.location.href = "/homeVolunteer.html";
-                    } else if (response.userType === 'organisation') {
-                        window.location.href = "/homeOrgVerified.html";
-                    } else if (response.userType === 'admin') {
-                        window.location.href = "/homeGuest.html";
-                    }
+                    // if (response.userType === 'volunteer') {
+                    //     window.location.href = "/homeVolunteer.html";
+                    // } else if (response.userType === 'organisation') {
+                    //     window.location.href = "/homeOrgVerified.html";
+                    // } else if (response.userType === 'admin') {
+                    //     window.location.href = "/homeGuest.html";
+                    // }
+                    window.location.href = "/home";
+
                 } else if (this.status == 400) {
                     console.log("Email or password is incorrect");
                     message.style.display = "block";
@@ -53,3 +55,9 @@ function login() {
 
 
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app'
+    });
+});

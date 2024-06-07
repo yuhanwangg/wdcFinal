@@ -74,6 +74,28 @@ header {
     margin-right: 5px;
 }
 
+/* .profileMenu {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+} */
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.profile img {
+    width: 35px;
+    border-radius: 50%;
+    margin-left: 10px;
+    margin-right: 15px;
+}
+
 #menu-icon {
     font-size: 25px;
     color: black;
@@ -103,6 +125,52 @@ header {
 .logo {
     max-width: 100px;
     margin-right: 3px;
+}
+
+/* creating drop down for the profile when clicked */
+.profileDropDown {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    background-color: white;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+    align-items: start;
+    position: absolute;
+    top: 100%;
+    width: 200px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D1EEE5;
+    text-align: left;
+}
+
+.profileDropDown p {
+    margin-left: 30px;
+}
+
+.profileDropDown.open {
+    display: block;
+    position: absolute;
+    top: 100%;
+    width: 200px;
+    max-height: 200px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #D1EEE5;
+    opacity: 1;
+}
+
+.profileDropDown a {
+    color: black;
+}
+
+.profileDropDown a:hover {
+    color: #F7B733;
+    transition: .3s;
 }
 
 .footer {
@@ -146,12 +214,15 @@ header {
         display: block;
     }
 
+    .profile {
+        margin-right: 10px;
+    }
+
     .navbar {
         position: absolute;
         top: 110%;
         right: -100%;
         width: 270px;
-        height: 29vh;
         background-color: white;
         display: flex;
         flex-direction: column;

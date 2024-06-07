@@ -9,7 +9,7 @@ var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var homeGuestRouter = require('./routes/homeGuest');
+var homeGuestRouter = require('./routes/home');
 var volunOppRouter = require('./routes/opportunities');
 var volunOrgRouter = require('./routes/organisations');
 var signUpRouter = require('./routes/signUp');

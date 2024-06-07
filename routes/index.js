@@ -10,6 +10,7 @@ var mysql = require('mysql');
 var nodemailer = require('nodemailer')
 
 var session = require('express-session');
+const { hashPass, deHashPass } = require('/workspaces/24S1_WDC_UG_Group_42/authHash.js');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -1121,7 +1122,7 @@ router.post('/addUser', function (req, res, next) {
           //get last user id
           var mostRecentUserId = "SELECT userID FROM User ORDER BY userID DESC LIMIT 1;";
 
-          connection.query(mostRecentUserId, function (err4, result) {
+          connection.query(mostRecentUserId, async function (err4, result) {
 
             //error handling
             if (err4) {
@@ -1137,9 +1138,20 @@ router.post('/addUser', function (req, res, next) {
             }
             console.log("the new user id is " + currUserId);
 
+            //hash password
+            var hash;
+
+            try {
+              hash = await hashPass(password);
+            } catch (err) {
+              console.log("error in hash");
+              res.sendStatus(500);
+              return;
+            }
+
             var query = "INSERT INTO User (userID, firstName, lastName, DOB, suburb, state, postcode, country, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-            connection.query(query, [currUserId, first_name, last_name, dob, suburb, state, postcode, country, email, password], function (err5, returnVal) {
+            connection.query(query, [currUserId, first_name, last_name, dob, suburb, state, postcode, country, email, hash], function (err5, returnVal) {
               connection.release();
 
               if (err5) {
@@ -1261,7 +1273,7 @@ router.post('/addOrg', function (req, res, next) {
             //get last branch id
             var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
 
-            connection.query(mostRecentBranchId, function (err5, result5) {
+            connection.query(mostRecentBranchId, async function (err5, result5) {
 
               //error handling
               if (err5) {
@@ -1277,9 +1289,20 @@ router.post('/addOrg', function (req, res, next) {
               }
               console.log("the new branch id is " + currBranchId);
 
+              //hash password
+              var hash;
+
+              try {
+                hash = await hashPass(password);
+              } catch (err) {
+                console.log("error in hash");
+                res.sendStatus(500);
+                return;
+              }
+
               var query = "INSERT INTO Organisations (orgID, orgName, email, password) VALUES (?, ?, ?, ?);";
 
-              connection.query(query, [currOrgId, name, email, password], function (err6, returnVal) {
+              connection.query(query, [currOrgId, name, email, hash], function (err6, returnVal) {
                 // connection.release();
 
                 if (err6) {
@@ -1328,7 +1351,7 @@ router.post('/addOrg', function (req, res, next) {
 });
 
 //login
-router.post('/login', function (req, res, next) {
+router.post('/login', async function (req, res, next) {
 
   const { email, password } = req.body;
   console.log("Received data ", email, password);
@@ -1345,8 +1368,8 @@ router.post('/login', function (req, res, next) {
       return;
     }
 
-    var accountQuery = "SELECT userID FROM User WHERE email = ? AND password = ?;";
-    connection.query(accountQuery, [email, password], function (err, rows) {
+    var accountQuery = "SELECT userID, password FROM User WHERE email = ?;";
+    connection.query(accountQuery, [email], async function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error finding login", err);
@@ -1355,17 +1378,33 @@ router.post('/login', function (req, res, next) {
       }
 
       if (rows.length > 0) {
-        connection.release();
-        const id = rows[0].userID;
-        req.session.userType = "volunteer";
-        req.session.accountID = id;
-        console.log("User id:", id);
-        console.log(req.session.userType, req.session.user);
-        res.status(200).json({ userType: 'volunteer' });
-        return;
+
+        console.log(rows[0].password, password, rows[0].userID);
+
+        //check if password matches, if it doesn't return the doesn't match error, if matches, login
+        try {
+          if (await deHashPass(rows[0].password, password)) {
+            connection.release();
+            const id = rows[0].userID;
+            req.session.userType = "volunteer";
+            req.session.accountID = id;
+            console.log("User id:", id);
+            console.log(req.session.userType, req.session.user);
+            res.status(200).json({ userType: 'volunteer' });
+            return;
+          } else {
+            res.status(400).send("Email or password is incorrect");
+            return;
+          }
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
+
       } else {
-        var orgQuery = "SELECT orgID FROM Organisations WHERE email = ? AND password = ?;";
-        connection.query(orgQuery, [email, password], function (err, rows) {
+        var orgQuery = "SELECT orgID, password FROM Organisations WHERE email = ?;";
+        connection.query(orgQuery, [email], async function (err, rows) {
           if (err) {
             connection.release();
             console.log("Error finding login", err);
@@ -1374,17 +1413,33 @@ router.post('/login', function (req, res, next) {
           }
 
           if (rows.length > 0) {
-            connection.release();
-            const id = rows[0].orgID;
-            console.log("Org id:", id);
-            req.session.userType = "organisation";
-            req.session.accountID = id;
-            console.log(req.session.userType, req.session.user);
-            res.status(200).json({ userType: 'organisation' });
-            return;
+
+            console.log(rows[0].password, password, rows[0].userID);
+
+            //check if password matches, if it doesn't return the doesn't match error, if matches, login
+            try {
+              if (await deHashPass(rows[0].password, password)) {
+                connection.release();
+                const id = rows[0].orgID;
+                console.log("Org id:", id);
+                req.session.userType = "organisation";
+                req.session.accountID = id;
+                console.log(req.session.userType, req.session.user);
+                res.status(200).json({ userType: 'organisation' });
+                return;
+              } else {
+                res.status(400).send("Email or password is incorrect");
+                return;
+              }
+            } catch (err) {
+              connection.release();
+              console.log("Error validating hash", err);
+              res.status(500).json({ error: "Internal Server Error" });
+            }
+
           } else {
-            var adminQuery = "SELECT adminID FROM Admin WHERE email = ? AND password = ?;";
-            connection.query(adminQuery, [email, password], function (err, rows) {
+            var adminQuery = "SELECT adminID, password FROM Admin WHERE email = ?;";
+            connection.query(adminQuery, [email], async function (err, rows) {
               connection.release();
               if (err) {
                 console.log("Error finding login", err);
@@ -1393,13 +1448,29 @@ router.post('/login', function (req, res, next) {
               }
 
               if (rows.length > 0) {
-                const id = rows[0].adminID;
-                console.log("Admin id:", id);
-                req.session.accountID = id;
-                req.session.userType = "admin";
-                console.log(req.session.userType, req.session.user);
-                res.status(200).json({ userType: 'admin' });
-                return;
+
+                console.log(rows[0].password, password, rows[0].userID);
+
+                //check if password matches, if it doesn't return the doesn't match error, if matches, login
+                try {
+                  if (await deHashPass(rows[0].password, password)) {
+                    const id = rows[0].adminID;
+                    console.log("Admin id:", id);
+                    req.session.accountID = id;
+                    req.session.userType = "admin";
+                    console.log(req.session.userType, req.session.user);
+                    res.status(200).json({ userType: 'admin' });
+                    return;
+                  } else {
+                    res.status(400).send("Email or password is incorrect");
+                    return;
+                  }
+                } catch (err) {
+                  connection.release();
+                  console.log("Error validating hash", err);
+                  res.status(500).json({ error: "Internal Server Error" });
+                }
+
               } else {
                 res.status(400).send("Email or password is incorrect");
                 return;
@@ -1508,8 +1579,8 @@ router.post('/checkPassword', function (req, res, next) {
     }
 
     //check if password matches
-    var accountQuery = "SELECT userID FROM User WHERE userID = ? AND password = ?;";
-    await connection.query(accountQuery, [accountID, password], async function (err, rows) {
+    var accountQuery = "SELECT password FROM User WHERE userID = ?;";
+    await connection.query(accountQuery, [accountID], async function (err, rows) {
 
       if (err) {
         //connection.release();
@@ -1519,12 +1590,24 @@ router.post('/checkPassword', function (req, res, next) {
       }
 
       if (rows.length > 0) {
-        //all good
-        res.send();
+        //check password matches
+        try {
+          if (await deHashPass(rows[0].password, password)) {
+            res.send();
+          } else {
+            connection.release();
+            console.log("password incorrect !!");
+            res.status(400).send("password incorrect");
+            return;
+          }
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
       } else {
-        connection.release();
-        console.log("password incorrect !!");
-        res.status(400).send("password incorrect");
+        console.log("Error searching with id", err);
+        res.sendStatus(500);
         return;
       }
 
@@ -1550,8 +1633,8 @@ router.post('/checkPasswordOrg', function (req, res, next) {
     }
 
     //check if password matches
-    var accountQuery = "SELECT orgID FROM Organisations WHERE orgID = ? AND password = ?;";
-    await connection.query(accountQuery, [accountID, password], async function (err, rows) {
+    var accountQuery = "SELECT password FROM Organisations WHERE orgID = ?;";
+    await connection.query(accountQuery, [accountID], async function (err, rows) {
 
       if (err) {
         //connection.release();
@@ -1561,12 +1644,24 @@ router.post('/checkPasswordOrg', function (req, res, next) {
       }
 
       if (rows.length > 0) {
-        //all good
-        res.send();
+        //check password matches
+        try {
+          if (await deHashPass(rows[0].password, password)) {
+            res.send();
+          } else {
+            connection.release();
+            console.log("password incorrect !!");
+            res.status(400).send("password incorrect");
+            return;
+          }
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
       } else {
-        connection.release();
-        console.log("password incorrect !!");
-        res.status(400).send("password incorrect");
+        console.log("Error searching with id", err);
+        res.sendStatus(500);
         return;
       }
 
@@ -1592,8 +1687,8 @@ router.post('/checkPasswordAdmin', function (req, res, next) {
     }
 
     //check if password matches
-    var accountQuery = "SELECT adminID FROM Admin WHERE adminID = ? AND password = ?;";
-    await connection.query(accountQuery, [accountID, password], async function (err, rows) {
+    var accountQuery = "SELECT password FROM Admin WHERE adminID = ?;";
+    await connection.query(accountQuery, [accountID], async function (err, rows) {
 
       if (err) {
         //connection.release();
@@ -1603,12 +1698,24 @@ router.post('/checkPasswordAdmin', function (req, res, next) {
       }
 
       if (rows.length > 0) {
-        //all good
-        res.send();
+        //check password matches
+        try {
+          if (await deHashPass(rows[0].password, password)) {
+            res.send();
+          } else {
+            connection.release();
+            console.log("password incorrect !!");
+            res.status(400).send("password incorrect");
+            return;
+          }
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
       } else {
-        connection.release();
-        console.log("password incorrect !!");
-        res.status(400).send("password incorrect");
+        console.log("Error searching with id", err);
+        res.sendStatus(500);
         return;
       }
 
@@ -1668,9 +1775,21 @@ router.post('/updateUserInfo', async function (req, res, next) {
 
     if (updatePassword == 1) {
       //update password
+
+      //hash password
+      var hash;
+
+      try {
+        hash = await hashPass(newPassword);
+      } catch (err) {
+        console.log("error in hash");
+        res.sendStatus(500);
+        return;
+      }
+
       const query = 'UPDATE User SET password = ? WHERE userID = ?;';
 
-      await connection.query(query, [newPassword, accountID], function (err, returnVal) {
+      await connection.query(query, [hash, accountID], function (err, returnVal) {
         // connection.release();
         if (err) {
           console.log("error inserting new password", err);
@@ -1786,8 +1905,8 @@ router.post('/deleteSelfUser', function (req, res, next) {
     }
 
     //check if the email and password match the database and the id of the user who is currently logged in
-    var accountQuery = "SELECT userID FROM User WHERE email = ? AND password = ? AND userID = ?;";
-    connection.query(accountQuery, [email, password, accountID], function (err, rows) {
+    var accountQuery = "SELECT password FROM User WHERE email = ? AND userID = ?;";
+    connection.query(accountQuery, [email, accountID], async function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error matching details", err);
@@ -1798,31 +1917,44 @@ router.post('/deleteSelfUser', function (req, res, next) {
       //matches
       if (rows.length > 0) {
 
-        var query = "DELETE FROM User WHERE userID = ?;";
+         //check password matches
+         try {
+          if (await deHashPass(rows[0].password, password)) {
+            var query = "DELETE FROM User WHERE userID = ?;";
 
-        //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-        //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-        connection.query(query, [accountID], function (err1, rows, fields) {
-          //release the query, don't need access to the database anymore
-          connection.release();
-          //error handling
-          if (err1) {
-            res.sendStatus(500);
-            return;
+            //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+            //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+            connection.query(query, [accountID], function (err1, rows, fields) {
+              //release the query, don't need access to the database anymore
+              connection.release();
+              //error handling
+              if (err1) {
+                res.sendStatus(500);
+                return;
+              }
+              //log out user
+              req.session.user = null;
+              req.session.userType = null;
+              req.session.accountID = null;
+
+              res.send("successfully deleted");
+            });
+          } else {
+            connection.release();
+            console.log("account details incorrect !!");
+            res.status(400).send("account details incorrect");
           }
-          //log out user
-          req.session.user = null;
-          req.session.userType = null;
-          req.session.accountID = null;
-
-          res.send("successfully deleted");
-        });
-        //does not match
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
       } else {
-        connection.release();
-        console.log("account details incorrect !!");
-        res.status(400).send("account details incorrect");
+        console.log("Error searching with id", err);
+        res.sendStatus(500);
+        return;
       }
+
     });
   });
 });
@@ -1892,9 +2024,21 @@ router.post('/updateOrgInfo', async function (req, res, next) {
 
     if (updatePassword == 1) {
       //update password
+
+      //hash password
+      var hash;
+
+      try {
+        hash = await hashPass(newPassword);
+      } catch (err) {
+        console.log("error in hash");
+        res.sendStatus(500);
+        return;
+      }
+
       const query = 'UPDATE Organisations SET password = ? WHERE orgID = ?;';
 
-      await connection.query(query, [newPassword, accountID], function (err, returnVal) {
+      await connection.query(query, [hash, accountID], function (err, returnVal) {
         // connection.release();
         if (err) {
           console.log("error inserting new password", err);
@@ -1938,8 +2082,8 @@ router.post('/deleteSelfOrg', function (req, res, next) {
     }
 
     //check if the email and password match the database and the id of the user who is currently logged in
-    var accountQuery = "SELECT orgID FROM Organisations WHERE email = ? AND password = ? AND orgID = ?;";
-    connection.query(accountQuery, [email, password, accountID], function (err, rows) {
+    var accountQuery = "SELECT password FROM Organisations WHERE email = ? AND orgID = ?;";
+    connection.query(accountQuery, [email, accountID], async function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error matching details", err);
@@ -1950,31 +2094,44 @@ router.post('/deleteSelfOrg', function (req, res, next) {
       //matches
       if (rows.length > 0) {
 
-        var query = "DELETE FROM Organisations WHERE orgID = ?;";
+         //check password matches
+         try {
+          if (await deHashPass(rows[0].password, password)) {
+            var query = "DELETE FROM Organisations WHERE orgID = ?;";
 
-        //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-        //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-        connection.query(query, [accountID], function (err1, rows, fields) {
-          //release the query, don't need access to the database anymore
-          connection.release();
-          //error handling
-          if (err1) {
-            res.sendStatus(500);
-            return;
+            //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+            //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+            connection.query(query, [accountID], function (err1, rows, fields) {
+              //release the query, don't need access to the database anymore
+              connection.release();
+              //error handling
+              if (err1) {
+                res.sendStatus(500);
+                return;
+              }
+              //log out user
+              req.session.user = null;
+              req.session.userType = null;
+              req.session.accountID = null;
+
+              res.send("successfully deleted");
+            });
+          } else {
+            connection.release();
+            console.log("account details incorrect !!");
+            res.status(400).send("account details incorrect");
           }
-          //log out user
-          req.session.user = null;
-          req.session.userType = null;
-          req.session.accountID = null;
-
-          res.send("successfully deleted");
-        });
-        //does not match
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
       } else {
-        connection.release();
-        console.log("account details incorrect !!");
-        res.status(400).send("account details incorrect");
+        console.log("Error searching with id", err);
+        res.sendStatus(500);
+        return;
       }
+
     });
   });
 });
@@ -2028,9 +2185,21 @@ router.post('/updateAdminInfo', async function (req, res, next) {
 
     if (updatePassword == 1) {
       //update password
+
+      //hash password
+      var hash;
+
+      try {
+        hash = await hashPass(newPassword);
+      } catch (err) {
+        console.log("error in hash");
+        res.sendStatus(500);
+        return;
+      }
+
       const query = 'UPDATE Admin SET password = ? WHERE adminID = ?;';
 
-      await connection.query(query, [newPassword, accountID], function (err, returnVal) {
+      await connection.query(query, [hash, accountID], function (err, returnVal) {
         // connection.release();
         if (err) {
           console.log("error inserting new password", err);
@@ -2074,8 +2243,8 @@ router.post('/deleteSelfAdmin', function (req, res, next) {
     }
 
     //check if the email and password match the database and the id of the user who is currently logged in
-    var accountQuery = "SELECT adminID FROM Admin WHERE email = ? AND password = ? AND adminID = ?;";
-    connection.query(accountQuery, [email, password, accountID], function (err, rows) {
+    var accountQuery = "SELECT password FROM Admin WHERE email = ? AND adminID = ?;";
+    connection.query(accountQuery, [email, accountID], async function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error matching details", err);
@@ -2086,31 +2255,44 @@ router.post('/deleteSelfAdmin', function (req, res, next) {
       //matches
       if (rows.length > 0) {
 
-        var query = "DELETE FROM Admin WHERE adminID = ?;";
+         //check password matches
+         try {
+          if (await deHashPass(rows[0].password, password)) {
+            var query = "DELETE FROM Admin WHERE adminID = ?;";
 
-        //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-        //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-        connection.query(query, [accountID], function (err1, rows, fields) {
-          //release the query, don't need access to the database anymore
-          connection.release();
-          //error handling
-          if (err1) {
-            res.sendStatus(500);
-            return;
+            //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+            //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+            connection.query(query, [accountID], function (err1, rows, fields) {
+              //release the query, don't need access to the database anymore
+              connection.release();
+              //error handling
+              if (err1) {
+                res.sendStatus(500);
+                return;
+              }
+              //log out user
+              req.session.user = null;
+              req.session.userType = null;
+              req.session.accountID = null;
+
+              res.send("successfully deleted");
+            });
+          } else {
+            connection.release();
+            console.log("account details incorrect !!");
+            res.status(400).send("account details incorrect");
           }
-          //log out user
-          req.session.user = null;
-          req.session.userType = null;
-          req.session.accountID = null;
-
-          res.send("successfully deleted");
-        });
-        //does not match
+        } catch (err) {
+          connection.release();
+          console.log("Error validating hash", err);
+          res.status(500).json({ error: "Internal Server Error" });
+        }
       } else {
-        connection.release();
-        console.log("account details incorrect !!");
-        res.status(400).send("account details incorrect");
+        console.log("Error searching with id", err);
+        res.sendStatus(500);
+        return;
       }
+
     });
   });
 });

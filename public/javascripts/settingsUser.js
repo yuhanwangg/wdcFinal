@@ -187,3 +187,34 @@ async function saveDetails() {
         }));
     }
 }
+
+function deleteAccount() {
+    var message = document.getElementsByClassName("errorInput2")[0];
+
+    var email = document.getElementById("deleteEmail").value;
+    var password = document.getElementById("deletePassword").value;
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                console.log("Deleted successfully!");
+                message.style.display = "block";
+                message.textContent = "Account deleted successfully";
+                message.style.color = "black";
+                window.location.href = "/home";
+            } else if (this.status == 400) {
+                message.style.display = "block";
+                message.textContent = "Details incorrect";
+            } else {
+                console.error("Failed to delete. Status:", this.status);
+            }
+        }
+    };
+
+    xhttp.open("POST", "/deleteSelfUser", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify({ password: password, email: email }));
+
+}

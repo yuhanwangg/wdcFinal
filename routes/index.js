@@ -1516,7 +1516,7 @@ router.post('/checkPassword', function (req, res, next) {
 
 });
 
-//update user info
+//update user info ADD EMAIL PREFERENCES
 router.post('/updateUserInfo', async function (req, res, next) {
   const { email, firstName, lastName, oldPassword, newPassword, suburb, state, postcode, country, checkboxFull, updateEmail, updateName, updatePassword, updateLocation, updateEmailPreference } = req.body;
   const currentEmail = req.session.user;
@@ -1606,6 +1606,65 @@ router.post('/updateUserInfo', async function (req, res, next) {
       res.sendStatus(200);
     }
 
+  });
+});
+
+//delete user
+router.post('/deleteSelfUser', function(req, res, next) {
+
+  const { email, password } = req.body;
+  console.log("Received data ", email, password );
+
+  accountID = req.session.accountID;
+
+  //get connection
+  req.pool.getConnection(function(err, connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    //check if the email and password match the database and the id of the user who is currently logged in
+    var accountQuery = "SELECT userID FROM User WHERE email = ? AND password = ? AND userID = ?;";
+    connection.query(accountQuery, [email, password, accountID], function(err, rows) {
+      if (err) {
+        connection.release();
+        console.log("Error matching details", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      //matches
+      if (rows.length > 0) {
+
+      var query = "DELETE FROM User WHERE userID = ?;";
+
+      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+      connection.query(query, [accountID], function (err1, rows, fields) {
+        //release the query, don't need access to the database anymore
+        connection.release();
+        //error handling
+        if (err1) {
+          res.sendStatus(500);
+          return;
+        }
+        //log out user
+        req.session.user = null;
+        req.session.userType = null;
+        req.session.accountID = null;
+
+        res.send("successfully deleted");
+      });
+      //does not match
+      } else {
+        connection.release();
+        console.log("account details incorrect !!");
+        res.status(400).send("account details incorrect");
+      }
+    });
   });
 });
 

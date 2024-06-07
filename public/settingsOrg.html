@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="stylesheets/settingsOrg.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="javascripts/settingsOrg.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 
@@ -44,43 +45,30 @@
 
         <div class="userInfo">
             <p>Email</p>
-            <input type="text" placeholder="New Email">
-            <input type="text" placeholder="Confirm New Email">
+            <input type="text" placeholder="New Email" id = "email">
+            <input type="text" placeholder="Confirm New Email" id = "emailConfirm">
         </div>
 
         <div class="userInfo">
             <p>Name</p>
-            <input type="text" placeholder="Organisation Name">
+            <input type="text" placeholder="Organisation Name" id = "name">
         </div>
 
         <div class="userInfo">
             <p>Organisation webpage URL</p>
-            <input type="text" placeholder="URL">
+            <input type="text" placeholder="URL" id = "url">
         </div>
 
         <div class="userInfo">
             <p>Reset Password</p>
-            <input type="text" placeholder="Current Password">
-            <input type="text" placeholder="New Password">
-            <input type="text" placeholder="Confirm New Password">
+            <input type="text" placeholder="Current Password" id = "password">
+            <input type="text" placeholder="New Password" id = "newPassword">
+            <input type="text" placeholder="Confirm New Password" id = "newPasswordConfirm">
         </div>
 
+        <p class = "errorInput"></p>
 
-        <div class="userInfo">
-            <p>Location</p>
-            <input type="text" placeholder="Suburb">
-            <input type="text" placeholder="State">
-            <input type="text" placeholder="Postcode">
-            <input type="text" placeholder="Country">
-        </div>
-
-        <div class="checkAndSave">
-            <div class="checkContainer">
-                <input type="checkbox" id="emailBox">
-                <label for="emailBox">Opt out of email notifications</label>
-            </div>
-            <button class="saveButton">Save</button>
-        </div>
+        <button class="saveButton" onclick = "saveDetails();">Save</button>
 
         <hr>
 
@@ -94,12 +82,13 @@
         <b>Delete account</b>
 
         <div class="userInfo">
-            <input type="text" placeholder="Email">
-            <input type="text" placeholder="Password">
+            <input type="text" placeholder="Email" id = "deleteEmail">
+            <input type="text" placeholder="Password" id = "deletePassword">
         </div>
 
+        <p class = "errorInput2"></p>
 
-        <button class="deleteButton">Delete Account</button>
+        <button class="deleteButton" onclick = "deleteAccount();">Delete Account</button>
 
     </div>
 

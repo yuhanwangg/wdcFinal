@@ -163,14 +163,71 @@ document.addEventListener('DOMContentLoaded', function () {
     Vue.component('footer-component', {
         template: `
     <ul class="footer">
-        <li><a href="/">Home</a></li>
-        <li><a href="/opportunities">Volunteer Opportunities</a></li>
-        <li><a href="/organisations">Find Organisations</a></li>
-        <li><a href="/signUp">Sign up</a></li>
-        <li><a href="/logIn">Login</a></li>
+        <template v-for="item in footer">
+            <li>
+                <a :href="item.url">
+                {{item.name}}
+                </a>
+            </li>
+        </template>
     </ul>
-    `
+
+    `,
+        data() {
+            return {
+                footer: [
+                    { name: "Home", url: "/home" },
+                    { name: "Volunteer Opportunities", url: "/opportunities" },
+                    { name: "Find Organisations", url: "/organisations" },
+                    { name: "Sign Up", url: "/signUp" },
+                    { name: "Log In", url: "/logIn" }
+                ]
+            };
+        }, methods: {
+            updateNavigation(userType) {
+                console.log("session user type: ", this.sessionUserType);
+                // Update navigation based on session user type
+                if (userType == null) {
+                    this.footer = [
+                        { name: "Home", url: "/home" },
+                        { name: "Volunteer Opportunities", url: "/opportunities" },
+                        { name: "Find Organisations", url: "/organisations" },
+                        { name: "Sign Up", url: "/signUp" },
+                        { name: "Log In", url: "/logIn" }
+                    ]
+                } else if (userType == "volunteer") {
+                    this.footer = [
+                        { name: "Home", url: "/home" },
+                        { name: "Volunteer Opportunities", url: "/opportunities" },
+                        { name: "Find Organisations", url: "/organisations" },
+                        { name: "RSVP'd", url: "/rsvpd" },
+                        { name: "Updates", url: "/updates" },
+                        { name: "Settings", url: "/settings" },
+                        { name: "Log Out", url: "/logOut" }
+                    ];
+                } else if (userType == "organisation") {
+                    this.footer = [
+                        { name: "Home", url: "/home" },
+                        { name: "Opportunities", url: "/opportunities" },
+                        { name: "Updates", url: "/updates" },
+                        { name: "Joined Volunteers", url: "/joinedVolunteers" },
+                        { name: "Settings", url: "/settings" },
+                        { name: "Log Out", url: "/logOut" }
+                    ];
+
+                } else if (userType == "admin") {
+                    this.footer = [
+                        { name: "Edit Users", url: "/editUser" },
+                        { name: "Edit Organisations", url: "/editOrganisations" },
+                        { name: "Admin", url: "/Admin" },
+                        { name: "Settings", url: "/settings" },
+                        { name: "Log Out", url: "/logOut" }
+                    ];
+                }
+            }
+        }
     });
+
 
 });
 

@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `WDCProject`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `WDCProject` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `WDCProject`;
-
---
 -- Table structure for table `Admin`
 --
 
@@ -36,7 +28,8 @@ CREATE TABLE `Admin` (
   `lastName` varchar(50) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`adminID`)
+  PRIMARY KEY (`adminID`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,7 +39,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES (3,'Bob','Johnson','bjohnson@example.com','admin789'),(4,'Emily','Brown','ebrown@example.com','admin101'),(5,'Michael','Davis','mdavis@example.com','admin202');
+INSERT INTO `Admin` VALUES (1,'John','Doe','johndoe@example.com','password123'),(2,'Jane','Smith','janesmith@example.com','password456'),(3,'Emily','Davis','emilydavis@example.com','password789'),(4,'Michael','Wilson','michaelwilson@example.com','password987');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +72,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
-INSERT INTO `Branch` VALUES (1,'Main Branch','Anytown','State','12345','Country',1,1),(2,'North Branch','Northville','State','54321','Country',1,1),(3,'South Branch','Southville','State','67890','Country',1,1),(4,'West Branch','Westville','State','09876','Country',1,1),(5,'East Branch','Eastville','State','13579','Country',1,1);
+INSERT INTO `Branch` VALUES (1,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(2,'Norwood','Norwood','SA','5067','Australia',1,1),(3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(4,'Sydney','Sydney','NSW','2000','Australia',1,1),(5,'Brisbane','Brisbane','QLD','4000','Australia',1,1),(6,'Melbourne','Melbourne','VIC','5067','Australia',1,0);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,6 +86,7 @@ DROP TABLE IF EXISTS `FollowedBranches`;
 CREATE TABLE `FollowedBranches` (
   `userID` int DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `emailSubscribed` tinyint NOT NULL DEFAULT '1',
   KEY `userID` (`userID`),
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
@@ -110,7 +104,7 @@ CREATE TABLE `FollowedBranches` (
 
 LOCK TABLES `FollowedBranches` WRITE;
 /*!40000 ALTER TABLE `FollowedBranches` DISABLE KEYS */;
-INSERT INTO `FollowedBranches` VALUES (1,1),(1,1),(1,2),(1,4),(2,1),(3,3),(4,2),(1,1),(1,2),(1,4),(2,1),(3,3),(4,2);
+INSERT INTO `FollowedBranches` VALUES (1,1,1),(1,2,1);
 /*!40000 ALTER TABLE `FollowedBranches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +143,7 @@ CREATE TABLE `Opportunities` (
 
 LOCK TABLES `Opportunities` WRITE;
 /*!40000 ALTER TABLE `Opportunities` DISABLE KEYS */;
-INSERT INTO `Opportunities` VALUES (1,'Volunteer at Food Bank','Food, Charity','123 Main St, Anytown','3 hours per week','Anyone can volunteer','Training provided on site','None','path/to/image.jpg','Help sort and pack food items','Volunteering','2024-06-15 to 2024-06-30',1),(2,'Environmental Cleanup Day','Environment, Conservation','456 Elm St, Othertown','Full day event','Suitable for outdoorsy individuals','Safety training required','Must bring own gloves and boots','path/to/image.jpg','Help clean up local parks and waterways','Volunteering','2024-07-10',1),(3,'Tutoring Program','Education, Tutoring','789 Oak St, Anycity','1 hour per week','Suitable for educators or students','Training provided','Must have teaching experience','path/to/image.jpg','Provide tutoring to underprivileged children','Volunteering','Ongoing',1),(4,'Community Garden Project','Gardening, Community','456 Main St, Northville','Flexible','No experience necessary','On-site training','None','path/to/image.jpg','Help maintain a community garden','Volunteering','Ongoing',4),(5,'Animal Shelter Volunteer','Animals, Shelter','789 Elm St, Southville','Flexible','Suitable for animal lovers','Training provided','Must be comfortable with animals','path/to/image.jpg','Assist with animal care and adoption','Volunteering','Ongoing',5);
+INSERT INTO `Opportunities` VALUES (1,'Food Drive','Food, Charity','123 Main St','4 hours per week','Anyone','None','Passion for helping','food_drive_thumbnail.jpg','Help collect and distribute food to those in need','Volunteering','June 12, 2024',1),(2,'Beach Cleanup','Environment, Conservation','456 Ocean Ave','2 hours per month','Adults','None','Eco-friendly mindset','beach_cleanup_thumbnail.jpg','Join us in cleaning up the beach and preserving marine life','Volunteering','June 15, 2024',2),(3,'Community Garden Maintenance','Community, Gardening','789 Elm St','2 hours per week','Adults','Basic gardening skills','Green thumb','garden_maintenance_thumbnail.jpg','Help maintain our local community garden by weeding, watering, and planting.','Volunteering','June 20, 2024',2),(4,'Animal Shelter Volunteer','Animals, Care','101 Oak St','Flexible','Animal lovers','Training provided','Passion for animals','animal_shelter_thumbnail.jpg','Assist with feeding, grooming, and socializing animals at our local animal shelter.','Volunteering','June 25, 2024',3);
 /*!40000 ALTER TABLE `Opportunities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +173,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (1,'Charity XYZ','http://charityxyz.org','contact@charityxyz.org','orgpassword','We are a charitable organization dedicated to helping those in need.','path/to/image.jpg'),(2,'Environmental Group','http://environmentgroup.org','contact@environmentgroup.org','org456','We are dedicated to preserving and protecting the environment.','path/to/image.jpg'),(3,'Education Foundation','http://educationfoundation.org','contact@educationfoundation.org','org789','We provide educational opportunities and resources to underprivileged communities.','path/to/image.jpg'),(4,'Community Services','http://communityservices.org','contact@communityservices.org','org101','We offer a variety of community services and support programs.','path/to/image.jpg'),(5,'Animal Rescue','http://animalrescue.org','contact@animalrescue.org','org202','We rescue and care for animals in need of homes.','path/to/image.jpg');
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png'),(2,'Salvos','https://redcross.org.au','contact@redcross.org.au','redcrosspassword','The Red Cross is a humanitarian organization that provides emergency assistance, disaster relief, and education.','redcross_logo.jpg'),(3,'Salvation Army','https://salvationarmy.org.au','info@salvationarmy.org.au','salvationpassword','The Salvation Army is a Christian organization dedicated to helping those in need.','salvationarmy_logo.jpg'),(4,'UNICEF','https://unicef.org','contact@unicef.org','unicefpassword','UNICEF works in over 190 countries and territories to save children’s lives, to defend their rights, and to help them fulfill their potential.','unicef_logo.jpg');
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,7 +204,6 @@ CREATE TABLE `RSVPD` (
 
 LOCK TABLES `RSVPD` WRITE;
 /*!40000 ALTER TABLE `RSVPD` DISABLE KEYS */;
-INSERT INTO `RSVPD` VALUES (1,1),(1,2),(2,3),(3,4),(4,5);
 /*!40000 ALTER TABLE `RSVPD` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,7 +223,7 @@ CREATE TABLE `Updates` (
   PRIMARY KEY (`updateID`),
   KEY `branchID` (`branchID`),
   CONSTRAINT `fk_branch_updates` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE,
-  CONSTRAINT `Updates_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
+  CONSTRAINT `Updates_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -240,7 +233,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-INSERT INTO `Updates` VALUES (1,'Important Update','This is an important update message.',1,'2024-06-02'),(2,'New Volunteer Program','We are excited to launch our new volunteer program.',1,'2024-06-03'),(3,'Fundraising Event Success','Thanks to everyone who participated in our fundraising event. We raised $5000!',1,'2024-06-04'),(4,'Community Outreach','Join us for a community outreach program this weekend.',1,'2024-06-05'),(5,'Environmental Initiative','Our latest environmental initiative was a great success!',1,'2024-06-06'),(6,'Annual Report Published','Our annual report for 2023 is now available online.',1,'2024-06-07'),(7,'Volunteer Recognition','Congratulations to our volunteers who were recognized at the recent awards ceremony.',1,'2024-06-08'),(8,'New Partnership Announced','We are pleased to announce a new partnership with Green Earth Organization.',1,'2024-06-09'),(9,'Upcoming Event','Don\'t miss our upcoming event next month!',1,'2024-06-10');
+INSERT INTO `Updates` VALUES (2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM');
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,7 +265,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'georgia','mcl','2004','Norwood','SA','5067','Australia','emailgeorgia','mypassword'),(2,'Jane','Doe','2000-01-01','Anytown','State','12345','Country','janedoe@example.com','user123'),(3,'Emma','Johnson','1998-05-15','Downtown','NY','10001','USA','emma@example.com','emma123'),(4,'David','Williams','1990-09-20','Midtown','CA','90210','USA','david@example.com','david123'),(5,'Sophia','Brown','1985-02-10','Uptown','TX','77001','USA','sophia@example.com','sophia123'),(6,'James','Jones','1982-11-30','Suburbia','WA','98101','USA','james@example.com','james123');
+INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','password'),(2,'Alice','Johnson','1995-03-25','Melbourne','VIC','3000','Australia','alice@example.com','password123'),(3,'Bob','Smith','1990-08-15','Sydney','NSW','2000','Australia','bob@example.com','password321'),(4,'Emma','Brown','1985-05-10','Brisbane','QLD','4000','Australia','emma@example.com','password654');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -285,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-05  4:12:35
+-- Dump completed on 2024-06-07 10:48:08

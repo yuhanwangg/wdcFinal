@@ -160,7 +160,7 @@ function sendInfo() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
                         console.log("Added successfully!");
-                        window.location.href = "/homeVolunteer.html";
+                        window.location.href = "/home";
                     } else if (this.status == 400) {
                         console.log("Email already in use");
                         message.style.display = "block";
@@ -282,7 +282,7 @@ function sendInfo() {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
                         console.log("Added successfully!");
-                        window.location.href = "/homeOrgNoVerify.html";
+                        window.location.href = "/home";
                     } else if (this.status == 400) {
                         console.log("Email already in use");
                         message.style.display = "block";

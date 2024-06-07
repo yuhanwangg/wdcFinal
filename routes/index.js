@@ -1536,12 +1536,12 @@ router.post('/checkPassword', function (req, res, next) {
 
 //check password matches in org
 router.post('/checkPasswordOrg', function (req, res, next) {
-  const {password} = req.body;
+  const { password } = req.body;
   console.log(password, accountID);
   var accountID = req.session.accountID;
 
   //get connection
-  req.pool.getConnection(async function(err,connection) {
+  req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -1551,7 +1551,7 @@ router.post('/checkPasswordOrg', function (req, res, next) {
 
     //check if password matches
     var accountQuery = "SELECT orgID FROM Organisations WHERE orgID = ? AND password = ?;";
-    await connection.query(accountQuery, [accountID, password], async function(err, rows) {
+    await connection.query(accountQuery, [accountID, password], async function (err, rows) {
 
       if (err) {
         //connection.release();
@@ -1578,12 +1578,12 @@ router.post('/checkPasswordOrg', function (req, res, next) {
 
 //check password matches in admin
 router.post('/checkPasswordAdmin', function (req, res, next) {
-  const {password} = req.body;
+  const { password } = req.body;
   console.log(password, accountID);
   var accountID = req.session.accountID;
 
   //get connection
-  req.pool.getConnection(async function(err,connection) {
+  req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -1593,7 +1593,7 @@ router.post('/checkPasswordAdmin', function (req, res, next) {
 
     //check if password matches
     var accountQuery = "SELECT adminID FROM Admin WHERE adminID = ? AND password = ?;";
-    await connection.query(accountQuery, [accountID, password], async function(err, rows) {
+    await connection.query(accountQuery, [accountID, password], async function (err, rows) {
 
       if (err) {
         //connection.release();
@@ -1769,15 +1769,15 @@ router.get('/getName', function (req, res) {
 });
 
 //delete user
-router.post('/deleteSelfUser', function(req, res, next) {
+router.post('/deleteSelfUser', function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password );
+  console.log("Received data ", email, password);
 
   accountID = req.session.accountID;
 
   //get connection
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -1787,7 +1787,7 @@ router.post('/deleteSelfUser', function(req, res, next) {
 
     //check if the email and password match the database and the id of the user who is currently logged in
     var accountQuery = "SELECT userID FROM User WHERE email = ? AND password = ? AND userID = ?;";
-    connection.query(accountQuery, [email, password, accountID], function(err, rows) {
+    connection.query(accountQuery, [email, password, accountID], function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error matching details", err);
@@ -1798,26 +1798,26 @@ router.post('/deleteSelfUser', function(req, res, next) {
       //matches
       if (rows.length > 0) {
 
-      var query = "DELETE FROM User WHERE userID = ?;";
+        var query = "DELETE FROM User WHERE userID = ?;";
 
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [accountID], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //log out user
-        req.session.user = null;
-        req.session.userType = null;
-        req.session.accountID = null;
+        //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+        //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+        connection.query(query, [accountID], function (err1, rows, fields) {
+          //release the query, don't need access to the database anymore
+          connection.release();
+          //error handling
+          if (err1) {
+            res.sendStatus(500);
+            return;
+          }
+          //log out user
+          req.session.user = null;
+          req.session.userType = null;
+          req.session.accountID = null;
 
-        res.send("successfully deleted");
-      });
-      //does not match
+          res.send("successfully deleted");
+        });
+        //does not match
       } else {
         connection.release();
         console.log("account details incorrect !!");
@@ -1835,7 +1835,7 @@ router.post('/updateOrgInfo', async function (req, res, next) {
 
   console.log(req.session.user, req.session.userType, accountID, email);
 
-  await req.pool.getConnection(async function(err,connection) {
+  await req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -1844,32 +1844,32 @@ router.post('/updateOrgInfo', async function (req, res, next) {
     }
 
     if (updateEmail == 1) {
-        const query = 'UPDATE Organisations SET email = ? WHERE email = ?;';
+      const query = 'UPDATE Organisations SET email = ? WHERE email = ?;';
 
-        connection.query(query, [email, currentEmail], function(err, returnVal) {
-          //connection.release();
+      connection.query(query, [email, currentEmail], function (err, returnVal) {
+        //connection.release();
 
-          if (err) {
-            console.log("error inserting new email", err);
-            res.sendStatus(500);
-            return;
-          }
-          console.log("email updated")
-        });
+        if (err) {
+          console.log("error inserting new email", err);
+          res.sendStatus(500);
+          return;
+        }
+        console.log("email updated")
+      });
     }
 
     if (updateName == 1) {
       const query = 'UPDATE Organisations SET orgName = ? WHERE orgID = ?;';
 
-      await connection.query(query, [name, accountID], function(err, returnVal) {
-      //connection.release();
+      await connection.query(query, [name, accountID], function (err, returnVal) {
+        //connection.release();
 
         if (err) {
           console.log("error inserting new name", err);
           res.sendStatus(500);
           return;
         }
-      console.log("name updated");
+        console.log("name updated");
       });
 
     }
@@ -1877,34 +1877,34 @@ router.post('/updateOrgInfo', async function (req, res, next) {
     if (updateURL == 1) {
       const query = 'UPDATE Organisations SET orgSite = ? WHERE orgID = ?;';
 
-      await connection.query(query, [url, accountID], function(err, returnVal) {
-      //connection.release();
+      await connection.query(query, [url, accountID], function (err, returnVal) {
+        //connection.release();
 
         if (err) {
           console.log("error inserting new url", err);
           res.sendStatus(500);
           return;
         }
-      console.log("url updated");
+        console.log("url updated");
       });
 
     }
 
     if (updatePassword == 1) {
-        //update password
-        const query = 'UPDATE Organisations SET password = ? WHERE orgID = ?;';
+      //update password
+      const query = 'UPDATE Organisations SET password = ? WHERE orgID = ?;';
 
-        await connection.query(query, [newPassword, accountID], function(err, returnVal) {
-         // connection.release();
-          if (err) {
-            console.log("error inserting new password", err);
-            res.sendStatus(500);
-            return;
-          }
+      await connection.query(query, [newPassword, accountID], function (err, returnVal) {
+        // connection.release();
+        if (err) {
+          console.log("error inserting new password", err);
+          res.sendStatus(500);
+          return;
+        }
 
         console.log("password updated");
       });
-   // });
+      // });
 
     }
 
@@ -1912,7 +1912,7 @@ router.post('/updateOrgInfo', async function (req, res, next) {
     //if connection has not been released, release it
     //if ((connection && connection.threadId)) {
     connection.release();
-   //}
+    //}
     if (!res.headersSent) {
       res.sendStatus(200);
     }
@@ -1921,15 +1921,15 @@ router.post('/updateOrgInfo', async function (req, res, next) {
 });
 
 //delete org
-router.post('/deleteSelfOrg', function(req, res, next) {
+router.post('/deleteSelfOrg', function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password );
+  console.log("Received data ", email, password);
 
   accountID = req.session.accountID;
 
   //get connection
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -1939,7 +1939,7 @@ router.post('/deleteSelfOrg', function(req, res, next) {
 
     //check if the email and password match the database and the id of the user who is currently logged in
     var accountQuery = "SELECT orgID FROM Organisations WHERE email = ? AND password = ? AND orgID = ?;";
-    connection.query(accountQuery, [email, password, accountID], function(err, rows) {
+    connection.query(accountQuery, [email, password, accountID], function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error matching details", err);
@@ -1950,26 +1950,26 @@ router.post('/deleteSelfOrg', function(req, res, next) {
       //matches
       if (rows.length > 0) {
 
-      var query = "DELETE FROM Organisations WHERE orgID = ?;";
+        var query = "DELETE FROM Organisations WHERE orgID = ?;";
 
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [accountID], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //log out user
-        req.session.user = null;
-        req.session.userType = null;
-        req.session.accountID = null;
+        //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+        //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+        connection.query(query, [accountID], function (err1, rows, fields) {
+          //release the query, don't need access to the database anymore
+          connection.release();
+          //error handling
+          if (err1) {
+            res.sendStatus(500);
+            return;
+          }
+          //log out user
+          req.session.user = null;
+          req.session.userType = null;
+          req.session.accountID = null;
 
-        res.send("successfully deleted");
-      });
-      //does not match
+          res.send("successfully deleted");
+        });
+        //does not match
       } else {
         connection.release();
         console.log("account details incorrect !!");
@@ -1987,7 +1987,7 @@ router.post('/updateAdminInfo', async function (req, res, next) {
 
   console.log(req.session.user, req.session.userType, accountID, email);
 
-  await req.pool.getConnection(async function(err,connection) {
+  await req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -1996,51 +1996,51 @@ router.post('/updateAdminInfo', async function (req, res, next) {
     }
 
     if (updateEmail == 1) {
-        const query = 'UPDATE Admin SET email = ? WHERE email = ?;';
+      const query = 'UPDATE Admin SET email = ? WHERE email = ?;';
 
-        connection.query(query, [email, currentEmail], function(err, returnVal) {
-          //connection.release();
+      connection.query(query, [email, currentEmail], function (err, returnVal) {
+        //connection.release();
 
-          if (err) {
-            console.log("error inserting new email", err);
-            res.sendStatus(500);
-            return;
-          }
-          console.log("email updated")
-        });
+        if (err) {
+          console.log("error inserting new email", err);
+          res.sendStatus(500);
+          return;
+        }
+        console.log("email updated")
+      });
     }
 
     if (updateName == 1) {
       const query = 'UPDATE Admin SET firstName = ?, lastName = ? WHERE adminID = ?;';
 
-      await connection.query(query, [firstName, lastName, accountID], function(err, returnVal) {
-      //connection.release();
+      await connection.query(query, [firstName, lastName, accountID], function (err, returnVal) {
+        //connection.release();
 
         if (err) {
           console.log("error inserting new name", err);
           res.sendStatus(500);
           return;
         }
-      console.log("name updated");
+        console.log("name updated");
       });
 
     }
 
     if (updatePassword == 1) {
-        //update password
-        const query = 'UPDATE Admin SET password = ? WHERE adminID = ?;';
+      //update password
+      const query = 'UPDATE Admin SET password = ? WHERE adminID = ?;';
 
-        await connection.query(query, [newPassword, accountID], function(err, returnVal) {
-         // connection.release();
-          if (err) {
-            console.log("error inserting new password", err);
-            res.sendStatus(500);
-            return;
-          }
+      await connection.query(query, [newPassword, accountID], function (err, returnVal) {
+        // connection.release();
+        if (err) {
+          console.log("error inserting new password", err);
+          res.sendStatus(500);
+          return;
+        }
 
         console.log("password updated");
       });
-   // });
+      // });
 
     }
 
@@ -2048,7 +2048,7 @@ router.post('/updateAdminInfo', async function (req, res, next) {
     //if connection has not been released, release it
     //if ((connection && connection.threadId)) {
     connection.release();
-   //}
+    //}
     if (!res.headersSent) {
       res.sendStatus(200);
     }
@@ -2057,15 +2057,15 @@ router.post('/updateAdminInfo', async function (req, res, next) {
 });
 
 //delete admin
-router.post('/deleteSelfAdmin', function(req, res, next) {
+router.post('/deleteSelfAdmin', function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password );
+  console.log("Received data ", email, password);
 
   accountID = req.session.accountID;
 
   //get connection
-  req.pool.getConnection(function(err, connection) {
+  req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
       console.log("error")
@@ -2075,7 +2075,7 @@ router.post('/deleteSelfAdmin', function(req, res, next) {
 
     //check if the email and password match the database and the id of the user who is currently logged in
     var accountQuery = "SELECT adminID FROM Admin WHERE email = ? AND password = ? AND adminID = ?;";
-    connection.query(accountQuery, [email, password, accountID], function(err, rows) {
+    connection.query(accountQuery, [email, password, accountID], function (err, rows) {
       if (err) {
         connection.release();
         console.log("Error matching details", err);
@@ -2086,26 +2086,26 @@ router.post('/deleteSelfAdmin', function(req, res, next) {
       //matches
       if (rows.length > 0) {
 
-      var query = "DELETE FROM Admin WHERE adminID = ?;";
+        var query = "DELETE FROM Admin WHERE adminID = ?;";
 
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [accountID], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //log out user
-        req.session.user = null;
-        req.session.userType = null;
-        req.session.accountID = null;
+        //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+        //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+        connection.query(query, [accountID], function (err1, rows, fields) {
+          //release the query, don't need access to the database anymore
+          connection.release();
+          //error handling
+          if (err1) {
+            res.sendStatus(500);
+            return;
+          }
+          //log out user
+          req.session.user = null;
+          req.session.userType = null;
+          req.session.accountID = null;
 
-        res.send("successfully deleted");
-      });
-      //does not match
+          res.send("successfully deleted");
+        });
+        //does not match
       } else {
         connection.release();
         console.log("account details incorrect !!");
@@ -2114,5 +2114,24 @@ router.post('/deleteSelfAdmin', function(req, res, next) {
     });
   });
 });
+
+router.get('/checkVerified', function (req, res, next) {
+  const query = "SELECT * FROM Organisations WHERE description IS NULL OR description = '' OR imgPath IS NULL OR imgPath = '' OR orgSite IS NULL OR orgSite = '';";
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    if (results.length > 0) {
+      // field empty? send false
+      res.json({ verified: false });
+    } else {
+      // verified? send true
+      res.json({ verified: true });
+    }
+  })
+}
+);
 
 module.exports = router;

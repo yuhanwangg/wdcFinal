@@ -57,7 +57,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 ],
                 sessionUserType: null,
                 isProfileDropDownOpen: false,
-                userName: ""
+                userName: "",
+                verified: false
             };
         },
         computed: {
@@ -84,6 +85,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(error => {
                     // If there is an error, log it to the console
                     console.error('Error retrieving session user type:', error);
+                });
+            fetch('/checkVerified')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to check verification status');
+                    }
+                })
+                .then(data => {
+                    verified = data.verified;
+                })
+                .catch(error => {
+                    console.error('Error checking verification status:', error);
                 });
             fetch('/getName')
                 .then(response => {
@@ -138,14 +153,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.button = [
                     ];
                 } else if (userType == "organisation") {
-                    this.navigation = [
-                        { name: "Home", url: "/home" },
-                        { name: "Opportunities", url: "/opportunities" },
-                        { name: "Updates", url: "/updates" },
-                        { name: "Joined Volunteers", url: "/joinedVolunteers" }
-                    ];
-                    this.button = [
-                    ];
+
+                    if (this.verified == true) {
+                        this.navigation = [
+                            { name: "Home", url: "/home" },
+                            { name: "Opportunities", url: "/opportunities" },
+                            { name: "Updates", url: "/updates" },
+                            { name: "Joined Volunteers", url: "/joinedVolunteers" }
+                        ];
+                        this.button = [
+                        ];
+                    } else {
+                        this.navigation = [
+                            { name: "Home", url: "/home" }
+                        ];
+                        this.button = [
+                        ];
+                    }
 
                 } else if (userType == "admin") {
                     this.navigation = [
@@ -180,9 +204,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     { name: "Volunteer Opportunities", url: "/opportunities" },
                     { name: "Find Organisations", url: "/organisations" },
                     { name: "Sign Up", url: "/signUp" },
-                    { name: "Log In", url: "/logIn" }
-                ]
+                    { name: "Log In", url: "/logIn" },
+                    { name: "Contact Us", url: "/contactUs" }
+                ],
+                verified: false
             };
+        }, mounted() {
+            fetch('/checkVerified')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to check verification status');
+                    }
+                })
+                .then(data => {
+                    verified = data.verified;
+                })
+                .catch(error => {
+                    console.error('Error checking verification status:', error);
+                });
         }, methods: {
             updateNavigation(userType) {
                 console.log("session user type: ", this.sessionUserType);
@@ -193,7 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         { name: "Volunteer Opportunities", url: "/opportunities" },
                         { name: "Find Organisations", url: "/organisations" },
                         { name: "Sign Up", url: "/signUp" },
-                        { name: "Log In", url: "/logIn" }
+                        { name: "Log In", url: "/logIn" },
+                        { name: "Contact Us", url: "/contactUs" }
                     ]
                 } else if (userType == "volunteer") {
                     this.footer = [
@@ -203,17 +245,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         { name: "RSVP'd", url: "/rsvpd" },
                         { name: "Updates", url: "/updates" },
                         { name: "Settings", url: "/settings" },
-                        { name: "Log Out", url: "/logOut" }
+                        { name: "Log Out", url: "/logOut" },
+                        { name: "Contact Us", url: "/contactUs" }
                     ];
                 } else if (userType == "organisation") {
-                    this.footer = [
-                        { name: "Home", url: "/home" },
-                        { name: "Opportunities", url: "/opportunities" },
-                        { name: "Updates", url: "/updates" },
-                        { name: "Joined Volunteers", url: "/joinedVolunteers" },
-                        { name: "Settings", url: "/settings" },
-                        { name: "Log Out", url: "/logOut" }
-                    ];
+                    // check if it's verified
+
+                    if (this.verified == true) {
+                        this.footer = [
+                            { name: "Home", url: "/home" },
+                            { name: "Opportunities", url: "/opportunities" },
+                            { name: "Updates", url: "/updates" },
+                            { name: "Joined Volunteers", url: "/joinedVolunteers" },
+                            { name: "Settings", url: "/settings" },
+                            { name: "Log Out", url: "/logOut" },
+                            { name: "Contact Us", url: "/contactUs" }
+                        ];
+                    } else {
+                        this.footer = [
+                            { name: "Home", url: "/home" },
+                            { name: "Contact Us", url: "/contactUs" }
+                        ];
+                    }
 
                 } else if (userType == "admin") {
                     this.footer = [
@@ -221,7 +274,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         { name: "Edit Organisations", url: "/editOrganisations" },
                         { name: "Admin", url: "/Admin" },
                         { name: "Settings", url: "/settings" },
-                        { name: "Log Out", url: "/logOut" }
+                        { name: "Log Out", url: "/logOut" },
+                        { name: "Contact Us", url: "/contactUs" }
                     ];
                 }
             }

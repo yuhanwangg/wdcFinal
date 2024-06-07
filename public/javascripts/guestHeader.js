@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-    const navigation = [
+    let navigation = [
         { name: "Home", url: "/home" },
         { name: "Volunteer Opportunities", url: "/opportunities" },
         { name: "Find Organisations", url: "/organisations" }
@@ -11,11 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
         // { name: "Admin", url: "/Admin" },
         // { name: "Joined Volunteers", url: "/joinedVolunteers" },
     ]
-    const button = [
+
+    let button = [
         // { source: "image_assets/defaultProfile", icon: "", class: "", name: "Name", url: "/settings" },
         { icon: "", class: "", source: "", name: "Sign Up", url: "/signUp" },
         { class: "userLogIn", source: "", icon: "ri-user-fill", name: "Log in", url: "/logIn" },
     ]
+
+    let sessionToken = req.session.userType;
 
 
     Vue.component('header-component', {

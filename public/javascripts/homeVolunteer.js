@@ -34,26 +34,44 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         mounted() {
-            axios.get('/userCount')
+            fetch('/userCount')
                 .then(response => {
-                    this.userCount = response.data.count;
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.userCount = data.count;
                 })
                 .catch(error => {
                     console.error('Error fetching user count:', error);
                 });
             // Fetch recent posts from server
-            axios.get('/recentPosts')
+            fetch('/recentPosts')
                 .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
                     console.log("successfully loaded post!");
-                    this.recentPosts = response.data;
+                    this.recentPosts = data;
                 })
                 .catch(error => {
                     console.error('Error fetching recent posts:', error);
                 });
-            axios.get('/recentUpdates')
+            fetch('/recentUpdates')
                 .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
                     console.log("successfully loaded updates!");
-                    this.recentUpdates = response.data;
+                    this.recentUpdates = data;
                 })
                 .catch(error => {
                     console.error('Error fetching recent updates:', error);

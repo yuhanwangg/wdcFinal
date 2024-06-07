@@ -233,7 +233,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-INSERT INTO `Updates` VALUES (2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM');
+INSERT INTO `Updates` VALUES (2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM'),(7,'New Opportunity','Exciting new volunteering opportunity coming up! Stay tuned for details.',2,'2024-06-07 10:00:00'),(8,'Volunteer Appreciation Event','Join us for an event to appreciate all our wonderful volunteers!',2,'2024-06-08 15:00:00');
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-07 10:48:08
+-- Dump completed on 2024-06-07 11:51:04

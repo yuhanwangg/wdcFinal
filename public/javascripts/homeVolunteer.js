@@ -1,14 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    let menu = document.querySelector('#menu-icon');
-    let navbar = document.querySelector(".navbar");
-
-    menu.onclick = () => {
-        console.log("Menu icon clicked"); // Debugging statement
-        navbar.classList.toggle('open');
-        menu.classList.toggle('bx-x');
-    }
-});
-
 // get the top few posts
 document.addEventListener('DOMContentLoaded', function () {
     new Vue({
@@ -16,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             recentPosts: [],
             recentUpdates: [],
-            userCount: 0
+            userCount: 0,
+            userName: "",
         },
         methods: {
             formatDate(dateString) {
@@ -34,6 +24,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         mounted() {
+            fetch('/getName')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.userName = data.name;
+                })
+                .catch(error => {
+                    console.error('error fetching user name:', error);
+                });
             fetch('/userCount')
                 .then(response => {
                     if (!response.ok) {
@@ -48,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error fetching user count:', error);
                 });
             // Fetch recent posts from server
-            fetch('/recentPosts')
+            fetch('/recentPostsVolun')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -62,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(error => {
                     console.error('Error fetching recent posts:', error);
                 });
-            fetch('/recentUpdates')
+            fetch('/recentUpdatesVolun')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

@@ -144,6 +144,16 @@ async function saveDetails() {
                     message.style.display = "block";
                     message.textContent = "Updated successfully";
                     message.style.color = "black";
+
+                    //empty text areas
+                    document.getElementById("email").value = "";
+                    document.getElementById("emailConfirm").value = "";
+                    document.getElementById("name").value = "";
+                    document.getElementById("url").value = "";
+                    document.getElementById("password").value = "";
+                    document.getElementById("newPassword").value = "";
+                    document.getElementById("newPasswordConfirm").value = "";
+
                 } else if (this.status == 400) {
                     message.style.display = "block";
                     message.textContent = "Password incorrect";

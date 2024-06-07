@@ -157,6 +157,20 @@ async function saveDetails() {
                     message.style.display = "block";
                     message.textContent = "Updated successfully";
                     message.style.color = "black";
+
+                    //empty text areas
+                    document.getElementById("email").value = "";
+                    document.getElementById("emailConfirm").value = "";
+                    document.getElementById("firstName").value = "";
+                    document.getElementById("lastName").value = "";
+                    document.getElementById("password").value = "";
+                    document.getElementById("newPassword").value = "";
+                    document.getElementById("newPasswordConfirm").value = "";
+                    document.getElementById("suburb").value = "";
+                    document.getElementById("state").value = "";
+                    document.getElementById("postcode").value = "";
+                    document.getElementById("country").value = "";
+
                 } else if (this.status == 400) {
                     message.style.display = "block";
                     message.textContent = "Password incorrect";

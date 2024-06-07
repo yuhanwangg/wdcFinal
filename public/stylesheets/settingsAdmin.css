@@ -32,6 +32,22 @@ header {
     /* overflow-x: hidden; */
 }
 
+.errorInput {
+    display: none;
+    margin-left: auto;
+    color:#FC4A1A;
+    display: flex;
+    align-self: flex-end;
+}
+
+.errorInput2 {
+    display: none;
+    margin-left: auto;
+    color:#FC4A1A;
+    display: flex;
+    align-self: flex-end;
+}
+
 .navbar {
     display: flex;
 }

@@ -1,21 +1,50 @@
+
 document.addEventListener('DOMContentLoaded', function () {
+    const navigation = [
+        { name: "Home", url: "/home" },
+        { name: "Volunteer Opportunities", url: "/opportunities" },
+        { name: "Find Organisations", url: "/organisations" }
+        // { name: "RSVP'd", url: "/rsvpd" },
+        // { name: "Updates", url: "/updates" },
+        // { name: "Edit Users", url: "/editUser" },
+        // { name: "Edit Organisations", url: "/editOrganisations" },
+        // { name: "Admin", url: "/Admin" },
+        // { name: "Joined Volunteers", url: "/joinedVolunteers" },
+    ]
+    const button = [
+        // { source: "image_assets/defaultProfile", icon: "", class: "", name: "Name", url: "/settings" },
+        { icon: "", class: "", source: "", name: "Sign Up", url: "/signUp" },
+        { class: "userLogIn", source: "", icon: "ri-user-fill", name: "Log in", url: "/logIn" },
+    ]
+
+
     Vue.component('header-component', {
         template: `
     <header>
     <a href="/"><img class="logo" src="images_assets/logo.png" alt="logo"></a>
         <ul class="navbar">
-            <li><a href="/">Home</a></li>
-            <li><a href="/opportunities">Volunteer Opportunities</a></li>
-            <li><a href="/organisations">Find Organisations</a></li>
+            <template v-for="item in navigation">
+                <li><a :href="item.url">{{item.name}}</a></li>
+            </template>
         </ul>
 
         <div class="nav_buttons">
-            <a href="/signUp">Sign Up</a>
-            <a href="/logIn" class="userLogIn"><i class="ri-user-fill"></i>Log In</a>
+            <template v-for="item in button">
+                <a :href="item.url">
+                <i :class="item.icon"></i>
+                {{item.name}}
+                </a>
+            </template>
             <div class="bx bx-menu" id="menu-icon" @click="toggleNavigation"></div>
         </div>
     </header>
     `,
+        data() {
+            return {
+                navigation: navigation,
+                button: button
+            };
+        },
         methods: {
             toggleNavigation() {
                 let menu = document.querySelector('#menu-icon');

@@ -106,7 +106,7 @@ router.get('/recentUpdates', (req, res) => {
                    LIMIT 3;`;
   connection.query(query, (err, results) => {
     if (err) {
-      console.error('Error querying database: ' + error.stack);
+      console.error('Error querying database: ' + err.stack);
       res.status(500).send('Internal Server Error');
       return;
     }
@@ -1030,6 +1030,582 @@ router.post('/emailUpdate', function (req, res, next) {
       }
       return;
     });
+  });
+});
+
+//ROUTES LUCY
+// sign up user ALSO update session tokens
+router.post('/addUser', function(req, res, next) {
+
+  const { first_name, last_name, dob, suburb, state, postcode, country, email, password } = req.body;
+  console.log("Received data ",first_name, last_name, dob, suburb, state, postcode, country, email, password );
+
+  //get connection
+  req.pool.getConnection(async function(err,connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    // check if email already present in user database
+      var checkPresent = "SELECT email FROM User WHERE email = ?;";
+      connection.query(checkPresent, [email], function(err1, result1) {
+        if (err1) {
+          connection.release();
+          console.log("Error checking for email: ", err1);
+          res.sendStatus(500);
+          return;
+        }
+
+        //email exists
+        if (result1.length > 0) {
+          connection.release();
+          console.log("email in use");
+          res.status(400).send("email in use");
+          return;
+        }
+     // });
+
+     // check if email already present in org database
+     checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+     connection.query(checkPresent, [email], function(err2, result2) {
+       if (err2) {
+         connection.release();
+         console.log("Error checking for email: ", err2);
+         res.sendStatus(500);
+         return;
+       }
+
+       //email exists
+       if (result2.length > 0) {
+         connection.release();
+         console.log("email in use");
+         res.status(400).send("email in use");
+         return;
+       }
+    // });
+
+     // check if email already present in admin database
+     var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+     connection.query(checkPresent, [email], function(err3, result3) {
+       if (err3) {
+         connection.release();
+         console.log("Error checking for email: ", err3);
+         res.sendStatus(500);
+         return;
+       }
+
+       //email exists
+       if (result3.length > 0) {
+         connection.release();
+         console.log("email in use");
+         res.status(400).send("email in use");
+         return;
+       }
+    // });
+
+  //get last user id
+  var mostRecentUserId = "SELECT userID FROM User ORDER BY userID DESC LIMIT 1;";
+
+  connection.query(mostRecentUserId, function(err4, result) {
+
+    //error handling
+    if (err4) {
+      connection.release();
+      console.log("Got error while fetching userID: ", err4);
+      res.sendStatus(500);
+      return;
+    }
+
+    let currUserId = 1;
+    if (result.length > 0) {
+      currUserId = result[0].userID + 1;
+    }
+    console.log("the new user id is " + currUserId);
+
+    var query = "INSERT INTO User (userID, firstName, lastName, DOB, suburb, state, postcode, country, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+    connection.query(query, [currUserId, first_name,last_name, dob, suburb, state, postcode, country, email, password], function(err5, returnVal) {
+      connection.release();
+
+      if (err5) {
+        console.log("error inserting user", err5);
+        res.sendStatus(500);
+        return;
+      }
+
+      req.session.user = email;
+      req.session.userType = "volunteer";
+      req.session.accountID = currUserId;
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully added");
+      return;
+
+    });
+
+  });
+});
+});
+
+    });
+
+  });
+
+});
+
+//sign up organisation
+router.post('/addOrg', function(req, res, next) {
+
+  const { name, email, password, suburb, state, postcode, country } = req.body;
+  console.log("Received data ",name, email, password, suburb, state, postcode, country );
+
+  //get connection
+  req.pool.getConnection(function(err,connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+   // check if email already present in user database
+   var checkPresent = "SELECT email FROM User WHERE email = ?;";
+   connection.query(checkPresent, [email], function(err1, result1) {
+     if (err1) {
+       connection.release();
+       console.log("Error checking for email: ", err1);
+       res.sendStatus(500);
+       return;
+     }
+
+     //email exists
+     if (result1.length > 0) {
+       connection.release();
+       console.log("email in use");
+       res.status(400).send("email in use");
+       return;
+     }
+ //  });
+
+  // check if email already present in org database
+  checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+  connection.query(checkPresent, [email], function(err2, result2) {
+    if (err2) {
+      connection.release();
+      console.log("Error checking for email: ", err2);
+      res.sendStatus(500);
+      return;
+    }
+
+    //email exists
+    if (result2.length > 0) {
+      connection.release();
+      console.log("email in use");
+      res.status(400).send("email in use");
+      return;
+    }
+ // });
+
+  // check if email already present in admin database
+  var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+  connection.query(checkPresent, [email], function(err3, result3) {
+    if (err3) {
+      connection.release();
+      console.log("Error checking for email: ", err3);
+      res.sendStatus(500);
+      return;
+    }
+
+    //email exists
+    if (result3.length > 0) {
+      connection.release();
+      console.log("email in use");
+      res.status(400).send("email in use");
+      return;
+    }
+ // });
+
+  //get last org id
+  var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
+
+  connection.query(mostRecentOrgId, function(err4, result4) {
+
+    //error handling
+    if (err4) {
+      connection.release();
+      console.log("Got error while fetching orgID: ", err4);
+      res.sendStatus(500);
+      return;
+    }
+
+    let currOrgId = 1;
+    if (result4.length > 0) {
+      currOrgId = result4[0].orgID + 1;
+    }
+    console.log("the new org id is " + currOrgId);
+
+  //get last branch id
+  var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
+
+  connection.query(mostRecentBranchId, function(err5, result5) {
+
+    //error handling
+    if (err5) {
+      connection.release();
+      console.log("Got error while fetching branchID: ", err5);
+      res.sendStatus(500);
+      return;
+    }
+
+    let currBranchId = 1;
+    if (result5.length > 0) {
+      currBranchId = result5[0].branchID + 1;
+    }
+    console.log("the new branch id is " + currBranchId);
+
+    var query = "INSERT INTO Organisations (orgID, orgName, email, password) VALUES (?, ?, ?, ?);";
+
+    connection.query(query, [currOrgId, name, email, password], function(err6, returnVal) {
+     // connection.release();
+
+      if (err6) {
+        connection.release();
+        console.log("error inserting org", err6);
+        res.sendStatus(500);
+        return;
+      }
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      // res.send("organisation successfully added");
+      // return;
+
+    });
+
+    var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, suburb, state, postcode, country) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    connection.query(queryBranch, [currOrgId, name, currBranchId, suburb, state, postcode, country], function(err7, returnVal) {
+      connection.release();
+
+      if (err7) {
+        console.log("error inserting branch", err7);
+        res.sendStatus(500);
+        return;
+      }
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("branch and org successfully added");
+      return;
+
+    });
+    });
+    });
+    });
+
+    });
+
+  });
+
+});
+
+});
+
+//login
+router.post('/login', function(req, res, next) {
+
+  const { email, password } = req.body;
+  console.log("Received data ", email, password );
+
+  //set session user to email
+  req.session.user = req.body.email;
+
+  //get connection
+  req.pool.getConnection(function(err, connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    var accountQuery = "SELECT userID FROM User WHERE email = ? AND password = ?;";
+    connection.query(accountQuery, [email, password], function(err, rows) {
+      if (err) {
+        connection.release();
+        console.log("Error finding login", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length > 0) {
+        connection.release();
+        const id = rows[0].userID;
+        req.session.userType = "volunteer";
+        req.session.accountID = id;
+        console.log("User id:", id);
+        console.log(req.session.userType, req.session.user);
+        res.status(200).json({ userType: 'volunteer' });
+        return;
+      } else {
+        var orgQuery = "SELECT orgID FROM Organisations WHERE email = ? AND password = ?;";
+        connection.query(orgQuery, [email, password], function(err, rows) {
+          if (err) {
+            connection.release();
+            console.log("Error finding login", err);
+            res.status(500).json({ error: "Internal Server Error" });
+            return;
+          }
+
+          if (rows.length > 0) {
+            connection.release();
+            const id = rows[0].orgID;
+            console.log("Org id:", id);
+            req.session.userType = "organisation";
+            req.session.accountID = id;
+            console.log(req.session.userType, req.session.user);
+            res.status(200).json({ userType: 'organisation' });
+            return;
+          } else {
+            var adminQuery = "SELECT adminID FROM Admin WHERE email = ? AND password = ?;";
+            connection.query(adminQuery, [email, password], function(err, rows) {
+              connection.release();
+              if (err) {
+                console.log("Error finding login", err);
+                res.status(500).json({ error: "Internal Server Error" });
+                return;
+              }
+
+              if (rows.length > 0) {
+                const id = rows[0].adminID;
+                console.log("Admin id:", id);
+                req.session.accountID = id;
+                req.session.userType = "admin";
+                console.log(req.session.userType, req.session.user);
+                res.status(200).json({ userType: 'admin' });
+                return;
+              } else {
+                res.status(400).send("Email or password is incorrect");
+                return;
+              }
+            });
+          }
+        });
+      }
+    });
+  });
+
+});
+
+//SETTINGS ROUTES
+//check duplicate email
+router.post('/checkEmail', function (req, res, next) {
+  const {email} = req.body;
+  console.log(email);
+
+  //get connection
+  req.pool.getConnection(async function(err,connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    // check if email already present in user database
+      var checkPresent = "SELECT email FROM User WHERE email = ?;";
+      connection.query(checkPresent, [email], function(err1, result1) {
+        if (err1) {
+          connection.release();
+          console.log("Error checking for email: ", err1);
+          res.sendStatus(500);
+          return;
+        }
+
+        //email exists
+        if (result1.length > 0) {
+          connection.release();
+          console.log("email in use");
+          res.status(400).send("email in use");
+          return;
+        }
+     // });
+
+     // check if email already present in org database
+     checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+     connection.query(checkPresent, [email], function(err2, result2) {
+       if (err2) {
+         connection.release();
+         console.log("Error checking for email: ", err2);
+         res.sendStatus(500);
+         return;
+       }
+
+       //email exists
+       if (result2.length > 0) {
+         connection.release();
+         console.log("email in use");
+         res.status(400).send("email in use");
+         return;
+       }
+    // });
+
+     // check if email already present in admin database
+     var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+     connection.query(checkPresent, [email], function(err3, result3) {
+       if (err3) {
+         connection.release();
+         console.log("Error checking for email: ", err3);
+         res.sendStatus(500);
+         return;
+       }
+
+       //email exists
+       if (result3.length > 0) {
+         connection.release();
+         console.log("email in use");
+         res.status(400).send("email in use");
+         return;
+       }
+    // });
+      res.send();
+
+      });
+    });
+  });
+});
+});
+
+//check password matches
+router.post('/checkPassword', function (req, res, next) {
+  const {password} = req.body;
+  console.log(password);
+  var accountID = req.session.accountID;
+
+  //get connection
+  req.pool.getConnection(async function(err,connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    //check if password matches
+    var accountQuery = "SELECT userID FROM User WHERE userID = ? AND password = ?;";
+    await connection.query(accountQuery, [accountID, password], async function(err, rows) {
+
+      if (err) {
+        //connection.release();
+        console.log("Error finding login", err);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length > 0) {
+        //all good
+        res.send();
+      } else {
+        connection.release();
+        console.log("password incorrect !!");
+        res.status(400).send("password incorrect");
+        return;
+      }
+
+    });
+
+  });
+
+});
+
+//update user info
+router.post('/updateUserInfo', async function (req, res, next) {
+  const { email, firstName, lastName, oldPassword, newPassword, suburb, state, postcode, country, checkboxFull, updateEmail, updateName, updatePassword, updateLocation, updateEmailPreference } = req.body;
+  const currentEmail = req.session.user;
+  const accountID = req.session.accountID;
+
+  console.log(req.session.user, req.session.userType, accountID, email);
+
+  await req.pool.getConnection(async function(err,connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    if (updateEmail == 1) {
+        const query = 'UPDATE User SET email = ? WHERE email = ?;';
+
+        connection.query(query, [email, currentEmail], function(err, returnVal) {
+          //connection.release();
+
+          if (err) {
+            console.log("error inserting new email", err);
+            res.sendStatus(500);
+            return;
+          }
+          console.log("email updated")
+        });
+    }
+
+    if (updateName == 1) {
+      const query = 'UPDATE User SET firstName = ?, lastName = ? WHERE userID = ?;';
+
+      await connection.query(query, [firstName, lastName, accountID], function(err, returnVal) {
+      //connection.release();
+
+        if (err) {
+          console.log("error inserting new name", err);
+          res.sendStatus(500);
+          return;
+        }
+      console.log("name updated");
+      });
+
+    }
+
+    if (updatePassword == 1) {
+        //update password
+        const query = 'UPDATE User SET password = ? WHERE userID = ?;';
+
+        await connection.query(query, [newPassword, accountID], function(err, returnVal) {
+         // connection.release();
+          if (err) {
+            console.log("error inserting new password", err);
+            res.sendStatus(500);
+            return;
+          }
+
+        console.log("password updated");
+      });
+   // });
+
+    }
+
+    if (updateLocation == 1) {
+      const query = 'UPDATE User SET suburb = ?, state = ?, postcode = ?, country = ? WHERE userID = ?;';
+
+      await connection.query(query, [suburb, state, postcode, country, accountID], function(err, returnVal) {
+      //connection.release();
+
+        if (err) {
+          console.log("error inserting new location", err);
+          res.sendStatus(500);
+          return;
+        }
+      console.log("location updated");
+      });
+
+    }
+
+    console.log("got to the end");
+    //if connection has not been released, release it
+    //if ((connection && connection.threadId)) {
+    connection.release();
+   //}
+    if (!res.headersSent) {
+      res.sendStatus(200);
+    }
+
   });
 });
 

@@ -1,7 +1,60 @@
-function saveDetails() {
+function checkDuplicateEmail(email) {
+    return new Promise((resolve, reject) => {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    console.log("No duplicate!");
+                    resolve(false);
+                } else if (this.status == 400) {
+                    console.log("Email already in use");
+                    resolve(true);
+                } else {
+                    console.error("Fail. Status:", this.status);
+                    resolve(false);
+                }
+            }
+        };
+
+        xhttp.open("POST", "/checkEmail", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        console.log(email);
+        xhttp.send(JSON.stringify({ email: email }));
+    });
+}
+
+function checkPassword(password) {
+    return new Promise((resolve, reject) => {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    console.log("Password matches!");
+                    resolve(false);
+                } else if (this.status == 400) {
+                    console.log("Password fails");
+                    resolve(true);
+                } else {
+                    console.error("Fail. Status:", this.status);
+                    resolve(false);
+                }
+            }
+        };
+
+        xhttp.open("POST", "/checkPassword", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        console.log(password);
+        xhttp.send(JSON.stringify({ password: password }));
+    });
+}
+
+async function saveDetails() {
+    var message = document.getElementsByClassName("errorInput")[0];
 
     var email = document.getElementById("email").value;
-    var emailConfirm = document.getElementById("emaiConfirm").value;
+    var emailConfirm = document.getElementById("emailConfirm").value;
 
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
@@ -15,10 +68,122 @@ function saveDetails() {
     var postcode = document.getElementById("postcode").value;
     var country = document.getElementById("country").value;
 
-    var checkboxFull =  document.getElementById("emailBox").value;
+    var checkboxFull = document.getElementById("emailBox").checked;
 
-    //need to send this info to update in database BUT ONLY IF NOT EMPTY
-    //do i send it all in one but then on the other side check if empty
-    //OR do i have seperate requests for each block of data, email, name, location etc
-    
+    var called = 0;
+
+    var updateEmail = 0;
+    var updateName = 0;
+    var updatePassword = 0;
+    var updateLocation = 0;
+    var updateEmailPreference = 0;
+
+    // Email update
+    if (email && emailConfirm) {
+        called = 1;
+        if (email !== emailConfirm) {
+            message.style.display = "block";
+            message.textContent = "Emails entered do not match";
+            return;
+        } else {
+            updateEmail = 1;
+        }
+    }
+
+    // Name update
+    if (firstName && lastName) {
+        called = 1;
+        updateName = 1;
+    }
+
+    // Password update
+    if (password && newPassword && newPasswordConfirm) {
+        called = 1;
+        if (newPassword !== newPasswordConfirm) {
+            message.style.display = "block";
+            message.textContent = "New passwords entered do not match";
+            return;
+        } else {
+            updatePassword = 1;
+        }
+    }
+
+    // Location update
+    if (suburb && state && postcode && country) {
+        called = 1;
+        updateLocation = 1;
+    }
+
+    // Email preference update
+    if (checkboxFull) {
+        called = 1;
+        updateEmailPreference = 1;
+    }
+
+    // Check if all empty to show error
+    if (called === 0) {
+        message.style.display = "block";
+        message.textContent = "Please enter information";
+        return;
+    }
+
+    if (updateEmail) {
+        var duplicate = await checkDuplicateEmail(email);
+        if (duplicate) {
+            message.style.display = "block";
+            message.textContent = "Email already in use";
+            message.style.color = "red";
+            return;
+        }
+    }
+
+    if (updatePassword) {
+        var passWrong = await checkPassword(password);
+        if (passWrong) {
+            message.style.display = "block";
+            message.textContent = "Current password incorrect";
+            message.style.color = "red";
+            return;
+        }
+    }
+
+    if (updateEmail || updateName || updatePassword || updateLocation || updateEmailPreference) {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    console.log("Details updated successfully!");
+                    message.style.display = "block";
+                    message.textContent = "Updated successfully";
+                    message.style.color = "black";
+                } else if (this.status == 400) {
+                    message.style.display = "block";
+                    message.textContent = "Password incorrect";
+                } else {
+                    console.error("Failed to update details. Status:", this.status);
+                }
+            }
+        };
+
+        xhttp.open("POST", "/updateUserInfo", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(JSON.stringify({
+            email: email,
+            firstName: firstName,
+            lastName: lastName,
+            oldPassword: password,
+            newPassword: newPassword,
+            suburb: suburb,
+            state: state,
+            postcode: postcode,
+            country: country,
+            checkboxFull: checkboxFull,
+            updateEmail: updateEmail,
+            updateName: updateName,
+            updatePassword: updatePassword,
+            updateLocation: updateLocation,
+            updateEmailPreference: updateEmailPreference
+        }));
+    }
 }

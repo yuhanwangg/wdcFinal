@@ -6,65 +6,59 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="stylesheets/login.css">
+    <link rel="stylesheet" href="stylesheets/main.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/guestHeader.js"></script>
     <script src="javascripts/login.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
 </head>
 
 <body>
-    <!-- nav bar -->
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Volunteer Opportunities</a></li>
-            <li><a href="#">Find Organisations</a></li>
-        </ul>
-        <div class="nav_buttons">
-            <a href="#">Sign Up</a>
-            <a href="#" class="userLogIn"><i class="ri-user-fill"></i>Log In</a>
-            <div class="bx bx-menu" id="menu-icon"></div>
-        </div>
+    <div id="app">
+        <header-component>
+        </header-component>
 
-    </header>
+        <div class="box">
 
-    <div class="box">
+            <div class="loginSpace">
+                <h1>Login</h1>
 
-        <div class="loginSpace">
-            <h1>Login</h1>
+                <input type="text" placeholder="Email" id="emailField">
+                <input type="text" placeholder="Password" id="passwordField">
 
-            <input type="text" placeholder="Email" id="emailField">
-            <input type="text" placeholder="Password" id="passwordField">
+                <b class="passwordForgot" onclick="forgotPassword();">Forgot password?</b>
 
-            <b class = "passwordForgot" onclick = "forgotPassword();">Forgot password?</b>
+                <p class="errorInput"></p>
 
-            <p class = "errorInput"></p>
+                <button class="loginButton" onclick="login();">Login</button>
 
-            <button class="loginButton" onclick = "login();">Login</button>
+                <div class="orDivider">
+                    <p>or</p>
+                </div>
 
-            <div class="orDivider">
-                <p>or</p>
+                <button class="googleButton">Sign up with Google</button>
             </div>
 
-            <button class="googleButton">Sign up with Google</button>
         </div>
 
-    </div>
+        <div class="centeredText">
+            <p>Don't have an account? <a href="signup.html"><b>Sign up today</b></a></p>
+        </div>
 
-    <div class="centeredText">
-        <p>Don't have an account? <a href="signup.html"><b>Sign up today</b></a></p>
-    </div>
+        <!-- footer -->
+        <div class="footer">
+            <p>Home</p>
+            <p>Volunteer Opportunites</p>
+            <p>Find Organisations</p>
+            <p>Contact Us</p>
+            <p>Sign up</p>
+            <p>Login</p>
+        </div>
+        <footer-component></footer-component>
 
-    <!-- footer -->
-    <div class="footer">
-        <p>Home</p>
-        <p>Volunteer Opportunites</p>
-        <p>Find Organisations</p>
-        <p>Contact Us</p>
-        <p>Sign up</p>
-        <p>Login</p>
     </div>
 
 </body>

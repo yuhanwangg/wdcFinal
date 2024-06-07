@@ -68,6 +68,9 @@ document.addEventListener('DOMContentLoaded', function () {
     </ul>
     `
     });
+    new Vue({
+        el: '#app'
+    });
 
 });
 

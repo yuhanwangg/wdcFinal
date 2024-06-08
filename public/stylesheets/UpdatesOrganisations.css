@@ -7,7 +7,9 @@ h1 {
     padding-left: 175px;
     padding-right: 175px;
 }
-
+.contentWrapper {
+    padding-top: 100px;
+}
 header {
     position: fixed;
     margin: 0;

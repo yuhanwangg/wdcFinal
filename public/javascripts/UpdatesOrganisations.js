@@ -8,7 +8,6 @@
 var orgID = 1;
 
 document.addEventListener('DOMContentLoaded', function () {
-
     // Initialize Vue instance after the DOM is fully loaded
     const vueinst = new Vue({
         el: "#app",

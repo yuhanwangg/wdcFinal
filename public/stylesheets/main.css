@@ -195,6 +195,42 @@ header {
     transition: .3s;
 }
 
+.placeholder {
+    background-color: #FC4A1A;
+    font-weight: bold;
+    padding: 20px;
+    /* border-style: solid;
+    border-color: #BABABA;
+    border-width: 1px; */
+    margin: 20px 0px;
+    color: white;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.placeholder:hover {
+    box-shadow: 1px 5px 10px 1px #FC4A1A;
+    transition: .5s;
+}
+
+.placeholderUpdates {
+    background-color: white;
+    font-weight: bold;
+    padding: 20px;
+    border-style: solid;
+    border-color: #BABABA;
+    border-width: 1px;
+    margin: 10px 10px;
+    color: black;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.placeholderUpdates:hover {
+    box-shadow: 1px 5px 10px 1px #FC4A1A;
+    transition: .5s;
+}
+
 @media (max-width: 1280px) {
     header {
         padding: 14px 2%;

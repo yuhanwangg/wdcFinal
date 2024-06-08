@@ -2,6 +2,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     new Vue({
         el: '#app',
+        data: {
+            orgName: ''
+        },
         mounted() {
             const descInput = document.querySelector('#descForm');
             const descCount = document.querySelector('.descCount');
@@ -115,6 +118,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.querySelector('.webLink').style.display = 'none';
             document.querySelector('.logoUpload').style.display = 'none';
+
+            fetch('/getName')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.orgName = data.name;
+                })
+                .catch(error => {
+                    console.error('error fetching user name:', error);
+                });
+        },
+        methods() {
+            // put button functionality
         }
     });
 });

@@ -26,6 +26,9 @@
                     {{userName}}</h1>
                 <h2>See your mark on the world</h2>
                 <div class="posts">
+                    <div v-if="recentPosts.length === 0" class="placeholder" @click="goOpportunities">
+                        <p>Join your first event today!</p>
+                    </div>
                     <div v-for="post in recentPosts" :key="post.oppID" class="opportunityBox">
                         <div class="contentLeft">
                             <a :href="post.link" class="programName"><b>{{ post.oppName }}</b></a>
@@ -48,6 +51,9 @@
                 <h2>Updates of your joined
                     Communities</h2>
                 <div class="updatesList">
+                    <div v-if="recentUpdates.length === 0" class="placeholderUpdates" @click="goOrganisations">
+                        <p>Join your first community!</p>
+                    </div>
                     <div v-for="update in recentUpdates" :key="update.updateID" class="update">
                         <div class="postInfo">
                             <a :href="'/update/' + update.updateID">

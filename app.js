@@ -14,6 +14,8 @@ var volunOppRouter = require('./routes/opportunities');
 var volunOrgRouter = require('./routes/organisations');
 var signUpRouter = require('./routes/signUp');
 var loginRouter = require('./routes/logIn');
+var settingsRouter = require('./routes/settings');
+var updatesRouter = require('./routes/updates');
 
 
 const { readFileSync } = require('fs');
@@ -56,7 +58,10 @@ app.use('/organisations', volunOrgRouter);
 app.use('/signUp', signUpRouter);
 app.use('/logIn', loginRouter);
 app.use('/home', homeGuestRouter);
+app.use('/settings', settingsRouter);
+app.use('/updates', updatesRouter);
 app.use('/users', usersRouter);
+
 
 
 module.exports = app;

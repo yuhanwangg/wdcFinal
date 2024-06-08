@@ -3,34 +3,26 @@
 
 <head>
     <title>Admin - Admin</title>
+    <!-- vue script -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    
     <link rel="stylesheet" href="stylesheets/AdminCreateAdmin.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="javascripts/AdminCreateAdmin.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <script src="javascripts/headerFooter.js"></script>
+    <link rel="stylesheet" href="stylesheets/main.css">
 
 </head>
 
 <body>
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Edit Users</a></li>
-            <li><a href="#">Edit Organisations</a></li>
-            <li><a href="#">Admin</a></li>
-        </ul>
-        <div class="profileMenu">
-            <a href="#">
-                <div class="profile">
-                    <p>Name</p>
-                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                </div>
-            </a>
-            <div class="bx bx-menu" id="menu-icon"></div>
-        </div>
-    </header>
-    <div class="contentWrapper">
+    <div id="app" class="contentWrapper">
+        <!-- header -->
+        <header-component>
+        </header-component>
+
         <!-- nav bar -->
 
         <h1>Admin</h1>
@@ -52,14 +44,12 @@
             <input type="submit" onclick="createAdmin()" value="Create">
             <!-- </div> -->
         </div>
+
+        <!-- footer -->
+        <footer-component></footer-component>
     </div>
-    <!-- footer -->
-    <div class="footer">
-        <p>Edit Users</p>
-        <p>Edit Organisations</p>
-        <p>Admin</p>
-        <p id="logoutFooter">Logout</p>
-    </div>
+
+
 
 </body>
 

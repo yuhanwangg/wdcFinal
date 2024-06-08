@@ -7,6 +7,7 @@
     <!-- vue script -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 
+
     <link rel="stylesheet" href="stylesheets/AdminOrganisation.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,77 +15,61 @@
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <script src="javascripts/AdminOrganisations.js"></script>
     <script src="javascripts/AdminOrganisationsLoadNames.js"></script>
+    <script src="javascripts/headerFooter.js"></script>
+    <link rel="stylesheet" href="stylesheets/main.css">
 
 </head>
 
 <body onload="getAllOrgNames()">
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Edit Users</a></li>
-            <li><a href="#">Edit Organisations</a></li>
-            <li><a href="#">Admin</a></li>
-        </ul>
-        <div class="profileMenu">
-            <a href="#">
-                <div class="profile">
-                    <p>Name</p>
-                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                </div>
-            </a>
-            <div class="bx bx-menu" id="menu-icon"></div>
-        </div>
-    </header>
-    <div id = "app" class="contentWrapper">
-        <!-- nav bar -->
+    <div id="app">
+        <div class="contentWrapper">
+            <!-- header -->
+            <header-component>
+            </header-component>
 
-        <h1>Edit Organisations</h1>
+            <h1>Edit Organisations</h1>
 
-        <!-- search bar -->
-        <div class="searchBar">
-            <input id="orgName" type="text" placeholder="Organisation Name">
-            <input id="orgEmail" type="text" placeholder="Email">
-            <input onclick="findOrganisation()" @click="searchOrg()"  type="submit">
-        </div>
-
-        <!-- vue updates the number of organisaitons and number of pages-->
-        <div class="orgPages">
-            <div id="numberOfOrgs">
-                <p id="numOrgs">{{ numOrgs }} Organisations</p>
-                <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
+            <!-- search bar -->
+            <div class="searchBar">
+                <input id="orgName" type="text" placeholder="Organisation Name">
+                <input id="orgEmail" type="text" placeholder="Email">
+                <input onclick="findOrganisation()" @click="searchOrg()"  type="submit">
             </div>
-        </div>
 
-        <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue">
-            <div v-for="(org, index) in allOrgs.slice(sliceStart, sliceEnd)" class="allOrgBoxes">
-                <div>
-                    <p class="Name">{{ org.orgName }}</p>
-                    <p> {{ org.email }}</p>
+            <!-- vue updates the number of organisaitons and number of pages-->
+            <div class="orgPages">
+                <div id="numberOfOrgs">
+                    <p id="numOrgs">{{ numOrgs }} Organisations</p>
+                    <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
                 </div>
-                <img class="logo" v-bind:src="org.imgPath" alt="Company logo">
             </div>
-        </div>
+
+            <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue">
+                <div v-for="(org, index) in allOrgs.slice(sliceStart, sliceEnd)" class="allOrgBoxes">
+                    <div>
+                        <p class="Name">{{ org.orgName }}</p>
+                        <p> {{ org.email }}</p>
+                    </div>
+                    <img class="logo" v-bind:src="org.imgPath" alt="Company logo">
+                </div>
+            </div>
 
 
-        <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" class="nextPageButtons" >
-            <button class="previous" @click="backPage()">Previous Page</button>
-            <button class="next" @click="nextPage()">Next Page</button>
-        </div>
+            <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" class="nextPageButtons" >
+                <button class="previous" @click="backPage()">Previous Page</button>
+                <button class="next" @click="nextPage()">Next Page</button>
+            </div>
 
-        <div class="orgBox">
+            <div class="orgBox">
+            </div>
+            <div class="branches">
+            </div>
+
+
         </div>
-        <div class="branches">
-        </div>
+        <!-- footer -->
+        <footer-component></footer-component>
     </div>
-
-    <!-- footer -->
-    <div class="footer">
-        <p>Edit Users</p>
-        <p>Edit Organisations</p>
-        <p>Admin</p>
-        <p id="logoutFooter">Logout</p>
-    </div>
-
 
 </body>
 

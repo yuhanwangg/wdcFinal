@@ -111,6 +111,10 @@ function checkDeleteUser() {
     var entireUser = document.getElementById('UserEdit');
     entireUser.remove();
 
+    //remove the back to search button
+    var backButton = document.getElementById('backToSearch');
+    backButton.remove();
+
     //remove the save user info box if on
     if (saveLabelShowing === true) {
         saveLabelShowing = false;

@@ -309,7 +309,8 @@ function branchRequestAccept(branchName, button, orgName, orgEmail) {
     //add to the current branches
     var newBranch = document.createElement('div');
     newBranch.className = 'nameAndButtons';
-    newBranch.innerHTML = `<p>${branchName}</p> <button class="remove" onclick="branchRemove('${branchName}', this, '${orgName.value}', '${orgEmail.value}')">Remove</button>`;
+   newBranch.innerHTML = `<p>${branchName}</p> <button class="remove" onclick="branchRemove('${branchName}', this, document.getElementById('orgName'), document.getElementById('orgEmail'))">Remove</button>`;
+
     var newLine = document.createElement('hr');
 
     var parent = document.querySelector('.allCurrentBranches');
@@ -350,6 +351,7 @@ function branchRequestReject(branchName, button, orgName, orgEmail) {
 }
 
 function branchRemove(branchName, button, orgName, orgEmail) {
+    console.log("orgName and orgemail are " + orgName.value + " " + orgEmail.value);
     //remove the branche
     var entireBranch = button.parentElement;
     var hrElement = entireBranch.nextElementSibling;

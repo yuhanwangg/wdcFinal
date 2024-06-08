@@ -1,4 +1,3 @@
-/*  */
 body {
     /* we are using Inter font, but there are fallbacks listed */
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -112,7 +111,7 @@ header {
     margin-left: 10px;
 }
 
-header .logo {
+header .companyLogo {
     max-width: 100px;
     margin-right: 3px;
     transform: translateX(100px);
@@ -269,7 +268,7 @@ input[type=submit]:active {
     margin-top: 5px;
 }
 
-.logo {
+.companyLogo {
     max-height: 50%;
     max-width: 20%;
     border-radius: 20px;
@@ -371,7 +370,7 @@ button {
         margin-right: 0;
     }
 
-    .logo {
+    .companyLogo {
         max-height: 100px;
         max-width: 100px;
     }

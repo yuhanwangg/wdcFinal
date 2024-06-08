@@ -215,3 +215,9 @@ function checkDeleteOrganisatoin() {
 function backToOrganisations() {
     window.location.href = "AdminOrganisation.html";
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app'
+    });
+});

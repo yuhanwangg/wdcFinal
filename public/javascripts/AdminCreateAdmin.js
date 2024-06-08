@@ -2,6 +2,12 @@ var incorrectInfoShowing = false;
 var notAllInfoFilled = false;
 var emailTaken = false;
 
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app'
+    });
+});
+
 function createAdmin() {
     // console.log("clicked!")
     //get the elements
@@ -24,6 +30,9 @@ function createAdmin() {
 
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+    //hash password
+    var hash;
 
     //check that there is info in all the boxes
     if (email.trim() && emailConfirm.trim() && firstName.trim() && lastName.trim() && password.trim() && passwordConfirm.trim()) {

@@ -6,6 +6,12 @@ var userID = urlParams.get('userID');
 
 var saveLabelShowing = false;
 
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app'
+    });
+});
+
 function loadInfo() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

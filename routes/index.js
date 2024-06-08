@@ -143,8 +143,7 @@ router.post('/addAdmin', function (req, res, next) {
 
     //get the last created and used AdminId
     var currAdminIdQuery = "SELECT adminId FROM Admin ORDER BY adminId DESC LIMIT 1;";
-
-    connection.query(currAdminIdQuery, function (err1, result) {
+    connection.query(currAdminIdQuery, async function (err1, result) {
       //release the query, don't need access to the database anymore
 
       //error handling
@@ -161,11 +160,22 @@ router.post('/addAdmin', function (req, res, next) {
       }
       console.log("the new admin id is " + currAdminId);
 
+      //hash password
+      var hash;
+
+      try {
+        hash = await hashPass(password);
+      } catch (err) {
+        console.log("error in hash");
+        res.sendStatus(500);
+        return;
+      }
+
       var query = "INSERT INTO Admin (adminId, firstname, lastName, email, password) VALUES (?, ?, ?, ?, ?);";
 
       //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
       //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [currAdminId, first_name, last_name, email, password], function (err2, returnVal) {
+      connection.query(query, [currAdminId, first_name, last_name, email, hash], function (err2, returnVal) {
         //release the query, don't need access to the database anymore
         connection.release();
         //error handling

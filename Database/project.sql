@@ -47,6 +47,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
+INSERT INTO `Admin` VALUES (1,'Georgia','McLeod','georgia.mcleod314@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$Wvr+iNTe9GrbVXxiSZVJ0w$n6thAyn7p1J38LJ0K7dBf92/e2T2rNf1bjvi44Y8Nv8'),(2,'Georgia','McLeod','georgia1.mcleod314@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$RuB05vmn5eQoxATyV1sL8w$ph1NOxloyBFTwsNBWcNWxy8jdvMjkdyc3hT5O3WoHA4');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-07  4:18:45
+-- Dump completed on 2024-06-08 11:18:56

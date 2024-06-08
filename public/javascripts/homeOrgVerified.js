@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         this.branches = data;
                         this.selectedBranchName = this.branches[0].branchName;
                         this.selectedBranchID = this.branches[0].branchID;
+                        this.fetchBranchUpdates(this.selectedBranchID);
+                        this.fetchBranchPosts(this.selectedBranchID);
                     }
                 })
                 .catch(error => {

@@ -21,6 +21,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Handle invalid date
                     return 'Invalid Date';
                 }
+            },
+            goUpdates() {
+                window.location.href = "/updates";
+            },
+            goOpportunities() {
+                window.location.href = "/opportunities";
+            },
+            goOrganisations() {
+                window.location.href = "/organisations";
             }
         },
         mounted() {

@@ -17,7 +17,6 @@
 </head>
 
 <body>
-
     <div id="app">
         <header-component>
         </header-component>
@@ -26,17 +25,7 @@
         <div class="topContent">
             <div class="title">
                 <h1>Welcome,</h1>
-                <h1>[insert organisation]</h1>
-            </div>
-
-            <div class="dropdown">
-                <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
-                <select class="dropbtn">
-                    <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
-                    <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
-                    <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
-                    <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
-                </select>
+                <h1>{{orgName}}</h1>
             </div>
         </div>
 
@@ -65,6 +54,7 @@
                     <div class="inline">
                         <div class="charLeft">
                             <p>Characters left: <span class="descCount">750</span></p>
+                            <p class="descWarning">*Please do not submit an empty description!</p>
                         </div>
                         <input type="submit" value="Submit" class="submitButton">
                     </div>
@@ -75,6 +65,7 @@
                 <form id="webLinkForm">
                     <strong>Enter your website link:</strong>
                     <textarea id="websiteLink" name="webLink" placeholder="www.example.com.au..."></textarea>
+                    <p class="linkWarning">*Please do not submit an empty link!</p>
                     <input type="submit" value="Submit" class="submitButton">
                 </form>
             </div>
@@ -82,7 +73,8 @@
             <div class="logoUpload">
                 <form id="logoUploadForm">
                     <strong>Upload your logo:</strong>
-                    <input type="file" id="image" name="fileName">
+                    <input type="file" id="logoInput" name="fileName" accept="image/*,.pdf">
+                    <p class="logoWarning">*Please submit a logo!</p>
                     <input type="submit" value="Submit" class="submitButton">
                 </form>
             </div>
@@ -90,7 +82,7 @@
 
         <div class="welcome">
             <div class="thanks">
-                <h3>Thank you for partnering with us at [name]</h3>
+                <h3>Thank you for partnering with us at Heartfelt Helpers</h3>
                 <p>This site cannot be run without you guys.</p>
                 <p>For organisations that wish to create variants/branches for specific locations or categories,
                     please fill

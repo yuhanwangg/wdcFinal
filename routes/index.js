@@ -7,6 +7,8 @@ var adminIdCounter = 1;
 
 var mysql = require('mysql');
 
+const multer = require('multer');
+
 var nodemailer = require('nodemailer')
 
 var session = require('express-session');
@@ -35,6 +37,8 @@ let transporter = nodemailer.createTransport({
     pass: 'WDCProject'
   }
 });
+
+const upload = multer({ dest: 'public/organisation_logos/' });
 
 var adminIdCounter = 1;
 
@@ -830,7 +834,8 @@ router.get('/oldPosts', function (req, res, next) {
 
 router.get('/getBranches', function (req, res, next) {
   console.log("i am in the getBranches requests index.js!!!");
-  const orgID = req.query.orgID;
+  const orgID = req.session.accountID;
+  console.log("orgID: ", orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
   req.pool.getConnection(function (err, connection) {
     //this is the error handling
@@ -851,10 +856,12 @@ router.get('/getBranches', function (req, res, next) {
         return;
       }
 
+      console.log("row length: ", rows1.length);
+
       if (rows1.length === 0) {
         connection.release();
         // Organization not found
-        res.status(404).json({ error: "Organization not found" });
+        res.status(404).json({ error: "Organisation not found" });
         return;
       }
 
@@ -2377,7 +2384,126 @@ router.get('/checkVerified', function (req, res, next) {
       res.json({ verified: true });
     }
   })
-}
-);
+});
+
+router.post('/uploadLogo', upload.single('fileName'), (req, res) => {
+  console.log("image uploaded successfully!");
+  let filePath = req.file.path;
+  let orgID = req.session.accountID;
+  let query = `UPDATE Organisations SET imgPath = ? WHERE orgID = ?`;
+  connection.query(query, [filePath, orgID], function (err, result) {
+    if (err) {
+      console.error("Error updating path:", err);
+      res.status(500).send("Error updating path");
+    } else {
+      console.log("path updated successfully");
+      res.sendStatus(200);
+    }
+  });
+});
+
+router.post('/uploadDescLink', function (req, res, next) {
+  console.log("AHHHHH");
+  const { desc, link } = req.body;
+  let orgID = req.session.accountID;
+  if (!desc || !link) {
+    console.error("Description or link missing in request");
+    return res.status(400).json({ error: "Description or link missing in request" });
+  }
+  const query = 'UPDATE Organisations SET description = ?, orgSite = ? WHERE orgID = ?';
+  connection.query(query, [desc, link, orgID], function (err, result) {
+    if (err) {
+      console.error("Error updating description and link:", err);
+      res.status(500).json({ error: "Error updating description and link" });
+    } else {
+      console.log("Description and link updated successfully");
+      res.json({ message: "Description and link updated successfully" });
+    }
+  });
+});
+
+
+router.get('/getUpdates', (req, res) => {
+  let organisationID = req.session.accountID;
+  console.log("orgID=", organisationID);
+  console.log("IM IN GET UPDATES");
+  let branchID = req.query.branchID;
+  console.log("BRANCHID: ", branchID);
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("got connection error for org branch requests!!!!")
+      res.sendStatus(500);
+      return;
+    }
+
+    const query = `
+      SELECT u.*
+      FROM Updates u
+      JOIN Branch b ON u.branchID = b.branchID
+      WHERE b.orgID = ? AND u.branchID = ?
+      ORDER BY u.dateCreated DESC
+      LIMIT 3
+    `;
+
+    connection.query(query, [organisationID, branchID], function (err, rows) {
+      connection.release(); // release connection after query execution
+
+      if (err) {
+        console.error('error fetching updates:', err);
+        res.status(500).json({ error: 'internal server error' });
+        return;
+      }
+
+      if (rows.length === 0) {
+        console.log("THERE IS NO UpDATES");
+      }
+
+      res.json(rows); // send updates as JSON response
+    });
+  });
+});
+
+
+router.get('/getPosts', (req, res) => {
+  let organisationID = req.session.accountID;
+  console.log("orgID=", organisationID);
+  console.log("IM IN GET POSTS");
+  let branchID = req.query.branchID;
+  console.log("BRANCHID: ", branchID);
+
+  req.pool.getConnection(function (err, connection) {
+    if (err) {
+      console.log("got connection error for org branch requests!!!!")
+      res.sendStatus(500);
+      return;
+    }
+
+    const query = `
+      SELECT o.*
+      FROM Opportunities o
+      JOIN Branch b ON o.branchID = b.branchID
+      WHERE b.orgID = ? AND o.branchID = ?
+      ORDER BY o.dates DESC
+      LIMIT 3
+    `;
+
+    connection.query(query, [organisationID, branchID], function (err, rows) {
+      connection.release(); // release connection after query execution
+
+      if (err) {
+        console.error('error fetching posts:', err);
+        res.status(500).json({ error: 'internal server error' });
+        return;
+      }
+
+      if (rows.length === 0) {
+        console.log("THERE IS NO POSTS");
+      }
+
+      res.json(rows); // send updates as JSON response
+    });
+  });
+});
 
 module.exports = router;

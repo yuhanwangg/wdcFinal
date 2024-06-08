@@ -18,33 +18,34 @@
 </head>
 
 <body>
-    <div id="app" class="contentWrapper">
-        <!-- header -->
-        <header-component>
-        </header-component>
+    <div id="app">
+        <div class="contentWrapper">
+            <!-- header -->
+            <header-component>
+            </header-component>
 
-        <!-- nav bar -->
+            <!-- nav bar -->
 
-        <h1>Admin</h1>
+            <h1>Admin</h1>
 
-        <h2>Create New Admin</h2>
+            <h2>Create New Admin</h2>
 
-        <!-- Oranisation edit box, filled using something (Vue?), placeholder changes -->
-        <div class="createAdmin">
-            <!-- <div class="changeTextInputs"> -->
-            <p>Email</p>
-            <input id="email" type="text" placeholder="Email">
-            <input id="emailConfirm" type="text" placeholder="Confirm Email">
-            <p>Name</p>
-            <input id="firstName" type="text" placeholder="First Name">
-            <input id="lastName" type="text" placeholder="Last Name">
-            <p>Set Password</p>
-            <input id="password" type="text" placeholder="Set Password">
-            <input id="passwordConfirm" type="text" placeholder="Confirm Password">
-            <input type="submit" onclick="createAdmin()" value="Create">
-            <!-- </div> -->
+            <!-- Oranisation edit box, filled using something (Vue?), placeholder changes -->
+            <div class="createAdmin">
+                <!-- <div class="changeTextInputs"> -->
+                <p>Email</p>
+                <input id="email" type="text" placeholder="Email">
+                <input id="emailConfirm" type="text" placeholder="Confirm Email">
+                <p>Name</p>
+                <input id="firstName" type="text" placeholder="First Name">
+                <input id="lastName" type="text" placeholder="Last Name">
+                <p>Set Password</p>
+                <input id="password" type="text" placeholder="Set Password">
+                <input id="passwordConfirm" type="text" placeholder="Confirm Password">
+                <input type="submit" onclick="createAdmin()" value="Create">
+                <!-- </div> -->
+            </div>
         </div>
-
         <!-- footer -->
         <footer-component></footer-component>
     </div>

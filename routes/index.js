@@ -1046,6 +1046,60 @@ router.post('/emailUpdate', function (req, res, next) {
   });
 });
 
+router.get('/allUsers', function (req, res, next) {
+  console.log("i am in the allUsers requests index.js!!!");
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // query to get the update posts by the branch
+    var oldPostsQuery = "SELECT * FROM User";
+    connection.query(oldPostsQuery, function (err2, rows2) {
+      connection.release();
+      if (err2) {
+        console.log("Error executing user request query:", err2);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      // old update posts found, send back the details
+      res.json(rows2);
+      return;
+    });
+  });
+});
+
+router.get('/allOrgs', function (req, res, next) {
+  console.log("i am in the allOrgs requests index.js!!!");
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      res.sendStatus(500);
+      return;
+    }
+
+    // query to get the update posts by the branch
+    var allOrgs = "SELECT * FROM Organisations;";
+    connection.query(allOrgs, function (err2, rows2) {
+      connection.release();
+      if (err2) {
+        console.log("Error executing user request query:", err2);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      // old update posts found, send back the details
+      res.json(rows2);
+      return;
+    });
+  });
+});
+
 //ROUTES LUCY
 // sign up user ALSO update session tokens
 router.post('/addUser', function (req, res, next) {

@@ -4,17 +4,20 @@
 
 <head>
     <title>Admin - Organisations</title>
+    <!-- vue script -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
     <link rel="stylesheet" href="stylesheets/AdminOrganisation.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="javascripts/AdminOrganisations.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-
+    <script src="javascripts/AdminOrganisations.js"></script>
+    <script src="javascripts/AdminOrganisationsLoadNames.js"></script>
 
 </head>
 
-<body>
+<body onload="getAllOrgNames()">
     <header>
         <img class="logo" src="images_assets/logo.png" alt="logo">
         <ul class="navbar">
@@ -32,7 +35,7 @@
             <div class="bx bx-menu" id="menu-icon"></div>
         </div>
     </header>
-    <div class="contentWrapper">
+    <div id = "app" class="contentWrapper">
         <!-- nav bar -->
 
         <h1>Edit Organisations</h1>
@@ -41,111 +44,36 @@
         <div class="searchBar">
             <input id="orgName" type="text" placeholder="Organisation Name">
             <input id="orgEmail" type="text" placeholder="Email">
-            <input onclick="findOrganisation()" type="submit">
+            <input onclick="findOrganisation()" @click="searchOrg()"  type="submit">
+        </div>
+
+        <!-- vue updates the number of organisaitons and number of pages-->
+        <div class="orgPages">
+            <div id="numberOfOrgs">
+                <p id="numOrgs">{{ numOrgs }} Organisations</p>
+                <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
+            </div>
+        </div>
+
+        <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue">
+            <div v-for="(org, index) in allOrgs.slice(sliceStart, sliceEnd)" class="allOrgBoxes">
+                <div>
+                    <p class="Name">{{ org.orgName }}</p>
+                    <p> {{ org.email }}</p>
+                </div>
+                <img class="logo" v-bind:src="org.imgPath" alt="Company logo">
+            </div>
+        </div>
+
+
+        <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" class="nextPageButtons" >
+            <button class="previous" @click="backPage()">Previous Page</button>
+            <button class="next" @click="nextPage()">Next Page</button>
         </div>
 
         <div class="orgBox">
-            <!-- Organisation box, filled using AJAX, should be empty -->
-            <!-- <div class="organisationBox">
-                <p class="name">redCross</p>
-                <p>redCross@gmail.com</p>
-                <div class="paragraphAndButton">
-                    <p>Their bio that spans multiple lines.
-                        Its very very very very long, and it really
-                        does span multiple lines, this just takes a
-                        while to write multiple lines. Something about
-                        how great they are and what you can do to make
-                        an impact. They are really important to the
-                        world, and your local community. Everyone loves
-                        organisation Name. With them you will be satisfied
-                        in how you are helping the world, all it takes is
-                        just one person to make a difference. Join us today
-                        and you wont regret it. We promise!</p>
-                    <button onclick="goToEditOrganisation()">Edit</button>
-                </div>
-
-            </div>-->
         </div>
         <div class="branches">
-            <!-- Branch requests -->
-            <!-- <div class="branchRequests"> -->
-            <!-- <h2>Branch Requests</h2>
-                <hr>
-
-                <div class="allRequests">
-                    <div class="nameAndButtons">
-                        <p>Branch name 6</p>
-                        <div>
-                            <button class="accept"
-                                onclick="branchRequestAccept('BranchName requested using Vue', this)">Accept
-                                &check;</button>
-                            <button class="reject" onclick="branchRequestReject(this)">Reject &#10005;</button>
-                        </div>
-                    </div>
-                    <hr>
-
-
-                    <div class="nameAndButtons">
-                        <p>Branch name 7</p>
-                        <div>
-                            <button class="accept"
-                                onclick="branchRequestAccept('BranchName requested using Vue', this)">Accept
-                                &check;</button>
-                            <button class="reject" onclick="branchRequestReject(this)">Reject &#10005;</button>
-                        </div>
-                    </div>
-                    <hr>
-
-                    <div class="nameAndButtons">
-                        <p>Branch name 8</p>
-                        <div>
-                            <button class="accept"
-                                onclick="branchRequestAccept('BranchName requested using Vue', this)">Accept
-                                &check;</button>
-                            <button class="reject" onclick="branchRequestReject(this)">Reject &#10005;</button>
-                        </div>
-                    </div>
-                    <hr>
-                </div> -->
-            <!-- </div> -->
-
-            <!-- All current Branches -->
-            <!-- <div class="currentBranches"> -->
-            <!-- <h2>Current Branches</h2>
-                <hr>
-
-                <div class="allCurrentBranches">
-                    <div class="nameAndButtons">
-                        <p>Branch name 1</p>
-                        <button class="remove" onclick="branchRemove(this)">Remove</button>
-                    </div>
-                    <hr>
-
-                    <div class="nameAndButtons">
-                        <p>Branch name 2</p>
-                        <button class="remove" onclick="branchRemove(this)">Remove</button>
-                    </div>
-                    <hr>
-
-                    <div class="nameAndButtons">
-                        <p>Branch name 3</p>
-                        <button class="remove" onclick="branchRemove(this)">Remove</button>
-                    </div>
-                    <hr>
-
-                    <div class="nameAndButtons">
-                        <p>Branch name 4</p>
-                        <button class="remove" onclick="branchRemove(this)">Remove</button>
-                    </div>
-                    <hr>
-
-                    <div class="nameAndButtons">
-                        <p>Branch name 5</p>
-                        <button class="remove" onclick="branchRemove(this)">Remove</button>
-                    </div>
-                    <hr>
-                </div> -->
-            <!-- </div> -->
         </div>
     </div>
 

@@ -8,21 +8,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const vueinst = new Vue({
         el: "#app",
         data: {
-            userInfo: [],
-            notFoundShowing: false,
-            userDetailsShowing: false,
-            searchedForUser: false,
-            notFoundMsg: "The user with these details cannot be found",
-            allUsers: [],
-            numUsers: 0,
+            notFoundShowingVue: false,
+            orgDetailsShowingVue: false,
+            searchedForOrgVue: false,
+            allOrgs: [],
+            numOrgs: 0,
             numPages: 1,
             currPage: 1,
             sliceStart: 0,
             sliceEnd: 6
         },
         methods: {
-            goToEditUser(userID) {
-                window.location.href = "AdminEditUsers.html?userID=" + userID;
+            searchOrg() {
+                vueinst.searchedForOrgVue = true;
+                vueinst.orgDetailsShowingVue = true;
+                vueinst.notFoundShowingVue = true;
             },
 
             nextPage() {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var nextPageButton = document.querySelector('.next');
                 var previousPageButton = document.querySelector('.previous');
                 //console.log("the endIndex is " + endIndex + " the post length is " + vueinst.numPosts);
-                if (endIndex >= vueinst.numUsers) {
+                if (endIndex >= vueinst.numOrgs) {
                     nextPageButton.style.display = 'none';
                     if (startIndex != 0) {
                         previousPageButton.style.display = 'block';
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         previousPageButton.style.display = 'none';
                         nextPageButton.style.display = 'block';
                     }
-                    else if (endIndex < vueinst.numPosts) {
+                    else if (endIndex < vueinst.numOrgs) {
                         previousPageButton.style.display = 'block';
                         nextPageButton.style.display = 'block';
                     }
@@ -104,41 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    function findUser() {
-        //have searched for user so set it to true
-        vueinst.searchedForUser = true;
-
-        ////console.log("WE ARE RIGHT HERE!!! went into find User function");
-        const inputedFirstName = document.getElementById('firstNameInput');
-        const inputedLastName = document.getElementById('lastNameInput');
-        const inputedEmail = document.getElementById('emailInput');
-        //console.log("inputted values are " + inputedFirstName.value + " " + inputedLastName.value + " " + inputedEmail.value);
-
-        //get the user details
-        var xhttp1 = new XMLHttpRequest();
-        xhttp1.onreadystatechange = function () {
-            //console.log("xhttp1 called");
-            if (this.readyState == 4 && this.status == 200) {
-                //set the vue value userInfo to be the JSON
-                //console.log(JSON.parse(this.responseText));
-                vueinst.userInfo = JSON.parse(this.responseText);
-
-                //remove current info/error messages showing
-                vueinst.notFoundShowing = false;
-                vueinst.userDetailsShowing = true;
-            } else if (this.status === 404) {
-                //change vue value to show that we didn't find the user
-                vueinst.notFoundShowing = true;
-                vueinst.userDetailsShowing = false;
-
-                //console.log("went into 404 else statement, the values of notFound and userShowing are: " +  vueinst.notFoundShowing +  " " + vueinst.userDetailsShowing);
-            }
-        };
-        xhttp1.open("GET", "/userDetails?userFirstName=" + inputedFirstName.value + "&userLastName=" + inputedLastName.value + "&email=" + inputedEmail.value, true);
-        xhttp1.send();
-    }
-
-    function getAllUsers() {
+    function getAllOrgNames() {
         var xhttp1 = new XMLHttpRequest();
         xhttp1.onreadystatechange = function () {
             //console.log("xhttp1 called");
@@ -146,16 +112,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 //set the vue value userInfo to be the JSON
                 //console.log(JSON.parse(this.responseText));
                 //set the vue value to have the JSON array of posts, reverse it so that the most recent (id > value) is at the front
-                vueinst.allUsers = JSON.parse(this.responseText).reverse();
+                vueinst.allOrgs = JSON.parse(this.responseText).reverse();
+                console.log("VALUES BEING PASSED ARE:");
+                vueinst.allOrgs.forEach(function(org) {
+                    console.log(org);
+                });
 
-                vueinst.numUsers = vueinst.allUsers.length;
-                vueinst.numPages = Math.ceil(vueinst.numUsers / 6);
+                vueinst.numOrgs = vueinst.allOrgs.length;
+                vueinst.numPages = Math.ceil(vueinst.numOrgs / 6);
                 if (vueinst.numPages === 0) {
                     vueinst.numPages = 1;
                 }
 
                 //if there are more than 6 users, display the next page button
-                if (vueinst.allUsers.length > 6) {
+                console.log("THE NUMBER OF ORGS LENGTH IS " + vueinst.numOrgs);
+
+                if (vueinst.allOrgs.length > 6) {
                     var nextPageButton1 = document.querySelector('.next');
                     nextPageButton1.style.display = 'block';
                 }
@@ -163,11 +135,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Hide or show the Next and previous Page button based on whether there are more posts to display
                 var startIndex = (vueinst.currPage - 1) * 6;
                 var endIndex = vueinst.currPage * 6;
+                console.log("THE ENDINDEX IS " + endIndex);
+                console.log("THE STARTINDEX IS " + startIndex);
                 var nextPageButton = document.querySelector('.next');
                 var previousPageButton = document.querySelector('.previous');
                 //console.log("the endIndex is " + endIndex + " the post length is " + vueinst.numPosts);
-                if (endIndex >= vueinst.numUsers) {
+                if (endIndex >= vueinst.numOrgs) {
                     nextPageButton.style.display = 'none';
+                    previousPageButton.style.display = 'none';
                     if (startIndex != 0) {
                         previousPageButton.style.display = 'block';
                     }
@@ -186,11 +161,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 //console.log ("failed");
             }
         };
-        xhttp1.open("GET", "/allUsers", true);
+        xhttp1.open("GET", "/allOrgs", true);
         xhttp1.send();
     }
 
     // Attach the findUser function to the window so it can be called from HTML
-    window.findUser = findUser;
-    window.getAllUsers = getAllUsers;
+    window.getAllOrgNames = getAllOrgNames;
 });

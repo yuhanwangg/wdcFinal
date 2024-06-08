@@ -3,6 +3,25 @@ body {
     font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
+.orgPages {
+    padding-left: 15px;
+    padding-right: 175px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.orgPages #numberOfOrgs {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.orgPages #numberOfOrgs p:first-child {
+    margin-right: 40px;
+}
+
 header {
     position: fixed;
     margin: 0;
@@ -15,6 +34,38 @@ header {
     background: white;
     padding: 20px 5%;
     /* overflow-x: hidden; */
+}
+
+.hidden {
+    display: none;
+}
+
+.nextPageButtons {
+    padding-left: 175px;
+    padding-right: 175px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.nextPageButtons button {
+    padding-top: 10px;
+    padding-bottom: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.nextPageButtons button:active {
+    outline: auto;
+}
+
+.nextPageButtons .next {
+    margin-left: auto;
+    display: none;
+}
+
+.nextPageButtons .previous {
+    display: none;
 }
 
 .navbar {
@@ -160,7 +211,7 @@ input[type=submit]:active {
 }
 
 
-.organisationBox {
+.organisationBox, .allOrgBoxes{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -265,6 +316,37 @@ button:active {
 #notFound p{
     color: white;
 }
+
+.nextPageButtons button {
+    border-radius: 20px;
+    border: none;
+    width: auto;
+    background-color: #FC4A1A;
+    color: white;
+    height: 2em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.Name {
+    font-weight: bold;
+}
+.logo {
+    max-height: 100px;
+    max-width: 100px;
+    border-radius: 20px;
+}
+
+.allOrgBoxes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* margin-bottom: 5px; */
+    /* margin-top: 5px; */
+    margin-top: 75px;
+    padding: 10px;
+}
+
 .footer {
     background-color: #D1EEE5;
     display: flex;
@@ -279,7 +361,23 @@ button:active {
 }
 
 
+
 @media only screen and (max-width:900px) {
+
+    .nextPageButtons {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .logo {
+        max-height: 100px;
+        max-width: 100px;
+    }
+
+    .orgPages {
+        margin: 0px;
+    }
+
     .searchBar {
         height: auto;
         padding-left: 15px;
@@ -354,7 +452,6 @@ button:active {
         border-radius: 10px;
         transition: all .3s ease;
     }
-
 
     .navbar a {
         display: block;

@@ -15,7 +15,7 @@
 
 </head>
 
-<body>
+<body onload="getAllUsers()">
     <header>
         <img class="logo" src="images_assets/logo.png" alt="logo">
         <ul class="navbar">
@@ -45,9 +45,28 @@
             <input onclick="findUser()" type="submit">
         </div>
 
+         <!-- vue updates the number of users and number of pages-->
+         <div class="usersPages">
+            <div id="numberOfUsers">
+                <p id="numUsers">{{ numUsers }} Users</p>
+                <p v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing" id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
+            </div>
+        </div>
+
         <!-- User box, filled using AJAX/vue, should be empty <p> tags -->
         <div v-if="searchedForUser && userDetailsShowing && !notFoundShowing">
             <div v-for="user in userInfo" class="UserBox">
+                <p class="Name">{{ user.firstName }}, {{ user.lastName }}</p>
+                <div class="lastLine">
+                    <p>{{ user.email }}</p>
+                    <button @click="goToEditUser(user.userID)">Edit</button>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing">
+            <div v-for="(user, index) in allUsers.slice(sliceStart, sliceEnd)" class="UserBox">
+            <!-- <div v-for="user in allUsers" class="UserBox"> -->
                 <p class="Name">{{ user.firstName }}, {{ user.lastName }}</p>
                 <div class="lastLine">
                     <p>{{ user.email }}</p>
@@ -61,7 +80,13 @@
             <p>{{ notFoundMsg }}</p>
         </div>
 
+        <div v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing" class="nextPageButtons" >
+            <button class="previous" @click="backPage()">Previous Page</button>
+            <button class="next" @click="nextPage()">Next Page</button>
+        </div>
+
     </div>
+
 
     <!-- footer -->
     <div class="footer">

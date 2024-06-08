@@ -137,6 +137,13 @@ function findOrganisation() {
                 currBranchesShowing = false;
             }
         }
+
+        var orgListContainers = document.querySelectorAll('.allOrgBoxes');
+        console.log(orgListContainers); // Log the selected elements
+        orgListContainers.forEach(function(orgListContainer) {
+            console.log("Adding hidden class to:", orgListContainer); // Log each container before adding the class
+            orgListContainer.classList.add('hidden');
+        });
     };
     xhttp1.open("GET", "/orgDetails?orgName=" + inputedName.value + "&email=" + inputedEmail.value, true);
     xhttp1.send();

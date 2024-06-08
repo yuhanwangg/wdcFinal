@@ -274,6 +274,68 @@ input[type=submit]:active {
     align-self:flex-start;
 } */
 
+.nextPageButtons {
+    padding-left: 175px;
+    padding-right: 175px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.nextPageButtons button {
+    padding-top: 10px;
+    padding-bottom: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.nextPageButtons button:active {
+    outline: auto;
+}
+
+.nextPageButtons .next {
+    margin-left: auto;
+    display: none;
+}
+
+.nextPageButtons .previous {
+    display: none;
+}
+
+.usersPages {
+    padding-left: 15px;
+    padding-right: 175px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.usersPages #numberOfUsers {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.usersPages #numberOfUsers p:first-child {
+    margin-right: 40px;
+}
+
+.hidden {
+    display: none;
+}
+
+.nextPageButtons button {
+    border-radius: 20px;
+    border: none;
+    width: auto;
+    background-color: #FC4A1A;
+    color: white;
+    height: 2em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .footer {
     background-color: #D1EEE5;
     display: flex;
@@ -288,11 +350,23 @@ input[type=submit]:active {
 }
 
 @media only screen and (max-width:900px) {
+    .usersPages {
+        margin: 0px;
+    }
     .searchBar {
         height: auto;
         padding-left: 15px;
         padding-right: 15px;
         line-height: 45px;
+    }
+
+    .nextPageButtons {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .postsPages {
+        padding: 0px;
     }
 
     #notFound{

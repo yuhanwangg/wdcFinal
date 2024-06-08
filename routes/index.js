@@ -6,6 +6,7 @@ router.use(bodyParser.json());
 var adminIdCounter = 1;
 
 var mysql = require('mysql');
+const multer = require('multer');
 
 var nodemailer = require('nodemailer')
 
@@ -34,6 +35,8 @@ let transporter = nodemailer.createTransport({
     pass: 'WDCProject'
   }
 });
+
+const upload = multer({ dest: 'public/organisation_logos/' });
 
 var adminIdCounter = 1;
 
@@ -2131,7 +2134,42 @@ router.get('/checkVerified', function (req, res, next) {
       res.json({ verified: true });
     }
   })
-}
-);
+});
+
+router.post('/uploadLogo', upload.single('fileName'), (req, res) => {
+  console.log("image uploaded successfully!");
+  let filePath = req.file.path;
+  let orgID = req.session.accountID;
+  let query = `UPDATE Organisations SET imgPath = ? WHERE orgID = ?`;
+  connection.query(query, [filePath, orgID], function (err, result) {
+    if (err) {
+      console.error("Error updating path:", err);
+      res.status(500).send("Error updating path");
+    } else {
+      console.log("path updated successfully");
+      res.sendStatus(200);
+    }
+  });
+});
+
+router.post('/uploadDescLink', function (req, res, next) {
+  console.log("AHHHHH");
+  const { desc, link } = req.body;
+  let orgID = req.session.accountID;
+  if (!desc || !link) {
+    console.error("Description or link missing in request");
+    return res.status(400).json({ error: "Description or link missing in request" });
+  }
+  const query = 'UPDATE Organisations SET description = ?, orgSite = ? WHERE orgID = ?';
+  connection.query(query, [desc, link, orgID], function (err, result) {
+    if (err) {
+      console.error("Error updating description and link:", err);
+      res.status(500).json({ error: "Error updating description and link" });
+    } else {
+      console.log("Description and link updated successfully");
+      res.json({ message: "Description and link updated successfully" });
+    }
+  });
+});
 
 module.exports = router;

@@ -96,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     verified = data.verified;
+                    console.log("verified? ", verified);
                 })
                 .catch(error => {
                     console.error('Error checking verification status:', error);
@@ -220,6 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     verified = data.verified;
+
                 })
                 .catch(error => {
                     console.error('Error checking verification status:', error);

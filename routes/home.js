@@ -36,9 +36,11 @@ router.get("/", (req, res, next) => {
             }
             if (results.length > 0) {
                 // field empty? send to no verified
+                console.log("sent to non verified!")
                 res.sendFile(path.join(__dirname, '..', 'public', 'homeOrgNoVerify.html'));
             } else {
                 // if redirect to verified page
+                console.log("send to verified!");
                 res.sendFile(path.join(__dirname, '..', 'public', 'homeOrgVerified.html'));
             }
         });

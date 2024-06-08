@@ -72,7 +72,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
-INSERT INTO `Branch` VALUES (1,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(2,'Norwood','Norwood','SA','5067','Australia',1,1),(3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(4,'Sydney','Sydney','NSW','2000','Australia',1,1),(5,'Brisbane','Brisbane','QLD','4000','Australia',1,1),(6,'Melbourne','Melbourne','VIC','5067','Australia',1,0);
+INSERT INTO `Branch` VALUES (1,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(2,'Norwood','Norwood','SA','5067','Australia',1,1),(3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(4,'Sydney','Sydney','NSW','2000','Australia',1,1),(5,'Brisbane','Brisbane','QLD','4000','Australia',1,1),(6,'Melbourne','Melbourne','VIC','5067','Australia',1,0),(7,'huhuh','dkjs','ksmad','696969','yapcity',5,0);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +173,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png'),(2,'Salvos','https://redcross.org.au','contact@redcross.org.au','redcrosspassword','The Red Cross is a humanitarian organization that provides emergency assistance, disaster relief, and education.','redcross_logo.jpg'),(3,'Salvation Army','https://salvationarmy.org.au','info@salvationarmy.org.au','salvationpassword','The Salvation Army is a Christian organization dedicated to helping those in need.','salvationarmy_logo.jpg'),(4,'UNICEF','https://unicef.org','contact@unicef.org','unicefpassword','UNICEF works in over 190 countries and territories to save children’s lives, to defend their rights, and to help them fulfill their potential.','unicef_logo.jpg');
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png'),(2,'Salvos','https://redcross.org.au','contact@redcross.org.au','redcrosspassword','The Red Cross is a humanitarian organization that provides emergency assistance, disaster relief, and education.','redcross_logo.jpg'),(3,'Salvation Army','https://salvationarmy.org.au','info@salvationarmy.org.au','salvationpassword','The Salvation Army is a Christian organization dedicated to helping those in need.','salvationarmy_logo.jpg'),(4,'UNICEF','https://unicef.org','contact@unicef.org','unicefpassword','UNICEF works in over 190 countries and territories to save children’s lives, to defend their rights, and to help them fulfill their potential.','unicef_logo.jpg'),(5,'huhuh','yap.com\n','huh@gmail.com','yuh','YUHHH','image_assets/4c66a8a4fcfe9531a250aba31f4b3386');
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-07 11:51:04
+-- Dump completed on 2024-06-08  7:18:13

@@ -86,11 +86,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.error('error fetching branch posts:', error);
                     });
             },
-            goUpdates() {
-                window.location.href = "/updates";
-            },
-            goOpportunities() {
-                window.location.href = "/opportunities";
+            goTo(windowLocation) {
+                window.location.href = windowLocation;
             }
         }
     });

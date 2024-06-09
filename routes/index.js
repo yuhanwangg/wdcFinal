@@ -1391,9 +1391,9 @@ router.post('/addOrg', function (req, res, next) {
 
               });
 
-              var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, suburb, state, postcode, country) VALUES (?, ?, ?, ?, ?, ?, ?);";
+              var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, suburb, state, postcode, country, instated) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
-              connection.query(queryBranch, [currOrgId, name, currBranchId, suburb, state, postcode, country], function (err7, returnVal) {
+              connection.query(queryBranch, [currOrgId, name, currBranchId, suburb, state, postcode, country, 1], function (err7, returnVal) {
                 connection.release();
 
                 if (err7) {

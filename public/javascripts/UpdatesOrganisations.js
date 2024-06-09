@@ -1,12 +1,5 @@
 /*global Vue*/
 
-// let sessionToken = req.session.userType;
-//     if (sessionToken == null) {
-//         res.sendFile(path.join(__dirname, '..', 'public', 'homeGuest.html'));
-//     } else if (sessionToken === "volunteer") {
-//         res.sendFile(path.join(__dirname, '..', 'public', 'homeVolunteer.html'));
-//     } else if (sessionToken === "organisation") {
-
 //using session tokens
 function getOrgName() {
     var xhttp1 = new XMLHttpRequest();

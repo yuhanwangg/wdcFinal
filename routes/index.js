@@ -864,7 +864,7 @@ router.get('/getBranches', function (req, res, next) {
         res.status(404).json({ error: "Organisation not found" });
         return;
       }
-
+      console.log("ALL GOOD WE ARE RETURNING "  + rows1);
       res.json(rows1);
       return;
     });
@@ -874,7 +874,8 @@ router.get('/getBranches', function (req, res, next) {
 
 router.get('/getOrgName', function (req, res, next) {
   console.log("i am in the getOrgName requests index.js!!!");
-  const orgID = req.query.orgID;
+  const orgID = req.session.accountID;
+  console.log("the orgID is " + orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
   req.pool.getConnection(function (err, connection) {
     //this is the error handling
@@ -901,7 +902,7 @@ router.get('/getOrgName', function (req, res, next) {
         res.status(404).json({ error: "Organization not found" });
         return;
       }
-
+      console.log("ALL GOOD WE ARE RETURNING "  + rows1[0] );
       res.json(rows1[0]);
       return;
     });
@@ -910,7 +911,8 @@ router.get('/getOrgName', function (req, res, next) {
 
 router.get('/getOrgLogo', function (req, res, next) {
   console.log("i am in the getOrgLogo requests index.js!!!");
-  const orgID = req.query.orgID;
+  const orgID = req.session.accountID;
+  console.log("the orgID is " + orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
   req.pool.getConnection(function (err, connection) {
     //this is the error handling
@@ -937,7 +939,7 @@ router.get('/getOrgLogo', function (req, res, next) {
         res.status(404).json({ error: "Organization not found" });
         return;
       }
-
+      console.log("ALL GOOD WE ARE RETURNING "  + rows1[0] );
       res.json(rows1[0]);
       return;
     });
@@ -947,8 +949,9 @@ router.get('/getOrgLogo', function (req, res, next) {
 
 router.post('/createNewPost', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
-  // const { branchName, orgID, updateName, updateMsg, dateCreated } = req.body;
-  const { branchID, orgID, updateName, updateMsg, dateCreated } = req.body;
+  // const { branchName, updateName, updateMsg, dateCreated } = req.body;
+  const orgID = req.session.accountID;
+  const { branchID, updateName, updateMsg, dateCreated } = req.body;
   // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
   req.pool.getConnection(function (err, connection) {
     //this is the error handling

@@ -40,7 +40,7 @@
                 <h2>See your mark on the world</h2>
                 <div class="posts">
 
-                    <div v-if="branchPosts.length === 0" class="placeholder" @click="goOpportunities">
+                    <div v-if="branchPosts.length === 0" class="placeholder" @click="goTo('/opportunities')">
                         <p>Make your first post today!</p>
                     </div>
 
@@ -64,10 +64,9 @@
             </div>
 
             <div class="rightContent">
-                <h2>Updates of your joined
-                    Communities</h2>
+                <h2>Your Recent Updates</h2>
                 <div class="updatesList">
-                    <div v-if="branchUpdates.length === 0" class="placeholderUpdates" @click="goUpdates">
+                    <div v-if="branchUpdates.length === 0" class="placeholderUpdates" @click="goTo('/updates')">
                         <p>Make your first update today!</p>
                     </div>
                     <div v-for="update in branchUpdates" :key="update.updateID" class="update">
@@ -126,9 +125,9 @@
             </div>
             <div class="buttonList">
                 <div class="contactBtn"><button>Contact Us</button></div>
-                <div class="reqBtn"><button>Request Branch</button></div>
-                <div class="eventBtn"><button>Create Event</button></div>
-                <div class="updateBtn"><button>Create Update</button></div>
+                <div class="reqBtn"><button @click="goTo('/reqBranch')">Request Branch</button></div>
+                <div class="eventBtn"><button @click="goTo('/opportunities')">Create Event</button></div>
+                <div class="updateBtn"><button @click="goTo('/updates')">Create Update</button></div>
             </div>
         </div>
 

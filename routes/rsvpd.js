@@ -5,14 +5,11 @@ const path = require('path');
 // handle the different routing depending on whether they are volunteer, guest, admin or organisation
 
 router.get("/", (req, res, next) => {
-    if (req.session.userType === 'organisation') {
-        res.sendFile(path.join(__dirname, '..', 'public', 'UpdatesOrganisations.html'));
-    } else if (req.session.userType === 'volunteer') {
-        res.sendFile(path.join(__dirname, '..', 'public', 'UpdatesVolunteer.html'));
+    if (req.session.userType === "volunteer") {
+        res.sendFile(path.join(__dirname, '..', 'public', 'rsvp.html'));
     } else {
         window.location.href = "/home";
     }
-
 });
 
 module.exports = router;

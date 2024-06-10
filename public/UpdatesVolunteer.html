@@ -2,22 +2,22 @@
 <html lang="en">
 
 <head>
-    <title>Organisation</title>
+    <title>Updates Volunteer</title>
     <!-- vue script -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <link rel="stylesheet" href="stylesheets/main.css">
     <link rel="icon" type="image/x-icon" href="/images_assets/favicon.svg">
-    <link rel="stylesheet" href="stylesheets/UpdatesOrganisations.css">
+    <link rel="stylesheet" href="stylesheets/UpdatesVolunteer.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <script src="javascripts/UpdatesOrganisations.js" defer></script>
+    <script src="javascripts/UpdatesVolunteer.js" defer></script>
     <script src="javascripts/headerFooter.js"></script>
 
 </head>
 
-<body onload="getOrgName(); getOrgLogo(); getBranches()">
+<body onload="getFollowedBranch(); getPosts()">
     <div id="app">
         <!-- header -->
         <header-component>
@@ -32,43 +32,25 @@
                     <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
                     <select class="dropbtn" @change="choseBranch($event)">
                         <option v-for="(branch, index) in branches" v-bind:value="branch.branchID"
-                            v-bind:selected="index === 0">{{ branch.branchName}}</option>
+                            v-bind:selected="index === 0">{{branch.orgName}} — {{ branch.branchName}}</option>
                 </div>
                 </select>
             </div>
 
-            <!-- vue updates the number of posts and number of pages-->
-            <div class="postsPages">
-                <h2>New Post</h2>
-                <div id="numberOfPosts">
-                    <p id="numPosts">{{ numPosts }} Posts</p>
-                    <p id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
-                </div>
-            </div>
-
             <div class="posts">
 
-                <div class="newPost">
-                    <input type="text" placeholder="Update Title">
-                    <textarea id="postMessage" maxlength="500" rows="3" placeholder="Update Message"></textarea>
-                    <div class="charLeft">
-                        <p>Characters left: <span class="descCount">750</span></p>
-                    </div>
-                    <input type="submit" @click="post()" value="Post">
-                </div>
-                <!-- these are posts that are created using ajax -->
                 <div class="allPosts">
                     <!-- load all the current posts using vue -->
                     <div v-for="(post, index) in oldPosts.slice(sliceStart, sliceEnd)" class="oldPosts">
                         <div class="postInfo">
                             <p class="title">{{ post.updateName}}</p>
                             <div class="extraDetails">
-                                <p>{{ orgName }}</p>
+                                <p>{{ post.orgName }}</p>
                                 <p>{{ post.dateCreated }}</p>
                             </div>
                             <p>{{ post.updateMsg }}</p>
                         </div>
-                        <img class="companyLogo" v-bind:src="logoPath" alt="Company logo">
+                        <img class="companyLogo" v-bind:src="post.imgPath" alt="Company logo">
                     </div>
                 </div>
             </div>

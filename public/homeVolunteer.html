@@ -56,13 +56,11 @@
                         <p>Join your first community!</p>
                     </div>
                     <div v-for="update in recentUpdates" :key="update.updateID" class="update">
-                        <div class="postInfo">
-                            <a :href="'/update/' + update.updateID">
-                                <p class="title">{{ update.updateName }}</p>
-                            </a>
+                        <div class="postInfo" @click="goUpdates">
+                            <p class="title">{{ update.updateName }}</p>
                             <div class="extraDetails">
                                 <p>{{ update.orgName }} — {{ update.branchName }}</p>
-                                <p>{{ new Date(update.dateCreated).toLocaleDateString() }}</p>
+                                <p>{{ update.dateCreated }}</p>
                             </div>
                             <p>{{ update.updateMsg }}</p>
                         </div>

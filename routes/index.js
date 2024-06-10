@@ -2876,4 +2876,51 @@ router.post("/unjoinOrgBranch", function (req, res, next) {
   });
 })
 
+router.get('/getPostsVolunteer', function (req, res, next) {
+  // get the followed updates depending on the branch
+  let branchID = req.query.branchID;
+  // Construct the SQL query to fetch posts based on branchID
+  let sqlQuery = `
+    SELECT Updates.*, Organisations.imgPath
+    FROM Updates
+    JOIN Branch ON Updates.branchID = Branch.branchID
+    JOIN Organisations ON Branch.orgID = Organisations.orgID
+    WHERE Updates.branchID = ${branchID}`;
+
+  // Execute the SQL query
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      // Handle errors
+      console.error("Error fetching posts:", err);
+      res.status(500).json({ error: "Failed to fetch posts" });
+    } else {
+      // Send the fetched posts as JSON response
+      res.json(results);
+    }
+  });
+})
+
+router.get('/getFollowedBranch', function (req, res, next) {
+  // get the followed updates depending on the branch
+  let userID = req.session.accountID;
+  // Construct the SQL query to fetch posts based on branchID
+  let sqlQuery = `
+        SELECT Branch.branchID, Branch.branchName, Branch.suburb, Branch.state, Branch.postcode, Branch.country, Organisations.orgName
+        FROM Branch
+        INNER JOIN FollowedBranches ON Branch.branchID = FollowedBranches.branchID
+        INNER JOIN Organisations ON Branch.orgID = Organisations.orgID
+        WHERE FollowedBranches.userID = ${userID}`;
+  // Execute the SQL query
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      // Handle errors
+      console.error("Error fetching followed branches:", err);
+      res.status(500).json({ error: "Failed to fetch followed branches" });
+    } else {
+      // Send the fetched followed branches as JSON response
+      res.json(results);
+    }
+  });
+})
+
 module.exports = router;

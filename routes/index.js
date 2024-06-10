@@ -2789,6 +2789,93 @@ router.post('/regBranch', function (req, res, next) {
 
 });
 
+// gettinga ll organisations
+router.post("/searchOrgs", function (req, res, next) {
+  // get inputs
+  const { location, name } = req.body;
+  let query = `
+        SELECT
+            Branch.branchID,
+            Branch.branchName,
+            Branch.suburb,
+            Branch.state,
+            Branch.postcode,
+            Branch.country,
+            Branch.orgID,
+            Organisations.orgName,
+            Organisations.description,
+            Organisations.imgPath,
+            CASE
+                WHEN FollowedBranches.userID IS NOT NULL THEN true
+                ELSE false
+            END AS joined
+        FROM
+            Branch
+        JOIN
+            Organisations ON Branch.orgID = Organisations.orgID
+        LEFT JOIN
+            FollowedBranches ON Branch.branchID = FollowedBranches.branchID AND FollowedBranches.userID = ?
+        WHERE
+            Branch.instated = 1
+    `;
+  let userID = req.session.accountID;
+  let queryParams = [userID];
 
+  if (location) {
+    query += ` AND (Branch.suburb LIKE ? OR Branch.state LIKE ? OR Branch.country LIKE ?)`;
+    queryParams.push(`%${location}%`, `%${location}%`, `%${location}%`);
+  }
+
+  if (name) {
+    query += ` AND Organisations.orgName LIKE ?`;
+    queryParams.push(`%${name}%`);
+  }
+
+  connection.query(query, queryParams, function (err, results) {
+    if (err) {
+      console.error('Error fetching branches:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    res.json(results);
+  });
+})
+
+router.post("/joinOrgBranch", function (req, res, next) {
+  // first get user ID, branch ID and org ID
+  let userID = req.session.accountID;
+  const { branchID } = req.body;
+
+  // insert query to follow the branch
+  let query = `
+    INSERT INTO FollowedBranches (userID, branchID, emailSubscribed)
+    VALUES (?, ?, 1)
+  `;
+  let queryParams = [userID, branchID];
+  connection.query(query, queryParams, function (err, results) {
+    if (err) {
+      console.error('Error joining branch:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    res.status(200).json({ message: 'Successfully joined branch' });
+  });
+})
+
+router.post("/unjoinOrgBranch", function (req, res, next) {
+  // first get user ID, branch ID and org ID
+  let userID = req.session.accountID;
+  const { branchID } = req.body;
+
+  let query = "DELETE FROM FollowedBranches WHERE userID = ? AND branchID = ?";
+  connection.query(query, [userID, branchID], function (err, result) {
+    if (err) {
+      console.error('Error unjoining branch:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    res.json({ message: 'Successfully unjoined branch' });
+  });
+})
 
 module.exports = router;

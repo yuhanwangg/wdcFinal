@@ -832,29 +832,21 @@ router.get('/oldPosts', function (req, res, next) {
   //const branchName = req.query.branch;
   const orgID = req.query.orgID;
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
+
+  console.log("connected to pool in org branch requests");
+
+  // query to get the update posts by the branch
+  var oldPostsQuery = "SELECT * FROM Updates WHERE branchID = ?";
+  connection.query(oldPostsQuery, [branchID], function (err2, rows2) {
+    if (err2) {
+      console.log("Error executing branch request query:", err2);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool in org branch requests");
 
-    // query to get the update posts by the branch
-    var oldPostsQuery = "SELECT * FROM Updates WHERE branchID = ?";
-    connection.query(oldPostsQuery, [branchID], function (err2, rows2) {
-      connection.release();
-      if (err2) {
-        console.log("Error executing branch request query:", err2);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      // old update posts found, send back the details
-      res.json(rows2);
-      return;
-    });
+    // old update posts found, send back the details
+    res.json(rows2);
+    return;
   });
 });
 
@@ -863,37 +855,30 @@ router.get('/getBranches', function (req, res, next) {
   const orgID = req.session.accountID;
   console.log("orgID: ", orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
+
+  console.log("connected to pool in org branch requests");
+  // First query to get the orgID
+  var query = "SELECT * FROM Branch WHERE orgID = ? && instated = 1;";
+  connection.query(query, [orgID], function (err1, rows1) {
+
+    if (err1) {
+      connection.release();
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool in org branch requests");
-    // First query to get the orgID
-    var query = "SELECT * FROM Branch WHERE orgID = ? && instated = 1;";
-    connection.query(query, [orgID], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
+    console.log("row length: ", rows1.length);
 
-      console.log("row length: ", rows1.length);
-
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organisation not found" });
-        return;
-      }
-      console.log("ALL GOOD WE ARE RETURNING " + rows1);
-      res.json(rows1);
+    if (rows1.length === 0) {
+      connection.release();
+      // Organization not found
+      res.status(404).json({ error: "Organisation not found" });
       return;
-    });
+    }
+    console.log("ALL GOOD WE ARE RETURNING " + rows1);
+    res.json(rows1);
+    return;
   });
 });
 
@@ -940,35 +925,25 @@ router.get('/getOrgLogo', function (req, res, next) {
   const orgID = req.session.accountID;
   console.log("the orgID is " + orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
+  console.log("connected to pool in org branch requests");
+  // First query to get the orgID
+  var query = "SELECT imgPath FROM Organisations WHERE orgID = ?;";
+  connection.query(query, [orgID], function (err1, rows1) {
+
+    if (err1) {
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool in org branch requests");
-    // First query to get the orgID
-    var query = "SELECT imgPath FROM Organisations WHERE orgID = ?;";
-    connection.query(query, [orgID], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organisation not fsound" });
-        return;
-      }
-      console.log("ALL GOOD WE ARE RETURNING " + rows1[0].imgPath);
-      res.json(rows1[0]);
+    if (rows1.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Organisation not fsound" });
       return;
-    });
+    }
+    console.log("ALL GOOD WE ARE RETURNING " + rows1[0].imgPath);
+    res.json(rows1[0]);
+    return;
   });
 });
 
@@ -1961,6 +1936,10 @@ router.get('/getName', function (req, res) {
       return res.status(400).json({ error: 'Invalid user type' });
     }
 
+    req.pool.getConnection(function (err, connection) {
+
+    })
+
     connection.query(query, [id], (error, results) => {
       if (error) {
         console.error('Error executing query:', error);
@@ -2459,14 +2438,9 @@ router.get('/getUpdates', (req, res) => {
   let branchID = req.query.branchID;
   console.log("BRANCHID: ", branchID);
 
-  req.pool.getConnection(function (err, connection) {
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
-      return;
-    }
 
-    const query = `
+
+  const query = `
       SELECT u.*
       FROM Updates u
       JOIN Branch b ON u.branchID = b.branchID
@@ -2475,21 +2449,19 @@ router.get('/getUpdates', (req, res) => {
       LIMIT 3
     `;
 
-    connection.query(query, [organisationID, branchID], function (err, rows) {
-      connection.release(); // release connection after query execution
+  connection.query(query, [organisationID, branchID], function (err, rows) {
 
-      if (err) {
-        console.error('error fetching updates:', err);
-        res.status(500).json({ error: 'internal server error' });
-        return;
-      }
+    if (err) {
+      console.error('error fetching updates:', err);
+      res.status(500).json({ error: 'internal server error' });
+      return;
+    }
 
-      if (rows.length === 0) {
-        console.log("THERE IS NO UpDATES");
-      }
+    if (rows.length === 0) {
+      console.log("THERE IS NO UpDATES");
+    }
 
-      res.json(rows); // send updates as JSON response
-    });
+    res.json(rows); // send updates as JSON response
   });
 });
 

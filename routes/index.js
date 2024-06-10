@@ -162,62 +162,51 @@ router.post('/addAdmin', function (req, res, next) {
   const { first_name, last_name, email, password } = req.body;
   console.log("values in /addAdmin are" + first_name, last_name, email, password);
 
-  //get the connection again
-  req.pool.getConnection(function (err, connection) {
+
+  //get the last created and used AdminId
+  var currAdminIdQuery = "SELECT adminId FROM Admin ORDER BY adminId DESC LIMIT 1;";
+  connection.query(currAdminIdQuery, async function (err1, result) {
+    //release the query, don't need access to the database anymore
+
     //error handling
-    if (err) {
-      console.log("got error!!!!")
+    if (err1) {
+      console.log("Got error while fetching AdminID: ", err1);
       res.sendStatus(500);
       return;
     }
 
-    //get the last created and used AdminId
-    var currAdminIdQuery = "SELECT adminId FROM Admin ORDER BY adminId DESC LIMIT 1;";
-    connection.query(currAdminIdQuery, async function (err1, result) {
+    let currAdminId = 1;
+    if (result.length > 0) {
+      currAdminId = result[0].adminId + 1
+    }
+    console.log("the new admin id is " + currAdminId);
+
+    //hash password
+    var hash;
+
+    try {
+      hash = await hashPass(password);
+    } catch (err) {
+      console.log("error in hash");
+      res.sendStatus(500);
+      return;
+    }
+
+    var query = "INSERT INTO Admin (adminId, firstname, lastName, email, password) VALUES (?, ?, ?, ?, ?);";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [currAdminId, first_name, last_name, email, hash], function (err2, returnVal) {
       //release the query, don't need access to the database anymore
-
       //error handling
-      if (err1) {
-        connection.release();
-        console.log("Got error while fetching AdminID: ", err1);
+      if (err2) {
+        console.log("Got error while inserting new admin: ", err2);
         res.sendStatus(500);
         return;
       }
-
-      let currAdminId = 1;
-      if (result.length > 0) {
-        currAdminId = result[0].adminId + 1
-      }
-      console.log("the new admin id is " + currAdminId);
-
-      //hash password
-      var hash;
-
-      try {
-        hash = await hashPass(password);
-      } catch (err) {
-        console.log("error in hash");
-        res.sendStatus(500);
-        return;
-      }
-
-      var query = "INSERT INTO Admin (adminId, firstname, lastName, email, password) VALUES (?, ?, ?, ?, ?);";
-
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [currAdminId, first_name, last_name, email, hash], function (err2, returnVal) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err2) {
-          console.log("Got error while inserting new admin: ", err2);
-          res.sendStatus(500);
-          return;
-        }
-        //send an empty response, not needing to return anything, or can send a message for clarity
-        res.send("successfully added");
-        return;
-      });
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully added");
+      return;
     });
   });
 });
@@ -229,37 +218,28 @@ router.get('/orgDetails', function (req, res, next) {
   const email = req.query.email;
   console.log("the org name and email in /orgDetails is " + orgName + " " + email);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!")
-      res.sendStatus(500);
+  console.log("connected to pool");
+  //this is the query which i can change
+  var query = "SELECT orgName, email, description, orgID FROM Organisations WHERE orgName = ? AND email = ?;";
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  connection.query(query, [orgName, email], function (err1, rows, fields) {
+
+    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+    if (err1) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
-    var query = "SELECT orgName, email, description, orgID FROM Organisations WHERE orgName = ? AND email = ?;";
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [orgName, email], function (err1, rows, fields) {
 
-      //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        // Organization not found
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-
-      // Organization found, send back the details
-      res.json(rows[0]);
+    if (rows.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
       return;
-    });
+    }
+
+    // Organization found, send back the details
+    res.json(rows[0]);
+    return;
   });
 });
 
@@ -268,48 +248,37 @@ router.get('/orgBranchRequests', function (req, res, next) {
   const orgName = req.query.orgName;
   const email = req.query.email;
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
+  console.log("connected to pool in org branch requests");
+  // First query to get the orgID
+  var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
+  connection.query(IDquery, [orgName, email], function (err1, rows1) {
+
+    if (err1) {
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool in org branch requests");
-    // First query to get the orgID
-    var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
-    connection.query(IDquery, [orgName, email], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
+    if (rows1.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
+      return;
+    }
+
+    const orgID = rows1[0].orgID;
+
+    // Second query to get the branch requests using the orgID
+    var branchRequestQuery = "SELECT branchName FROM Branch WHERE orgID = ? AND instated = 0";
+    connection.query(branchRequestQuery, [orgID], function (err2, rows2) {
+      if (err2) {
+        console.log("Error executing branch request query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
 
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-
-      const orgID = rows1[0].orgID;
-
-      // Second query to get the branch requests using the orgID
-      var branchRequestQuery = "SELECT branchName FROM Branch WHERE orgID = ? AND instated = 0";
-      connection.query(branchRequestQuery, [orgID], function (err2, rows2) {
-        connection.release();
-        if (err2) {
-          console.log("Error executing branch request query:", err2);
-          res.status(500).json({ error: "Internal Server Error" });
-          return;
-        }
-
-        // Branch requests found, send back the details
-        res.json(rows2);
-        return;
-      });
+      // Branch requests found, send back the details
+      res.json(rows2);
+      return;
     });
   });
 });
@@ -319,48 +288,39 @@ router.get('/orgCurrentBranches', function (req, res, next) {
   const orgName = req.query.orgName;
   const email = req.query.email;
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error in current branch!!!!")
-      res.sendStatus(500);
+  console.log("connected to pool for current branch");
+  // First query to get the orgID
+  var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
+  connection.query(IDquery, [orgName, email], function (err1, rows1) {
+
+    if (err1) {
+
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool for current branch");
-    // First query to get the orgID
-    var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
-    connection.query(IDquery, [orgName, email], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
+    if (rows1.length === 0) {
+
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
+      return;
+    }
+
+    const orgID = rows1[0].orgID;
+
+    // Second query to get the branch requests using the orgID
+    var branchRequestQuery = "SELECT branchName FROM Branch WHERE orgID = ? AND instated = 1";
+    connection.query(branchRequestQuery, [orgID], function (err2, rows2) {
+      if (err2) {
+        console.log("Error executing branch current query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
 
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-
-      const orgID = rows1[0].orgID;
-
-      // Second query to get the branch requests using the orgID
-      var branchRequestQuery = "SELECT branchName FROM Branch WHERE orgID = ? AND instated = 1";
-      connection.query(branchRequestQuery, [orgID], function (err2, rows2) {
-        connection.release();
-        if (err2) {
-          console.log("Error executing branch current query:", err2);
-          res.status(500).json({ error: "Internal Server Error" });
-          return;
-        }
-
-        // Branch requests found, send back the details
-        res.json(rows2);
-        return;
-      });
+      // Branch requests found, send back the details
+      res.json(rows2);
+      return;
     });
   });
 });
@@ -372,47 +332,36 @@ router.post('/instantiateBranch', function (req, res, next) {
   console.log(branchName, orgName, orgEmail);
 
   //get the connection again
-  req.pool.getConnection(function (err, connection) {
-    //error handling
-    if (err) {
-      console.log("got error!!!!")
-      res.sendStatus(500);
+  // First query to get the orgID
+  var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
+  connection.query(IDquery, [orgName, orgEmail], function (err1, rows1) {
+
+    if (err1) {
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    // First query to get the orgID
-    var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
-    connection.query(IDquery, [orgName, orgEmail], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
+    if (rows1.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
+      return;
+    }
+
+    var orgID = rows1[0].orgID;
+
+    // Second query to alter the branch instanitated value
+    var updateInstanitatedQuery = "UPDATE Branch SET instated = 1 WHERE orgID = ? AND branchName = ?;";
+    connection.query(updateInstanitatedQuery, [orgID, branchName], function (err2, rows2) {
+      if (err2) {
+        console.log("Error executing branch current query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
 
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-
-      var orgID = rows1[0].orgID;
-
-      // Second query to alter the branch instanitated value
-      var updateInstanitatedQuery = "UPDATE Branch SET instated = 1 WHERE orgID = ? AND branchName = ?;";
-      connection.query(updateInstanitatedQuery, [orgID, branchName], function (err2, rows2) {
-        connection.release();
-        if (err2) {
-          console.log("Error executing branch current query:", err2);
-          res.status(500).json({ error: "Internal Server Error" });
-          return;
-        }
-
-        // Branch requests found, send back the details
-        res.json(rows2);
-        return;
-      });
+      // Branch requests found, send back the details
+      res.json(rows2);
+      return;
     });
   });
 });
@@ -425,47 +374,36 @@ router.post('/removeBranch', function (req, res, next) {
   console.log(branchName, orgName, orgEmail);
 
   //get the connection again
-  req.pool.getConnection(function (err, connection) {
-    //error handling
-    if (err) {
-      console.log("got error!!!!")
-      res.sendStatus(500);
+  // First query to get the orgID
+  var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
+  connection.query(IDquery, [orgName, orgEmail], function (err1, rows1) {
+
+    if (err1) {
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    // First query to get the orgID
-    var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
-    connection.query(IDquery, [orgName, orgEmail], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
+    if (rows1.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
+      return;
+    }
+
+    const orgID = rows1[0].orgID;
+
+    // Second query to remove the branch and everything associated with it (ON DELETE CASCADE)
+    var updateInstanitatedQuery = "DELETE FROM Branch WHERE orgID = ? AND branchName = ?;";
+    connection.query(updateInstanitatedQuery, [orgID, branchName], function (err2, rows2) {
+      if (err2) {
+        console.log("Error executing branch current query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
 
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-
-      const orgID = rows1[0].orgID;
-
-      // Second query to remove the branch and everything associated with it (ON DELETE CASCADE)
-      var updateInstanitatedQuery = "DELETE FROM Branch WHERE orgID = ? AND branchName = ?;";
-      connection.query(updateInstanitatedQuery, [orgID, branchName], function (err2, rows2) {
-        connection.release();
-        if (err2) {
-          console.log("Error executing branch current query:", err2);
-          res.status(500).json({ error: "Internal Server Error" });
-          return;
-        }
-
-        // Branch requests found, send back the details
-        res.json(rows2);
-        return;
-      });
+      // Branch requests found, send back the details
+      res.json(rows2);
+      return;
     });
   });
 });
@@ -478,31 +416,22 @@ router.post('/orgInfo', function (req, res, next) {
   console.log("i am here now in orgInfo!!!");
   //console.log("i am here now in orgInfo!!! and the orgId is " + orgId);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!")
+  console.log("connected to pool");
+  //this is the query which i can change
+  // var query = "SELECT orgName, email, description FROM Organisations WHERE orgID = ?;";
+
+  var query = "SELECT orgName, email, description FROM Organisations WHERE orgName = ? AND email = ? ;";
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  // connection.query(query, [orgId], function(err1, rows, fields) {
+  connection.query(query, [orgName, orgEmail], function (err1, rows, fields) {
+    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+    //error handling
+    if (err1) {
       res.sendStatus(500);
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
-    // var query = "SELECT orgName, email, description FROM Organisations WHERE orgID = ?;";
-
-    var query = "SELECT orgName, email, description FROM Organisations WHERE orgName = ? AND email = ? ;";
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    // connection.query(query, [orgId], function(err1, rows, fields) {
-    connection.query(query, [orgName, orgEmail], function (err1, rows, fields) {
-      //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
-      connection.release();
-      //error handling
-      if (err1) {
-        res.sendStatus(500);
-        return;
-      }
-      //in this case we are recieving information from our query which we want to send back, so we send back a json version of the rows
-      res.json(rows);
-    });
+    //in this case we are recieving information from our query which we want to send back, so we send back a json version of the rows
+    res.json(rows);
   });
 });
 
@@ -512,41 +441,30 @@ router.post('/orgId', function (req, res, next) {
   const { orgName, orgEmail } = req.body;
   console.log("the orgName and email in the index.js /orgId is " + orgName + " " + orgEmail);
 
-  //get the connection again
-  req.pool.getConnection(function (err, connection) {
-    //error handling
-    if (err) {
-      console.log("got error!!!!")
-      res.sendStatus(500);
+  // First query to get the orgID
+
+  var query = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ? ;";
+
+  connection.query(query, [orgName, orgEmail], function (err1, rows, fields) {
+    console.log("the built query is: " + query);
+    console.log("orgName value is: " + orgName);
+    console.log("orgEmail value is: " + orgEmail);
+
+    if (err1) {
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    // First query to get the orgID
 
-    var query = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ? ;";
+    if (rows.length === 0) {
+      // Organization not found
+      console.log("I AM HERE!!");
+      res.status(404).json({ error: "Organization not found" });
+      return;
+    }
 
-    connection.query(query, [orgName, orgEmail], function (err1, rows, fields) {
-      console.log("the built query is: " + query);
-      console.log("orgName value is: " + orgName);
-      console.log("orgEmail value is: " + orgEmail);
-
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        connection.release();
-        // Organization not found
-        console.log("I AM HERE!!");
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-
-      console.log("the found orgId in index.js is " + rows[0].orgID);
-      res.json(rows);
-    });
+    console.log("the found orgId in index.js is " + rows[0].orgID);
+    res.json(rows);
   });
 });
 
@@ -557,29 +475,20 @@ router.post('/saveOrgInfoNewName', function (req, res, next) {
 
   if (orgId > 0) {
     //get the connection again
-    req.pool.getConnection(function (err, connection) {
+    //changed query
+    var query = "UPDATE Organisations SET orgName = ?, email = ?, description = ? WHERE orgID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [newOrgName, newOrgEmail, newOrgDescription, orgId], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
       //error handling
-      if (err) {
-        console.log("got error!!!!")
+      if (err1) {
         res.sendStatus(500);
         return;
       }
-      //changed query
-      var query = "UPDATE Organisations SET orgName = ?, email = ?, description = ? WHERE orgID = ?;";
-
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [newOrgName, newOrgEmail, newOrgDescription, orgId], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //send an empty response, not needing to return anything, or can send a message for clarity
-        res.send("successfully updated");
-      });
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully updated");
     });
   }
   else {
@@ -596,29 +505,20 @@ router.post('/saveOrgInfoOldName', function (req, res, next) {
 
   if (orgId > 0) {
     //get the connection again
-    req.pool.getConnection(function (err, connection) {
+    //changed query
+    var query = "UPDATE Organisations SET email = ?, description = ? WHERE orgID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [newOrgEmail, newOrgDescription, orgId], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
       //error handling
-      if (err) {
-        console.log("got error!!!!")
+      if (err1) {
         res.sendStatus(500);
         return;
       }
-      //changed query
-      var query = "UPDATE Organisations SET email = ?, description = ? WHERE orgID = ?;";
-
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [newOrgEmail, newOrgDescription, orgId], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //send an empty response, not needing to return anything, or can send a message for clarity
-        res.send("successfully updated");
-      });
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully updated");
     });
   }
   else {
@@ -635,32 +535,21 @@ router.post('/deleteOrg', function (req, res, next) {
 
   if (orgId > 0) {
     //get the connection again
-    req.pool.getConnection(function (err, connection) {
+
+    //changed query
+    var query = "DELETE FROM Organisations WHERE orgID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [orgId], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
       //error handling
-      if (err) {
-        console.log("got error!!!!")
+      if (err1) {
         res.sendStatus(500);
         return;
       }
-      else {
-        console.log("didn't get error for connection");
-      }
-      //changed query
-      var query = "DELETE FROM Organisations WHERE orgID = ?;";
-
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [orgId], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //send an empty response, not needing to return anything, or can send a message for clarity
-        res.send("successfully deleted");
-      });
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully deleted");
     });
   }
   else {
@@ -677,37 +566,29 @@ router.get('/userDetails', function (req, res, next) {
   const email = req.query.email;
   console.log("the first name, last name, and email in /userDetails is " + firstName + " " + lastName + " " + email);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!")
-      res.sendStatus(500);
+
+  console.log("connected to pool");
+  //this is the query which i can change
+  var query = "SELECT userID, firstName, lastName, email FROM User WHERE firstName = ? AND lastName = ? AND email = ?;";
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  connection.query(query, [firstName, lastName, email], function (err1, rows, fields) {
+
+    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+    if (err1) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
-    var query = "SELECT userID, firstName, lastName, email FROM User WHERE firstName = ? AND lastName = ? AND email = ?;";
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [firstName, lastName, email], function (err1, rows, fields) {
 
-      //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        // Organization not found
-        res.status(404).json({ error: "Users not found" });
-        return;
-      }
-
-      // Users found, send back the details
-      res.json(rows);
+    if (rows.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Users not found" });
       return;
-    });
+    }
+
+    // Users found, send back the details
+    res.json(rows);
+    return;
   });
 });
 
@@ -717,31 +598,23 @@ router.post('/userInfo', function (req, res, next) {
   console.log("i am here now in userInfo!!!");
 
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!")
+  console.log("connected to pool");
+  //this is the query which i can change
+
+  var query = "SELECT firstName, lastName, email FROM User WHERE userID = ? ;";
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+
+  connection.query(query, [userID], function (err1, rows, fields) {
+    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+    //error handling
+    if (err1) {
       res.sendStatus(500);
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
-
-    var query = "SELECT firstName, lastName, email FROM User WHERE userID = ? ;";
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-
-    connection.query(query, [userID], function (err1, rows, fields) {
-      //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
-      connection.release();
-      //error handling
-      if (err1) {
-        res.sendStatus(500);
-        return;
-      }
-      //in this case we are recieving information from our query which we want to send back, so we send back a json version of the rows
-      res.json(rows);
-    });
+    //in this case we are recieving information from our query which we want to send back, so we send back a json version of the rows
+    res.json(rows);
   });
+
 });
 
 
@@ -750,29 +623,20 @@ router.post('/saveUserInfo', function (req, res, next) {
   const { userID, newFirstName, newLastName, newEmail } = req.body;
 
   if (userID > 0) {
-    req.pool.getConnection(function (err, connection) {
+    //changed query
+    var query = "UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE userID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [newFirstName, newLastName, newEmail, userID], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
       //error handling
-      if (err) {
-        console.log("got error!!!!")
+      if (err1) {
         res.sendStatus(500);
         return;
       }
-      //changed query
-      var query = "UPDATE User SET firstName = ?, lastName = ?, email = ? WHERE userID = ?;";
-
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [newFirstName, newLastName, newEmail, userID], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //send an empty response, not needing to return anything, or can send a message for clarity
-        res.send("successfully updated");
-      });
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully updated");
     });
   }
   else {
@@ -791,32 +655,21 @@ router.post('/deleteUser', function (req, res, next) {
 
   if (userID > 0) {
     //get the connection again
-    req.pool.getConnection(function (err, connection) {
+
+    //changed query
+    var query = "DELETE FROM User WHERE userID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [userID], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
       //error handling
-      if (err) {
-        console.log("got error!!!!")
+      if (err1) {
         res.sendStatus(500);
         return;
       }
-      else {
-        console.log("didn't get error for connection");
-      }
-      //changed query
-      var query = "DELETE FROM User WHERE userID = ?;";
-
-      //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
-      //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(query, [userID], function (err1, rows, fields) {
-        //release the query, don't need access to the database anymore
-        connection.release();
-        //error handling
-        if (err1) {
-          res.sendStatus(500);
-          return;
-        }
-        //send an empty response, not needing to return anything, or can send a message for clarity
-        res.send("successfully deleted");
-      });
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      res.send("successfully deleted");
     });
   }
   else {
@@ -888,35 +741,27 @@ router.get('/getOrgName', function (req, res, next) {
   const orgID = req.session.accountID;
   console.log("the orgID is " + orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
+  console.log("connected to pool in org branch requests");
+  // First query to get the orgID
+  var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
+  connection.query(query, [orgID], function (err1, rows1) {
+
+    if (err1) {
+      connection.release();
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool in org branch requests");
-    // First query to get the orgID
-    var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
-    connection.query(query, [orgID], function (err1, rows1) {
 
-      if (err1) {
-        connection.release();
-        console.log("Error executing ID query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows1.length === 0) {
-        connection.release();
-        // Organization not found
-        res.status(404).json({ error: "Organization not found" });
-        return;
-      }
-      console.log("ALL GOOD WE ARE RETURNING " + rows1[0]);
-      res.json(rows1[0]);
+    if (rows1.length === 0) {
+      connection.release();
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
       return;
-    });
+    }
+    console.log("ALL GOOD WE ARE RETURNING " + rows1[0]);
+    res.json(rows1[0]);
+    return;
   });
 });
 
@@ -954,61 +799,50 @@ router.post('/createNewPost', function (req, res, next) {
   const orgID = req.session.accountID;
   const { branchID, updateName, updateMsg, dateCreated } = req.body;
   // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
+  //get the last created and used updateID
+  var currUpdateIdQuery = "SELECT updateID FROM Updates ORDER BY updateID DESC LIMIT 1;";
+
+  connection.query(currUpdateIdQuery, function (err1, result) {
+    //release the query, don't need access to the database anymore
+
+    //error handling
+    if (err1) {
+      console.log("Got error while fetching updateID: ", err1);
       res.sendStatus(500);
       return;
     }
-    //get the last created and used updateID
-    var currUpdateIdQuery = "SELECT updateID FROM Updates ORDER BY updateID DESC LIMIT 1;";
 
-    connection.query(currUpdateIdQuery, function (err1, result) {
-      //release the query, don't need access to the database anymore
+    let currUpdateId = 1;
+    if (result.length > 0) {
+      currUpdateId = result[0].updateID + 1
+    }
+    console.log("the new update id is " + currUpdateId);
+
+    var newPostQuery = "INSERT INTO Updates (updateID, updateName, updateMsg, branchID, dateCreated) VALUES (?, ?, ?, ?, ?);";
+
+    //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
+    //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(newPostQuery, [currUpdateId, updateName, updateMsg, branchID, dateCreated], function (err2, returnVal) {
 
       //error handling
-      if (err1) {
-        connection.release();
-        console.log("Got error while fetching updateID: ", err1);
+      if (err2) {
+        //release the query, don't need access to the database anymore
+        console.log("Got error while inserting new post: ", err2);
         res.sendStatus(500);
         return;
       }
 
-      let currUpdateId = 1;
-      if (result.length > 0) {
-        currUpdateId = result[0].updateID + 1
-      }
-      console.log("the new update id is " + currUpdateId);
-
-      var newPostQuery = "INSERT INTO Updates (updateID, updateName, updateMsg, branchID, dateCreated) VALUES (?, ?, ?, ?, ?);";
-
-      //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
-      //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-      connection.query(newPostQuery, [currUpdateId, updateName, updateMsg, branchID, dateCreated], function (err2, returnVal) {
-
-        //error handling
+      var allPosts = "SELECT * FROM Updates WHERE branchID = ?";
+      connection.query(allPosts, [branchID], function (err2, rows2) {
         if (err2) {
-          //release the query, don't need access to the database anymore
-          connection.release();
-          console.log("Got error while inserting new post: ", err2);
-          res.sendStatus(500);
+          console.log("Error executing branch request query:", err2);
+          res.status(500).json({ error: "Internal Server Error" });
           return;
         }
 
-        var allPosts = "SELECT * FROM Updates WHERE branchID = ?";
-        connection.query(allPosts, [branchID], function (err2, rows2) {
-          connection.release();
-          if (err2) {
-            console.log("Error executing branch request query:", err2);
-            res.status(500).json({ error: "Internal Server Error" });
-            return;
-          }
-
-          // old update posts found, send back the details
-          res.json(rows2);
-          return;
-        });
+        // old update posts found, send back the details
+        res.json(rows2);
+        return;
       });
     });
   });
@@ -1029,95 +863,70 @@ router.post('/email', function (req, res, next) {
 router.post('/emailUpdate', function (req, res, next) {
   //find the email list
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!")
-      res.sendStatus(500);
+  console.log("connected to pool");
+  //this is the query which i can change
+  var query = "SELECT email FROM User WHERE userID IN (SELECT userID FROM FollowedBranches WHERE branchID = ? AND emailSubscribed = 1);";
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  connection.query(query, [req.body.branchID], function (err1, rows, fields) {
+
+    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+    if (err1) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
-    var query = "SELECT email FROM User WHERE userID IN (SELECT userID FROM FollowedBranches WHERE branchID = ? AND emailSubscribed = 1);";
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [req.body.branchID], function (err1, rows, fields) {
 
-      //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length > 0) {
-        // Extract email addresses from the result rows
-        const emailList = rows.map(row => row.email);
-        // Organization found, send back the details
-        let info = transporter.sendMail({
-          from: "heartfelthelpers@outlook.com", //sender address
-          to: emailList.join(','), //list of recievers
-          subject: req.body.subject, //subject line
-          text: req.body.text, //plain text body
-          html: req.body.text //html body
-        })
-      }
-      return;
-    });
+    if (rows.length > 0) {
+      // Extract email addresses from the result rows
+      const emailList = rows.map(row => row.email);
+      // Organization found, send back the details
+      let info = transporter.sendMail({
+        from: "heartfelthelpers@outlook.com", //sender address
+        to: emailList.join(','), //list of recievers
+        subject: req.body.subject, //subject line
+        text: req.body.text, //plain text body
+        html: req.body.text //html body
+      })
+    }
+    return;
   });
 });
 
 router.get('/allUsers', function (req, res, next) {
   console.log("i am in the allUsers requests index.js!!!");
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      res.sendStatus(500);
+
+  // query to get the update posts by the branch
+  var oldPostsQuery = "SELECT * FROM User";
+  connection.query(oldPostsQuery, function (err2, rows2) {
+    if (err2) {
+      console.log("Error executing user request query:", err2);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
 
-    // query to get the update posts by the branch
-    var oldPostsQuery = "SELECT * FROM User";
-    connection.query(oldPostsQuery, function (err2, rows2) {
-      connection.release();
-      if (err2) {
-        console.log("Error executing user request query:", err2);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      // old update posts found, send back the details
-      res.json(rows2);
-      return;
-    });
+    // old update posts found, send back the details
+    res.json(rows2);
+    return;
   });
 });
 
 router.get('/allOrgs', function (req, res, next) {
   console.log("i am in the allOrgs requests index.js!!!");
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      res.sendStatus(500);
+
+  // query to get the update posts by the branch
+  var allOrgs = "SELECT * FROM Organisations;";
+  connection.query(allOrgs, function (err2, rows2) {
+    if (err2) {
+      console.log("Error executing user request query:", err2);
+      res.status(500).json({ error: "Internal Server Error" });
       return;
     }
 
-    // query to get the update posts by the branch
-    var allOrgs = "SELECT * FROM Organisations;";
-    connection.query(allOrgs, function (err2, rows2) {
-      connection.release();
-      if (err2) {
-        console.log("Error executing user request query:", err2);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      // old update posts found, send back the details
-      res.json(rows2);
-      return;
-    });
+    // old update posts found, send back the details
+    res.json(rows2);
+    return;
   });
 });
 
@@ -1935,11 +1744,6 @@ router.get('/getName', function (req, res) {
     } else {
       return res.status(400).json({ error: 'Invalid user type' });
     }
-
-    req.pool.getConnection(function (err, connection) {
-
-    })
-
     connection.query(query, [id], (error, results) => {
       if (error) {
         console.error('Error executing query:', error);
@@ -2473,14 +2277,8 @@ router.get('/getPosts', (req, res) => {
   let branchID = req.query.branchID;
   console.log("BRANCHID: ", branchID);
 
-  req.pool.getConnection(function (err, connection) {
-    if (err) {
-      console.log("got connection error for org branch requests!!!!")
-      res.sendStatus(500);
-      return;
-    }
 
-    const query = `
+  const query = `
       SELECT o.*
       FROM Opportunities o
       JOIN Branch b ON o.branchID = b.branchID
@@ -2489,21 +2287,19 @@ router.get('/getPosts', (req, res) => {
       LIMIT 3
     `;
 
-    connection.query(query, [organisationID, branchID], function (err, rows) {
-      connection.release(); // release connection after query execution
+  connection.query(query, [organisationID, branchID], function (err, rows) {
 
-      if (err) {
-        console.error('error fetching posts:', err);
-        res.status(500).json({ error: 'internal server error' });
-        return;
-      }
+    if (err) {
+      console.error('error fetching posts:', err);
+      res.status(500).json({ error: 'internal server error' });
+      return;
+    }
 
-      if (rows.length === 0) {
-        console.log("THERE IS NO POSTS");
-      }
+    if (rows.length === 0) {
+      console.log("THERE IS NO POSTS");
+    }
 
-      res.json(rows); // send updates as JSON response
-    });
+    res.json(rows); // send updates as JSON response
   });
 });
 
@@ -2516,91 +2312,91 @@ router.post('/loginGoogle', async function (req, res, next) {
   console.log("/loginGoogle running");
 
   try {
-      const ticket = await client.verifyIdToken({
-          idToken: req.body.credential,
-          audience: req.body.client_id
-      });
+    const ticket = await client.verifyIdToken({
+      idToken: req.body.credential,
+      audience: req.body.client_id
+    });
 
-      const payload = ticket.getPayload();
-      console.log(payload['email'], payload['name']);
-      const email = payload['email'];
+    const payload = ticket.getPayload();
+    console.log(payload['email'], payload['name']);
+    const email = payload['email'];
 
-      req.pool.getConnection(function (err, connection) {
-          if (err) {
-              console.log("error");
-              res.sendStatus(500);
-              return;
+    req.pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("error");
+        res.sendStatus(500);
+        return;
+      }
+
+      // function to handle response and release connection to prevent accidentally releasing too many times
+      const handleResponse = (status, message) => {
+        connection.release();
+        res.status(status).send(message);
+      };
+
+      // check if email already present in user database
+      let checkPresent = "SELECT email, userID FROM User WHERE email = ? AND googleUser = 1;";
+      connection.query(checkPresent, [email], function (err1, result1) {
+        if (err1) {
+          console.log("Error checking for email: ", err1);
+          handleResponse(500, "Error checking for email");
+          return;
+        }
+
+        if (result1.length > 0) {
+          console.log("email in users");
+          req.session.userType = "volunteer";
+          req.session.accountID = result1[0].userID;
+          req.session.user = result1[0].email;
+          handleResponse(200, "Login successful");
+          return;
+        }
+
+        // check if email already present in org database
+        checkPresent = "SELECT email, orgID FROM Organisations WHERE email = ? AND googleUser = 1;";
+        connection.query(checkPresent, [email], function (err2, result2) {
+          if (err2) {
+            console.log("Error checking for email: ", err2);
+            handleResponse(500, "Error checking for email");
+            return;
           }
 
-          // function to handle response and release connection to prevent accidentally releasing too many times
-          const handleResponse = (status, message) => {
-              connection.release();
-              res.status(status).send(message);
-          };
+          if (result2.length > 0) {
+            console.log("email in organisation");
+            req.session.userType = "organisation";
+            req.session.userID = result2[0].orgID;
+            req.session.user = result2[0].email;
+            handleResponse(200, "Login successful");
+            return;
+          }
 
-          // check if email already present in user database
-          let checkPresent = "SELECT email, userID FROM User WHERE email = ? AND googleUser = 1;";
-          connection.query(checkPresent, [email], function (err1, result1) {
-              if (err1) {
-                  console.log("Error checking for email: ", err1);
-                  handleResponse(500, "Error checking for email");
-                  return;
-              }
+          // check if email already present in admin database
+          checkPresent = "SELECT email, adminID FROM Admin WHERE email = ?;";
+          connection.query(checkPresent, [email], function (err3, result3) {
+            if (err3) {
+              console.log("Error checking for email: ", err3);
+              handleResponse(500, "Error checking for email");
+              return;
+            }
 
-              if (result1.length > 0) {
-                  console.log("email in users");
-                  req.session.userType = "volunteer";
-                  req.session.accountID = result1[0].userID;
-                  req.session.user = result1[0].email;
-                  handleResponse(200, "Login successful");
-                  return;
-              }
+            if (result3.length > 0) {
+              console.log("email in admin");
+              req.session.userType = "admin";
+              req.session.userID = result3[0].adminID;
+              req.session.user = result3[0].email;
+              handleResponse(200, "Login successful");
+              return;
+            }
 
-              // check if email already present in org database
-              checkPresent = "SELECT email, orgID FROM Organisations WHERE email = ? AND googleUser = 1;";
-              connection.query(checkPresent, [email], function (err2, result2) {
-                  if (err2) {
-                      console.log("Error checking for email: ", err2);
-                      handleResponse(500, "Error checking for email");
-                      return;
-                  }
-
-                  if (result2.length > 0) {
-                      console.log("email in organisation");
-                      req.session.userType = "organisation";
-                      req.session.userID = result2[0].orgID;
-                      req.session.user = result2[0].email;
-                      handleResponse(200, "Login successful");
-                      return;
-                  }
-
-                  // check if email already present in admin database
-                  checkPresent = "SELECT email, adminID FROM Admin WHERE email = ?;";
-                  connection.query(checkPresent, [email], function (err3, result3) {
-                      if (err3) {
-                          console.log("Error checking for email: ", err3);
-                          handleResponse(500, "Error checking for email");
-                          return;
-                      }
-
-                      if (result3.length > 0) {
-                          console.log("email in admin");
-                          req.session.userType = "admin";
-                          req.session.userID = result3[0].adminID;
-                          req.session.user = result3[0].email;
-                          handleResponse(200, "Login successful");
-                          return;
-                      }
-
-                      console.log("email not in any database");
-                      handleResponse(400, "You need to sign up before signing in");
-                  });
-              });
+            console.log("email not in any database");
+            handleResponse(400, "You need to sign up before signing in");
           });
+        });
       });
+    });
   } catch (error) {
-      console.error("Error logging in with Google:", error);
-      res.status(500).json({ error: "something went wrong with google login" });
+    console.error("Error logging in with Google:", error);
+    res.status(500).json({ error: "something went wrong with google login" });
   }
 });
 
@@ -2609,9 +2405,9 @@ router.post('/loginGoogle', async function (req, res, next) {
 router.post('/signUpGoogleUser', async function (req, res, next) {
   try {
     const ticket = await client.verifyIdToken({
-        idToken: req.body.credential,
-        audience: req.body.client_id
-      });
+      idToken: req.body.credential,
+      audience: req.body.client_id
+    });
 
     const payload = ticket.getPayload();
     console.log(payload['email'], payload['name']);
@@ -2619,48 +2415,29 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
     const name = payload['name'];
     const space = "";
 
-   // const dob = payload['birthdate'];
+    // const dob = payload['birthdate'];
 
     //get connection
     req.pool.getConnection(async function (err, connection) {
-    //error handling
-    if (err) {
-      console.log("error")
-      res.sendStatus(500);
-      return;
-    }
-
-    // check if email already present in user database
-    var checkPresent = "SELECT email FROM User WHERE email = ?;";
-    connection.query(checkPresent, [email], function (err1, result1) {
-      if (err1) {
-        connection.release();
-        console.log("Error checking for email: ", err1);
+      //error handling
+      if (err) {
+        console.log("error")
         res.sendStatus(500);
         return;
       }
 
-      //email exists
-      if (result1.length > 0) {
-        connection.release();
-        console.log("email in use");
-        res.status(400).send("email in use");
-        return;
-      }
-      // });
-
-      // check if email already present in org database
-      checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
-      connection.query(checkPresent, [email], function (err2, result2) {
-        if (err2) {
+      // check if email already present in user database
+      var checkPresent = "SELECT email FROM User WHERE email = ?;";
+      connection.query(checkPresent, [email], function (err1, result1) {
+        if (err1) {
           connection.release();
-          console.log("Error checking for email: ", err2);
+          console.log("Error checking for email: ", err1);
           res.sendStatus(500);
           return;
         }
 
         //email exists
-        if (result2.length > 0) {
+        if (result1.length > 0) {
           connection.release();
           console.log("email in use");
           res.status(400).send("email in use");
@@ -2668,18 +2445,18 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
         }
         // });
 
-        // check if email already present in admin database
-        var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
-        connection.query(checkPresent, [email], function (err3, result3) {
-          if (err3) {
+        // check if email already present in org database
+        checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+        connection.query(checkPresent, [email], function (err2, result2) {
+          if (err2) {
             connection.release();
-            console.log("Error checking for email: ", err3);
+            console.log("Error checking for email: ", err2);
             res.sendStatus(500);
             return;
           }
 
           //email exists
-          if (result3.length > 0) {
+          if (result2.length > 0) {
             connection.release();
             console.log("email in use");
             res.status(400).send("email in use");
@@ -2687,56 +2464,75 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
           }
           // });
 
-          //get last user id
-          var mostRecentUserId = "SELECT userID FROM User ORDER BY userID DESC LIMIT 1;";
-
-          connection.query(mostRecentUserId, async function (err4, result) {
-
-            //error handling
-            if (err4) {
+          // check if email already present in admin database
+          var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+          connection.query(checkPresent, [email], function (err3, result3) {
+            if (err3) {
               connection.release();
-              console.log("Got error while fetching userID: ", err4);
+              console.log("Error checking for email: ", err3);
               res.sendStatus(500);
               return;
             }
 
-            let currUserId = 1;
-            if (result.length > 0) {
-              currUserId = result[0].userID + 1;
-            }
-            console.log("the new user id is " + currUserId);
-
-            var query = "INSERT INTO User (userID, firstName, lastName, email, googleUser) VALUES (?, ?, ?, ?, ?);";
-
-            connection.query(query, [currUserId, name, space, email, 1], function (err5, returnVal) {
+            //email exists
+            if (result3.length > 0) {
               connection.release();
+              console.log("email in use");
+              res.status(400).send("email in use");
+              return;
+            }
+            // });
 
-              if (err5) {
-                console.log("error inserting user", err5);
+            //get last user id
+            var mostRecentUserId = "SELECT userID FROM User ORDER BY userID DESC LIMIT 1;";
+
+            connection.query(mostRecentUserId, async function (err4, result) {
+
+              //error handling
+              if (err4) {
+                connection.release();
+                console.log("Got error while fetching userID: ", err4);
                 res.sendStatus(500);
                 return;
               }
 
-              req.session.user = email;
-              req.session.userType = "volunteer";
-              req.session.accountID = currUserId;
-              //send an empty response, not needing to return anything, or can send a message for clarity
-              res.send("successfully added");
-              return;
+              let currUserId = 1;
+              if (result.length > 0) {
+                currUserId = result[0].userID + 1;
+              }
+              console.log("the new user id is " + currUserId);
+
+              var query = "INSERT INTO User (userID, firstName, lastName, email, googleUser) VALUES (?, ?, ?, ?, ?);";
+
+              connection.query(query, [currUserId, name, space, email, 1], function (err5, returnVal) {
+                connection.release();
+
+                if (err5) {
+                  console.log("error inserting user", err5);
+                  res.sendStatus(500);
+                  return;
+                }
+
+                req.session.user = email;
+                req.session.userType = "volunteer";
+                req.session.accountID = currUserId;
+                //send an empty response, not needing to return anything, or can send a message for clarity
+                res.send("successfully added");
+                return;
+
+              });
 
             });
-
           });
         });
+
       });
 
     });
 
-  });
-
   } catch (error) {
-      console.error("Error logging in with Google:", error);
-      res.status(500).json({ error: "something went wrong with google login" });
+    console.error("Error logging in with Google:", error);
+    res.status(500).json({ error: "something went wrong with google login" });
   }
 });
 
@@ -2744,56 +2540,37 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
 router.post('/signUpGoogleOrg', async function (req, res, next) {
   try {
     const ticket = await client.verifyIdToken({
-        idToken: req.body.credential,
-        audience: req.body.client_id
-      });
+      idToken: req.body.credential,
+      audience: req.body.client_id
+    });
 
     const payload = ticket.getPayload();
     console.log(payload['email'], payload['name']);
     const email = payload['email'];
     const name = payload['name'];
-   // const dob = payload['birthdate'];
+    // const dob = payload['birthdate'];
 
     //get connection
     req.pool.getConnection(async function (err, connection) {
-    //error handling
-    if (err) {
-      console.log("error")
-      res.sendStatus(500);
-      return;
-    }
-
-    // check if email already present in user database
-    var checkPresent = "SELECT email FROM User WHERE email = ?;";
-    connection.query(checkPresent, [email], function (err1, result1) {
-      if (err1) {
-        connection.release();
-        console.log("Error checking for email: ", err1);
+      //error handling
+      if (err) {
+        console.log("error")
         res.sendStatus(500);
         return;
       }
 
-      //email exists
-      if (result1.length > 0) {
-        connection.release();
-        console.log("email in use");
-        res.status(400).send("email in use");
-        return;
-      }
-      // });
-
-      // check if email already present in org database
-      checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
-      connection.query(checkPresent, [email], function (err2, result2) {
-        if (err2) {
+      // check if email already present in user database
+      var checkPresent = "SELECT email FROM User WHERE email = ?;";
+      connection.query(checkPresent, [email], function (err1, result1) {
+        if (err1) {
           connection.release();
-          console.log("Error checking for email: ", err2);
+          console.log("Error checking for email: ", err1);
           res.sendStatus(500);
           return;
         }
 
         //email exists
-        if (result2.length > 0) {
+        if (result1.length > 0) {
           connection.release();
           console.log("email in use");
           res.status(400).send("email in use");
@@ -2801,18 +2578,18 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
         }
         // });
 
-        // check if email already present in admin database
-        var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
-        connection.query(checkPresent, [email], function (err3, result3) {
-          if (err3) {
+        // check if email already present in org database
+        checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+        connection.query(checkPresent, [email], function (err2, result2) {
+          if (err2) {
             connection.release();
-            console.log("Error checking for email: ", err3);
+            console.log("Error checking for email: ", err2);
             res.sendStatus(500);
             return;
           }
 
           //email exists
-          if (result3.length > 0) {
+          if (result2.length > 0) {
             connection.release();
             console.log("email in use");
             res.status(400).send("email in use");
@@ -2820,56 +2597,75 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
           }
           // });
 
-          //get last user id
-          var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
-
-          connection.query(mostRecentOrgId, async function (err4, result) {
-
-            //error handling
-            if (err4) {
+          // check if email already present in admin database
+          var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+          connection.query(checkPresent, [email], function (err3, result3) {
+            if (err3) {
               connection.release();
-              console.log("Got error while fetching orgID: ", err4);
+              console.log("Error checking for email: ", err3);
               res.sendStatus(500);
               return;
             }
 
-            let currOrgId = 1;
-            if (result.length > 0) {
-              currOrgId = result[0].orgID + 1;
-            }
-            console.log("the new org id is " + currOrgId);
-
-            var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
-
-            connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
+            //email exists
+            if (result3.length > 0) {
               connection.release();
+              console.log("email in use");
+              res.status(400).send("email in use");
+              return;
+            }
+            // });
 
-              if (err5) {
-                console.log("error inserting user", err5);
+            //get last user id
+            var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
+
+            connection.query(mostRecentOrgId, async function (err4, result) {
+
+              //error handling
+              if (err4) {
+                connection.release();
+                console.log("Got error while fetching orgID: ", err4);
                 res.sendStatus(500);
                 return;
               }
 
-              req.session.user = email;
-              req.session.userType = "organisation";
-              req.session.accountID = currOrgId;
-              //send an empty response, not needing to return anything, or can send a message for clarity
-              res.send("successfully added");
-              return;
+              let currOrgId = 1;
+              if (result.length > 0) {
+                currOrgId = result[0].orgID + 1;
+              }
+              console.log("the new org id is " + currOrgId);
+
+              var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
+
+              connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
+                connection.release();
+
+                if (err5) {
+                  console.log("error inserting user", err5);
+                  res.sendStatus(500);
+                  return;
+                }
+
+                req.session.user = email;
+                req.session.userType = "organisation";
+                req.session.accountID = currOrgId;
+                //send an empty response, not needing to return anything, or can send a message for clarity
+                res.send("successfully added");
+                return;
+
+              });
 
             });
-
           });
         });
+
       });
 
     });
 
-  });
-
   } catch (error) {
-      console.error("Error signing up with Google:", error);
-      res.status(500).json({ error: "something went wrong with google signup" });
+    console.error("Error signing up with Google:", error);
+    res.status(500).json({ error: "something went wrong with google signup" });
   }
 });
 

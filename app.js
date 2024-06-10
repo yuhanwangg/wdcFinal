@@ -19,6 +19,7 @@ var signUpRouter = require('./routes/signUp');
 var loginRouter = require('./routes/logIn');
 var settingsRouter = require('./routes/settings');
 var updatesRouter = require('./routes/updates');
+var registerBranchRouter = require('./routes/registerBranch');
 
 
 const { readFileSync } = require('fs');
@@ -26,6 +27,7 @@ const { validateHeaderName } = require('http');
 
 //connect to RDBMS in express
 var mysql = require('mysql');
+const { register } = require('module');
 var dbConnectionPool = mysql.createPool({
     host: 'localhost',
     database: 'WDCProject'
@@ -73,6 +75,7 @@ app.use('/registerBranch.html', checkSession.checkOrganisation);
 app.use('/settingsOrg.html', checkSession.checkOrganisation);
 app.use('/UpdatesOrganisations.html', checkSession.checkOrganisation);
 app.use('/VolunteerOpportunitiesOrg.html', checkSession.checkOrganisation);
+app.use('/registerBranch.html', checkSession.checkOrganisation);
 
 //User pages
 app.use('/homeVolunteer.html', checkSession.checkVolunteer);
@@ -93,6 +96,7 @@ app.use('/logIn', loginRouter);
 app.use('/home', homeGuestRouter);
 app.use('/settings', settingsRouter);
 app.use('/updates', updatesRouter);
+app.use('/registerBranch', registerBranchRouter);
 app.use('/users', usersRouter);
 
 

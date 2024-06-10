@@ -52,6 +52,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.fetchBranchUpdates(this.selectedBranchID);
                 this.fetchBranchPosts(this.selectedBranchID);
             },
+            formatDate(dateString) {
+                // Parse the date string into a JavaScript Date object
+                const date = new Date(dateString);
+                // Check if the date is valid
+                if (!isNaN(date.getTime())) {
+                    // Format the date as desired (e.g., 'MM/DD/YYYY')
+                    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                    return formattedDate;
+                } else {
+                    // Handle invalid date
+                    return 'Invalid Date';
+                }
+            },
             fetchBranchUpdates(branchID) {
                 fetch(`/getUpdates?branchID=${branchID}`) // Assuming there's an endpoint to fetch updates for a branch
                     .then(response => {

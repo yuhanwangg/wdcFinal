@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(error => {
                     console.error('error fetching branches:', error);
                 });
-            fetch('/')
         },
         methods: {
             chooseBranch(event) {

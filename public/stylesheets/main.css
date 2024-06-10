@@ -158,15 +158,31 @@ header {
     position: absolute;
     top: 100%;
     width: 200px;
-    max-height: 200px;
+    max-height: 300px;
     border-style: solid;
     border-width: 1px;
     border-color: #D1EEE5;
     opacity: 1;
 }
 
+.profileDropDown button {
+    background-color: #4ABDAC;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    margin-left: 30px;
+    padding: 10px;
+    border-style: none;
+}
+
+.profileDropDown button:hover {
+    transform: translateY(2px);
+    transition: .5s;
+}
+
 .profileDropDown a {
     color: black;
+    margin: 0;
 }
 
 .profileDropDown a:hover {

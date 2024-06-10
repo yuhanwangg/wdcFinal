@@ -715,7 +715,6 @@ router.get('/getBranches', function (req, res, next) {
   connection.query(query, [orgID], function (err1, rows1) {
 
     if (err1) {
-      connection.release();
       console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
@@ -724,7 +723,6 @@ router.get('/getBranches', function (req, res, next) {
     console.log("row length: ", rows1.length);
 
     if (rows1.length === 0) {
-      connection.release();
       // Organization not found
       res.status(404).json({ error: "Organisation not found" });
       return;
@@ -2668,6 +2666,129 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
     res.status(500).json({ error: "something went wrong with google signup" });
   }
 });
+
+router.post('/logOut', function (req, res, next) {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log("error destroying session: ", err);
+      res.status(500).send("failed to log out");
+    } else {
+      res.status(200).send("logged out");
+    }
+  });
+});
+
+router.get('/getNumVolunteers', function (req, res, next) {
+  // first get the branch id
+  console.log("GETTING NUM OF VOLUNTEERS OF EACH BRANCH");
+  let organisationID = req.session.accountID;
+  console.log("orgID=", organisationID);
+  let branchID = req.query.branchID;
+  console.log("BRANCHID: ", branchID);
+
+  const query = `
+    SELECT COUNT(DISTINCT fb.userID) AS follower_count
+    FROM FollowedBranches fb
+    JOIN Branch b ON fb.branchID = b.branchID
+    WHERE b.branchID = ? AND b.orgID = ?;`;
+
+  connection.query(query, [branchID, organisationID], function (err, count) {
+
+    if (err) {
+      console.error('error fetching updates:', err);
+      res.status(500).json({ error: 'internal server error' });
+      return;
+    }
+    const followerCount = count[0].follower_count || 0;
+    console.log("the number of volunteers: ", followerCount);
+    res.json({ followerCount }); // send updates as JSON response
+  });
+})
+
+router.get('/getBranchVolunteers', function (req, res, next) {
+  // first get the branch id
+  console.log("GETTING ALL VOLUNTEERS");
+  let organisationID = req.session.accountID;
+  console.log("orgID=", organisationID);
+  let branchID = req.query.branchID;
+  console.log("BRANCHID: ", branchID);
+
+  const query = `
+    SELECT u.firstName, u.lastName, u.email, u.userID
+    FROM FollowedBranches fb
+    JOIN User u ON fb.userID = u.userID
+    JOIN Branch b ON fb.branchID = b.branchID
+    WHERE b.branchID = ? AND b.orgID = ?;`;
+
+  connection.query(query, [branchID, organisationID], function (err, volunteers) {
+
+    if (err) {
+      console.error('error fetching updates:', err);
+      res.status(500).json({ error: 'internal server error' });
+      return;
+    }
+    console.log("yay, we're getting the branch volunteers now!!!");
+    res.json(volunteers);
+  });
+})
+
+router.post('/removeVolunteer/:branchID/:volunteerID', function (req, res, next) {
+  console.log("REMOVE VOLUNTEER")
+  // get user ID and branch ID and org ID
+  let branchID = req.params.branchID;
+  let userID = req.params.volunteerID;
+  console.log("branch ID: ", branchID);
+  console.log("user ID: ", userID);
+
+  const query = `
+        DELETE FROM FollowedBranches
+        WHERE userID = ? AND branchID = ?`;
+
+  connection.query(query, [userID, branchID], function (err, result) {
+    if (err) {
+      console.error('Error removing volunteer:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    } else {
+      console.log('Volunteer removed successfully');
+      res.status(200).json({ message: 'Volunteer removed successfully' });
+    }
+  });
+});
+
+router.post('/regBranch', function (req, res, next) {
+  console.log("IN REGISTER BRANCH")
+  // get user ID and branch ID and org ID
+
+  let orgID = req.session.accountID;
+
+  const { name, suburb, state, postcode, country } = req.body;
+  console.log("values in new branch: " + name + suburb + state + postcode + country)
+
+  // get the last query ID
+  var currBranchIDQuery = "SELECT MAX(branchID) AS highestBranchID FROM Branch;";
+
+  connection.query(currBranchIDQuery, async function (err1, result) {
+    let highestBranchID = result[0].highestBranchID || 0;
+    let newBranchID = highestBranchID + 1;
+
+    let query = 'INSERT INTO Branch (branchID, branchName, suburb, state, postcode, country, orgID, instated) VALUES (?, ?, ?, ?, ?, ?, ?, 0)';
+
+    connection.query(query,
+      [newBranchID, name, suburb, state, postcode, country, orgID], // Assuming orgID is hardcoded for demonstration
+      function (err, result) {
+        if (err) {
+          console.error('Error registering branch:', err);
+          res.status(500).json({ error: 'Internal server error' });
+        } else {
+          console.log('Branch registered successfully');
+          res.status(200).json({ message: 'Branch registered successfully' });
+        }
+      }
+    );
+  })
+
+});
+
 
 
 module.exports = router;

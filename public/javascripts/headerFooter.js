@@ -29,9 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <a href="/settings">
                             <p>Settings</p>
                         </a>
-                        <a href="/logOut">
-                            <p>Log Out</p>
-                        </a>
+                            <button @click='logOut'>Log Out</button>
                     </div>
                 </div>
 
@@ -126,6 +124,19 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             toggleProfileDropDown() {
                 this.isProfileDropDownOpen = !this.isProfileDropDownOpen;
+            },
+            logOut() {
+                fetch('/logout', {
+                    method: 'POST' // post request to log out
+                }).then(response => {
+                    if (response.ok) {
+                        window.location.href = '/login'; // redirect to log in page
+                    } else {
+                        alert('Failed to log out');
+                    }
+                }).catch(error => {
+                    console.error('Error logging out:', error);
+                });
             },
             updateNavigation(userType) {
                 console.log("user type: ", userType)

@@ -29,17 +29,11 @@
 
             <!-- Branch boxes and post updates -->
             <div class="boxes">
-                <div class="dropdown">
-                    <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
-                    <select class="dropbtn">
-                        <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
-                        <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
-                        <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
-                        <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
-                        <!-- <a href="#" onclick="chooseBranch(this)" selected>Branch Name 1</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 2</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 3</a>
-                      <a href="#" onclick="chooseBranch(this)">Branch Name 4</a> -->
+                <div class="dropdown" v-if="branches.length!=0">
+
+                    <select class="dropbtn" @change="chooseBranch($event)">
+                        <option v-for="(branch, index) in branches" :value="branch.branchID" :selected="index === 0">{{
+                            branch.branchName}}</option>
                     </select>
                 </div>
 
@@ -49,60 +43,19 @@
                     <div id="numberOfVolunteers">
                         <!-- <div id="numberOfPosts"> -->
                         <!-- <p id="numPosts">0 Posts</p> -->
-                        <p id="numVolunteers">6 Volunteers</p>
-                        <p id="pageNum">Page 1/1</p>
+                        <p id="numVolunteers">{{numVolunteers}} Volunteers</p>
+                        <!-- <p id="pageNum">Page 1/1</p> -->
                     </div>
                 </div>
 
                 <!-- <div class="posts"> -->
                 <div class="volunteers">
-                    <!-- User box, filled using AJAX, should be empty <p> tags -->
-                    <div class="UserBox">
-                        <p class="Name">User First Name, User Last Name</p>
-                        <div class="lastLine">
-                            <p>theiremail@gmail.com</p>
-                            <button onclick="goToEditUser()">Remove</button>
-                        </div>
-                    </div>
-                    <!-- User box, filled using AJAX, should be empty <p> tags -->
-                    <div class="UserBox">
-                        <p class="Name">User First Name, User Last Name</p>
-                        <div class="lastLine">
-                            <p>theiremail@gmail.com</p>
-                            <button onclick="goToEditUser()">Remove</button>
-                        </div>
-                    </div>
 
-                    <!-- User box, filled using AJAX, should be empty <p> tags -->
-                    <div class="UserBox">
-                        <p class="Name">User First Name, User Last Name</p>
+                    <div v-for="volunteer in branchVolunteers" :key="volunteer.userID" class="UserBox">
+                        <p class="Name">{{ volunteer.firstName }}, {{ volunteer.lastName }}</p>
                         <div class="lastLine">
-                            <p>theiremail@gmail.com</p>
-                            <button onclick="goToEditUser()">Remove</button>
-                        </div>
-                    </div>
-
-                    <div class="UserBox">
-                        <p class="Name">User First Name, User Last Name</p>
-                        <div class="lastLine">
-                            <p>theiremail@gmail.com</p>
-                            <button onclick="goToEditUser()">Remove</button>
-                        </div>
-                    </div>
-
-                    <div class="UserBox">
-                        <p class="Name">User First Name, User Last Name</p>
-                        <div class="lastLine">
-                            <p>theiremail@gmail.com</p>
-                            <button onclick="goToEditUser()">Remove</button>
-                        </div>
-                    </div>
-
-                    <div class="UserBox">
-                        <p class="Name">User First Name, User Last Name</p>
-                        <div class="lastLine">
-                            <p>theiremail@gmail.com</p>
-                            <button onclick="goToEditUser()">Remove</button>
+                            <p>{{ volunteer.email }}</p>
+                            <button @click="removeVolunteer(volunteer.userID)">Remove</button>
                         </div>
                     </div>
 

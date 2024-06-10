@@ -308,10 +308,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // window.getOrgName = getOrgName;
-    // window.getBranches = getBranches;
-    // window.getPosts = getPosts;
-    // window.getOrgLogo = getOrgLogo;
     getOrgName();
     getBranches();
     getPosts();

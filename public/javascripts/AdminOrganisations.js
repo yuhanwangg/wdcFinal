@@ -5,6 +5,11 @@ var orgDetailsShowing = false;
 var branchRequestsShowing = false;
 var currBranchesShowing = false;
 
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app',
+    });
+});
 
 function findOrganisation() {
     //console.log("WER ARE RIGHT HERE!!! went into find Org function");
@@ -140,7 +145,7 @@ function findOrganisation() {
 
         var orgListContainers = document.querySelectorAll('.allOrgBoxes');
         console.log(orgListContainers); // Log the selected elements
-        orgListContainers.forEach(function(orgListContainer) {
+        orgListContainers.forEach(function (orgListContainer) {
             console.log("Adding hidden class to:", orgListContainer); // Log each container before adding the class
             orgListContainer.classList.add('hidden');
         });
@@ -309,7 +314,7 @@ function branchRequestAccept(branchName, button, orgName, orgEmail) {
     //add to the current branches
     var newBranch = document.createElement('div');
     newBranch.className = 'nameAndButtons';
-   newBranch.innerHTML = `<p>${branchName}</p> <button class="remove" onclick="branchRemove('${branchName}', this, document.getElementById('orgName'), document.getElementById('orgEmail'))">Remove</button>`;
+    newBranch.innerHTML = `<p>${branchName}</p> <button class="remove" onclick="branchRemove('${branchName}', this, document.getElementById('orgName'), document.getElementById('orgEmail'))">Remove</button>`;
 
     var newLine = document.createElement('hr');
 

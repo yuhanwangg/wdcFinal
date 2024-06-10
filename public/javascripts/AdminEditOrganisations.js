@@ -1,5 +1,9 @@
 var urlParams = new URLSearchParams(window.location.search);
-
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app'
+    });
+});
 // Retrieve individual parameters
 var orgName = urlParams.get('orgName');
 var orgEmail = urlParams.get('orgEmail');
@@ -215,9 +219,3 @@ function checkDeleteOrganisatoin() {
 function backToOrganisations() {
     window.location.href = "AdminOrganisation.html";
 }
-
-document.addEventListener('DOMContentLoaded', function () {
-    new Vue({
-        el: '#app'
-    });
-});

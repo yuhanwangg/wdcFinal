@@ -745,14 +745,12 @@ router.get('/getOrgName', function (req, res, next) {
   connection.query(query, [orgID], function (err1, rows1) {
 
     if (err1) {
-      connection.release();
       console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
 
     if (rows1.length === 0) {
-      connection.release();
       // Organization not found
       res.status(404).json({ error: "Organization not found" });
       return;

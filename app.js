@@ -21,6 +21,7 @@ var settingsRouter = require('./routes/settings');
 var updatesRouter = require('./routes/updates');
 var registerBranchRouter = require('./routes/registerBranch');
 var joinedUsersRouter = require('./routes/joinedUsers');
+var editUserRouter = require('./routes/editUser');
 
 
 const { readFileSync } = require('fs');
@@ -100,6 +101,7 @@ app.use('/settings', settingsRouter);
 app.use('/updates', updatesRouter);
 app.use('/registerBranch', registerBranchRouter);
 app.use('/joinedUsers', joinedUsersRouter);
+app.use('/editUser', editUserRouter);
 app.use('/users', usersRouter);
 
 

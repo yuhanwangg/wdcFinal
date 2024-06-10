@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 //set the vue value to have the JSON array of posts, reverse it so that the most recent (id > value) is at the front
                 vueinst.allOrgs = JSON.parse(this.responseText).reverse();
                 console.log("VALUES BEING PASSED ARE:");
-                vueinst.allOrgs.forEach(function(org) {
+                vueinst.allOrgs.forEach(function (org) {
                     console.log(org);
                 });
 
@@ -167,4 +167,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Attach the findUser function to the window so it can be called from HTML
     window.getAllOrgNames = getAllOrgNames;
+
+    new Vue({
+        el: '#app',
+    });
 });

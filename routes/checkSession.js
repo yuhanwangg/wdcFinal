@@ -73,7 +73,7 @@ function adminEditOrgPage(req, res, next) {
   }
 
   // admin is valid, but only allow to go to the non-specific edit Org page
-    // Check if there are any query parameters, if there are then the admin clicked the edit button, if there aren't then the user typed in the url
+  // Check if there are any query parameters, if there are then the admin clicked the edit button, if there aren't then the user typed in the url
   if (Object.keys(req.query).length === 0) {
     return res.redirect('/editOrganisations');
   }

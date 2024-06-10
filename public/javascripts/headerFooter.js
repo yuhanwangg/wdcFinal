@@ -184,8 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('admin user')
                     this.navigation = [
                         { name: "Edit Users", url: "/editUser" },
-                        { name: "Edit Organisations", url: "/editOrganisations" },
-                        { name: "Admin", url: "/Admin" }
+                        { name: "Edit Organisations", url: "/organisations" },
+                        { name: "Admin", url: "/home" }
                     ];
                     this.button = [];
                 }
@@ -290,8 +290,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (userType === "admin") {
                     this.footer = [
                         { name: "Edit Users", url: "/editUser" },
-                        { name: "Edit Organisations", url: "/editOrganisations" },
-                        { name: "Admin", url: "/Admin" },
+                        { name: "Edit Organisations", url: "/organisations" },
+                        { name: "Admin", url: "/home" },
                         { name: "Settings", url: "/settings" },
                         { name: "Log Out", url: "/logOut" },
                         { name: "Contact Us", url: "/contactUs" }

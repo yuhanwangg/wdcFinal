@@ -40,6 +40,19 @@ input[type=submit]:active {
     align-self: flex-end;
 }
 
+.errorInput2 {
+    display: none;
+    margin-left: auto;
+    color: #FC4A1A;
+    display: flex;
+    align-self: flex-end;
+}
+
+.box .g_id_signin {
+    align-self: center;
+    margin-top: 5px;
+}
+
 .box {
     display: flex;
     flex-direction: column;

@@ -56,6 +56,50 @@ function login() {
 
 }
 
+function googleLogin(response) {
+
+    console.log(response);
+
+    var message = document.getElementsByClassName("errorInput2")[0];
+
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    console.log("Logged in successfuly!");
+                    //redirect to relevant home page
+                    //var response = JSON.parse(this.responseText);
+                    window.location.href = "/home";
+                } else if (this.status == 400) {
+                    console.log("You need to sign up before signing in");
+                    message.style.display = "block";
+                    message.textContent = "You must sign up with google before signing in";
+                } else {
+                    console.error("Failed to login. Status:", this.status);
+                }
+            }
+        }
+    };
+
+    xhttp.open("POST", "/loginGoogle", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+
+    xhttp.send(JSON.stringify(response));
+
+    // decodeJwtResponse() is a custom function defined by you
+    // to decode the credential response.
+    // const responsePayload = decodeJwtResponse(response.credential);
+
+    // console.log("ID: " + responsePayload.sub);
+    // console.log('Full Name: ' + responsePayload.name);
+    // console.log('Given Name: ' + responsePayload.given_name);
+    // console.log('Family Name: ' + responsePayload.family_name);
+    // console.log("Image URL: " + responsePayload.picture);
+    // console.log("Email: " + responsePayload.email);
+ }
+
 document.addEventListener('DOMContentLoaded', function () {
     new Vue({
         el: '#app'

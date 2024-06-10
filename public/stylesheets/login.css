@@ -25,6 +25,14 @@ a {
     align-self: flex-end;
 }
 
+.errorInput2 {
+    display: none;
+    margin-left: auto;
+    color: #FC4A1A;
+    display: flex;
+    align-self: flex-end;
+}
+
 header {
     position: fixed;
     margin: 0;
@@ -38,6 +46,11 @@ header {
     background: white;
     padding: 20px 5%;
     /* overflow-x: hidden; */
+}
+
+.loginTitle {
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
 .navbar {
@@ -137,7 +150,7 @@ input[type=submit]:active {
 
 .centeredText {
     display: flex;
-    margin-top: 45px;
+    margin-top: 55px;
     justify-content: center;
 }
 
@@ -188,6 +201,10 @@ input[type=submit]:active {
     margin-top: 5px;
 }
 
+.box .g_id_signin {
+    align-self: center;
+    margin-top: 5px;
+}
 .box .googleButton {
     align-self: center;
     margin-top: 5px;

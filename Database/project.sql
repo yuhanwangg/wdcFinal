@@ -165,7 +165,7 @@ CREATE TABLE `Organisations` (
   `orgName` varchar(255) DEFAULT NULL,
   `orgSite` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `description` varchar(750) DEFAULT NULL,
   `imgPath` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`orgID`),

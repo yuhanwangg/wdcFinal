@@ -313,6 +313,76 @@ function sendInfo() {
 
 }
 
+
+function googleSignUp(response) {
+
+    console.log(response);
+
+    //check if user or organisation sign up
+    if (document.getElementsByClassName("userButton")[0].style.outline == "auto") {
+
+        var message = document.getElementsByClassName("errorInput2")[0];
+
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        console.log("Signed up in successfuly!");
+                        //redirect to relevant home page
+                        //var response = JSON.parse(this.responseText);
+                        window.location.href = "/home";
+                    } else if (this.status == 400) {
+                        console.log("Email already in use");
+                        message.style.display = "block";
+                        message.textContent = "Email already in use";
+                    } else {
+                        console.error("Failed to login. Status:", this.status);
+                    }
+                }
+            }
+        };
+
+        xhttp.open("POST", "/signUpGoogleUser", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+
+        xhttp.send(JSON.stringify(response));
+
+    } else if (document.getElementsByClassName("organisationButton")[0].style.outline == "auto") {
+
+        var message = document.getElementsByClassName("errorInput2")[0];
+
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        console.log("Signed up in successfuly!");
+                        //redirect to relevant home page
+                        //var response = JSON.parse(this.responseText);
+                        window.location.href = "/home";
+                    } else if (this.status == 400) {
+                        console.log("Email already in use");
+                        message.style.display = "block";
+                        message.textContent = "Email already in use";
+                    } else {
+                        console.error("Failed to login. Status:", this.status);
+                    }
+                }
+            }
+        };
+
+        xhttp.open("POST", "/signUpGoogleOrg", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+
+        xhttp.send(JSON.stringify(response));
+
+    }
+
+ }
+
 document.addEventListener('DOMContentLoaded', function () {
     new Vue({
         el: '#app'

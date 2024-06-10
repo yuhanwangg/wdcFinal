@@ -2509,4 +2509,370 @@ router.get('/getPosts', (req, res) => {
   });
 });
 
+//login with google
+
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client('YOUR_GOOGLE_CLIENT_ID');
+
+router.post('/loginGoogle', async function (req, res, next) {
+  console.log("/loginGoogle running");
+
+  try {
+      const ticket = await client.verifyIdToken({
+          idToken: req.body.credential,
+          audience: req.body.client_id
+      });
+
+      const payload = ticket.getPayload();
+      console.log(payload['email'], payload['name']);
+      const email = payload['email'];
+
+      req.pool.getConnection(function (err, connection) {
+          if (err) {
+              console.log("error");
+              res.sendStatus(500);
+              return;
+          }
+
+          // function to handle response and release connection to prevent accidentally releasing too many times
+          const handleResponse = (status, message) => {
+              connection.release();
+              res.status(status).send(message);
+          };
+
+          // check if email already present in user database
+          let checkPresent = "SELECT email, userID FROM User WHERE email = ? AND googleUser = 1;";
+          connection.query(checkPresent, [email], function (err1, result1) {
+              if (err1) {
+                  console.log("Error checking for email: ", err1);
+                  handleResponse(500, "Error checking for email");
+                  return;
+              }
+
+              if (result1.length > 0) {
+                  console.log("email in users");
+                  req.session.userType = "volunteer";
+                  req.session.accountID = result1[0].userID;
+                  req.session.user = result1[0].email;
+                  handleResponse(200, "Login successful");
+                  return;
+              }
+
+              // check if email already present in org database
+              checkPresent = "SELECT email, orgID FROM Organisations WHERE email = ? AND googleUser = 1;";
+              connection.query(checkPresent, [email], function (err2, result2) {
+                  if (err2) {
+                      console.log("Error checking for email: ", err2);
+                      handleResponse(500, "Error checking for email");
+                      return;
+                  }
+
+                  if (result2.length > 0) {
+                      console.log("email in organisation");
+                      req.session.userType = "organisation";
+                      req.session.userID = result2[0].orgID;
+                      req.session.user = result2[0].email;
+                      handleResponse(200, "Login successful");
+                      return;
+                  }
+
+                  // check if email already present in admin database
+                  checkPresent = "SELECT email, adminID FROM Admin WHERE email = ?;";
+                  connection.query(checkPresent, [email], function (err3, result3) {
+                      if (err3) {
+                          console.log("Error checking for email: ", err3);
+                          handleResponse(500, "Error checking for email");
+                          return;
+                      }
+
+                      if (result3.length > 0) {
+                          console.log("email in admin");
+                          req.session.userType = "admin";
+                          req.session.userID = result3[0].adminID;
+                          req.session.user = result3[0].email;
+                          handleResponse(200, "Login successful");
+                          return;
+                      }
+
+                      console.log("email not in any database");
+                      handleResponse(400, "You need to sign up before signing in");
+                  });
+              });
+          });
+      });
+  } catch (error) {
+      console.error("Error logging in with Google:", error);
+      res.status(500).json({ error: "something went wrong with google login" });
+  }
+});
+
+
+//sign up with google for user
+router.post('/signUpGoogleUser', async function (req, res, next) {
+  try {
+    const ticket = await client.verifyIdToken({
+        idToken: req.body.credential,
+        audience: req.body.client_id
+      });
+
+    const payload = ticket.getPayload();
+    console.log(payload['email'], payload['name']);
+    const email = payload['email'];
+    const name = payload['name'];
+    const space = "";
+   // const dob = payload['birthdate'];
+
+    //get connection
+    req.pool.getConnection(async function (err, connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    // check if email already present in user database
+    var checkPresent = "SELECT email FROM User WHERE email = ?;";
+    connection.query(checkPresent, [email], function (err1, result1) {
+      if (err1) {
+        connection.release();
+        console.log("Error checking for email: ", err1);
+        res.sendStatus(500);
+        return;
+      }
+
+      //email exists
+      if (result1.length > 0) {
+        connection.release();
+        console.log("email in use");
+        res.status(400).send("email in use");
+        return;
+      }
+      // });
+
+      // check if email already present in org database
+      checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+      connection.query(checkPresent, [email], function (err2, result2) {
+        if (err2) {
+          connection.release();
+          console.log("Error checking for email: ", err2);
+          res.sendStatus(500);
+          return;
+        }
+
+        //email exists
+        if (result2.length > 0) {
+          connection.release();
+          console.log("email in use");
+          res.status(400).send("email in use");
+          return;
+        }
+        // });
+
+        // check if email already present in admin database
+        var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+        connection.query(checkPresent, [email], function (err3, result3) {
+          if (err3) {
+            connection.release();
+            console.log("Error checking for email: ", err3);
+            res.sendStatus(500);
+            return;
+          }
+
+          //email exists
+          if (result3.length > 0) {
+            connection.release();
+            console.log("email in use");
+            res.status(400).send("email in use");
+            return;
+          }
+          // });
+
+          //get last user id
+          var mostRecentUserId = "SELECT userID FROM User ORDER BY userID DESC LIMIT 1;";
+
+          connection.query(mostRecentUserId, async function (err4, result) {
+
+            //error handling
+            if (err4) {
+              connection.release();
+              console.log("Got error while fetching userID: ", err4);
+              res.sendStatus(500);
+              return;
+            }
+
+            let currUserId = 1;
+            if (result.length > 0) {
+              currUserId = result[0].userID + 1;
+            }
+            console.log("the new user id is " + currUserId);
+
+            var query = "INSERT INTO User (userID, firstName, lastName, email, googleUser) VALUES (?, ?, ?, ?);";
+
+            connection.query(query, [currUserId, name, space, email, 1], function (err5, returnVal) {
+              connection.release();
+
+              if (err5) {
+                console.log("error inserting user", err5);
+                res.sendStatus(500);
+                return;
+              }
+
+              req.session.user = email;
+              req.session.userType = "volunteer";
+              req.session.accountID = currUserId;
+              //send an empty response, not needing to return anything, or can send a message for clarity
+              res.send("successfully added");
+              return;
+
+            });
+
+          });
+        });
+      });
+
+    });
+
+  });
+
+  } catch (error) {
+      console.error("Error logging in with Google:", error);
+      res.status(500).json({ error: "something went wrong with google login" });
+  }
+});
+
+//sign up with google for organisation
+router.post('/signUpGoogleOrg', async function (req, res, next) {
+  try {
+    const ticket = await client.verifyIdToken({
+        idToken: req.body.credential,
+        audience: req.body.client_id
+      });
+
+    const payload = ticket.getPayload();
+    console.log(payload['email'], payload['name']);
+    const email = payload['email'];
+    const name = payload['name'];
+   // const dob = payload['birthdate'];
+
+    //get connection
+    req.pool.getConnection(async function (err, connection) {
+    //error handling
+    if (err) {
+      console.log("error")
+      res.sendStatus(500);
+      return;
+    }
+
+    // check if email already present in user database
+    var checkPresent = "SELECT email FROM User WHERE email = ?;";
+    connection.query(checkPresent, [email], function (err1, result1) {
+      if (err1) {
+        connection.release();
+        console.log("Error checking for email: ", err1);
+        res.sendStatus(500);
+        return;
+      }
+
+      //email exists
+      if (result1.length > 0) {
+        connection.release();
+        console.log("email in use");
+        res.status(400).send("email in use");
+        return;
+      }
+      // });
+
+      // check if email already present in org database
+      checkPresent = "SELECT email FROM Organisations WHERE email = ?;";
+      connection.query(checkPresent, [email], function (err2, result2) {
+        if (err2) {
+          connection.release();
+          console.log("Error checking for email: ", err2);
+          res.sendStatus(500);
+          return;
+        }
+
+        //email exists
+        if (result2.length > 0) {
+          connection.release();
+          console.log("email in use");
+          res.status(400).send("email in use");
+          return;
+        }
+        // });
+
+        // check if email already present in admin database
+        var checkPresent = "SELECT email FROM Admin WHERE email = ?;";
+        connection.query(checkPresent, [email], function (err3, result3) {
+          if (err3) {
+            connection.release();
+            console.log("Error checking for email: ", err3);
+            res.sendStatus(500);
+            return;
+          }
+
+          //email exists
+          if (result3.length > 0) {
+            connection.release();
+            console.log("email in use");
+            res.status(400).send("email in use");
+            return;
+          }
+          // });
+
+          //get last user id
+          var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
+
+          connection.query(mostRecentOrgId, async function (err4, result) {
+
+            //error handling
+            if (err4) {
+              connection.release();
+              console.log("Got error while fetching orgID: ", err4);
+              res.sendStatus(500);
+              return;
+            }
+
+            let currOrgId = 1;
+            if (result.length > 0) {
+              currOrgId = result[0].orgID + 1;
+            }
+            console.log("the new org id is " + currOrgId);
+
+            var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
+
+            connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
+              connection.release();
+
+              if (err5) {
+                console.log("error inserting user", err5);
+                res.sendStatus(500);
+                return;
+              }
+
+              req.session.user = email;
+              req.session.userType = "organisation";
+              req.session.accountID = currOrgId;
+              //send an empty response, not needing to return anything, or can send a message for clarity
+              res.send("successfully added");
+              return;
+
+            });
+
+          });
+        });
+      });
+
+    });
+
+  });
+
+  } catch (error) {
+      console.error("Error signing up with Google:", error);
+      res.status(500).json({ error: "something went wrong with google signup" });
+  }
+});
+
+
 module.exports = router;

@@ -101,7 +101,6 @@ router.get('/recentPostsVolun', function (req, res, next) {
       o.requirements,
       o.thumbnail,
       o.description,
-      o.oppType,
       o.dates,
       b.branchID,
       b.branchName,

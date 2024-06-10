@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="stylesheets/settingsOrg.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/headerFooter.js"></script>
     <script src="javascripts/settingsOrg.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -15,91 +18,64 @@
 </head>
 
 <body>
+    <div id="app">
+        <header-component></header-component>
 
-    <!-- nav bar -->
+        <h1>Settings</h1>
 
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Volunteer Opportunities</a></li>
-            <li><a href="#">Updates</a></li>
-            <li><a href="#">Joined Volunteers</a></li>
-        </ul>
-        <div class="profileMenu">
-            <a href="#">
-                <div class="profile">
-                    <p>Name</p>
-                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                </div>
-            </a>
-            <div class="bx bx-menu" id="menu-icon"></div>
+        <div class="box">
+            <b>Change details</b>
+
+            <div class="userInfo">
+                <p>Email</p>
+                <input type="text" placeholder="New Email" id="email">
+                <input type="text" placeholder="Confirm New Email" id="emailConfirm">
+            </div>
+
+            <div class="userInfo">
+                <p>Name</p>
+                <input type="text" placeholder="Organisation Name" id="name">
+            </div>
+
+            <div class="userInfo">
+                <p>Organisation webpage URL</p>
+                <input type="text" placeholder="URL" id="url">
+            </div>
+
+            <div class="userInfo">
+                <p>Reset Password</p>
+                <input type="text" placeholder="Current Password" id="password">
+                <input type="text" placeholder="New Password" id="newPassword">
+                <input type="text" placeholder="Confirm New Password" id="newPasswordConfirm">
+            </div>
+
+            <p class="errorInput"></p>
+
+            <button class="saveButton" onclick="saveDetails();">Save</button>
+
+            <hr>
+
+            <b>Request a new branch</b>
+            <div class="userInfo">
+                <p>Request a new branch<b><a href="registerBranch.html">here</a></b></p>
+            </div>
+
+            <hr>
+
+            <b>Delete account</b>
+
+            <div class="userInfo">
+                <input type="text" placeholder="Email" id="deleteEmail">
+                <input type="text" placeholder="Password" id="deletePassword">
+            </div>
+
+            <p class="errorInput2"></p>
+
+            <button class="deleteButton" onclick="deleteAccount();">Delete Account</button>
+
         </div>
 
-    </header>
-
-    <h1>Settings</h1>
-
-    <div class="box">
-        <b>Change details</b>
-
-        <div class="userInfo">
-            <p>Email</p>
-            <input type="text" placeholder="New Email" id="email">
-            <input type="text" placeholder="Confirm New Email" id="emailConfirm">
-        </div>
-
-        <div class="userInfo">
-            <p>Name</p>
-            <input type="text" placeholder="Organisation Name" id="name">
-        </div>
-
-        <div class="userInfo">
-            <p>Organisation webpage URL</p>
-            <input type="text" placeholder="URL" id="url">
-        </div>
-
-        <div class="userInfo">
-            <p>Reset Password</p>
-            <input type="text" placeholder="Current Password" id="password">
-            <input type="text" placeholder="New Password" id="newPassword">
-            <input type="text" placeholder="Confirm New Password" id="newPasswordConfirm">
-        </div>
-
-        <p class="errorInput"></p>
-
-        <button class="saveButton" onclick="saveDetails();">Save</button>
-
-        <hr>
-
-        <b>Request a new branch</b>
-        <div class="userInfo">
-            <p>Request a new branch<b><a href="registerBranch.html">here</a></b></p>
-        </div>
-
-        <hr>
-
-        <b>Delete account</b>
-
-        <div class="userInfo">
-            <input type="text" placeholder="Email" id="deleteEmail">
-            <input type="text" placeholder="Password" id="deletePassword">
-        </div>
-
-        <p class="errorInput2"></p>
-
-        <button class="deleteButton" onclick="deleteAccount();">Delete Account</button>
-
-    </div>
-
-    <!-- footer -->
-    <div class="footer">
-        <p>Home</p>
-        <p>Volunteer Opportunites</p>
-        <p>Updates</p>
-        <p>Joined Volunteers</p>
-        <p>Contact Us</p>
-        <p id="logoutFooter">Logout</p>
+        <footer-component></footer-component>
     </div>
 
 </body>

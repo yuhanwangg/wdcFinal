@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="stylesheets/settingsAdmin.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/headerFooter.js"></script>
     <script src="javascripts/settingsAdmin.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -16,78 +19,54 @@
 
 <body>
 
-    <!-- nav bar -->
+    <div id="app">
+        <header-component></header-component>
 
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Edit Users</a></li>
-            <li><a href="#">Edit Organisations</a></li>
-            <li><a href="#">Admin</a></li>
-        </ul>
-        <div class="profileMenu">
-            <a href="#">
-                <div class="profile">
-                    <p>Name</p>
-                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                </div>
-            </a>
-            <div class="bx bx-menu" id="menu-icon"></div>
+        <h1>Settings</h1>
+
+        <div class="box">
+            <b>Change details</b>
+
+            <div class="userInfo">
+                <p>Email</p>
+                <input type="text" placeholder="New Email" id="email">
+                <input type="text" placeholder="Confirm New Email" id="emailConfirm">
+            </div>
+
+            <div class="userInfo">
+                <p>Name</p>
+                <input type="text" placeholder="First Name" id="firstName">
+                <input type="text" placeholder="Last Name" id="lastName">
+            </div>
+
+            <div class="userInfo">
+                <p>Reset Password</p>
+                <input type="text" placeholder="Current Password" id="password">
+                <input type="text" placeholder="New Password" id="newPassword">
+                <input type="text" placeholder="Confirm New Password" id="newPasswordConfirm">
+            </div>
+
+            <p class="errorInput"></p>
+
+            <button class="saveButton" onclick="saveDetails();">Save</button>
+
+            <hr>
+
+            <b>Delete account</b>
+
+            <div class="userInfo">
+                <input type="text" placeholder="Email" id="deleteEmail">
+                <input type="text" placeholder="Password" id="deletePassword">
+            </div>
+
+            <p class="errorInput2"></p>
+
+            <button class="deleteButton" onclick="deleteAccount();">Delete Account</button>
+
         </div>
 
-    </header>
-
-    <h1>Settings</h1>
-
-    <div class="box">
-        <b>Change details</b>
-
-        <div class="userInfo">
-            <p>Email</p>
-            <input type="text" placeholder="New Email" id = "email">
-            <input type="text" placeholder="Confirm New Email" id = "emailConfirm">
-        </div>
-
-        <div class="userInfo">
-            <p>Name</p>
-            <input type="text" placeholder="First Name" id = "firstName">
-            <input type="text" placeholder="Last Name" id = "lastName">
-        </div>
-
-        <div class="userInfo">
-            <p>Reset Password</p>
-            <input type="text" placeholder="Current Password" id = "password">
-            <input type="text" placeholder="New Password" id = "newPassword">
-            <input type="text" placeholder="Confirm New Password" id = "newPasswordConfirm">
-        </div>
-
-        <p class = "errorInput"></p>
-
-        <button class="saveButton" onclick = "saveDetails();">Save</button>
-
-        <hr>
-
-        <b>Delete account</b>
-
-        <div class="userInfo">
-            <input type="text" placeholder="Email" id = "deleteEmail">
-            <input type="text" placeholder="Password" id = "deletePassword">
-        </div>
-
-        <p class = "errorInput2"></p>
-
-        <button class="deleteButton" onclick = "deleteAccount();">Delete Account</button>
-
+        <footer-component></footer-component>
     </div>
-
-    <!-- footer -->
-    <div class="footer">
-        <p>Edit Users</p>
-        <p>Edit Organisations</p>
-        <p>Admin</p>
-        <p id="logoutFooter">Logout</p>
-    </div>
-
 </body>
 
 </html>

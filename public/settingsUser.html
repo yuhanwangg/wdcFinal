@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="stylesheets/settingsUser.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="javascripts/headerFooter.js"></script>
     <script src="javascripts/settingsUser.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
@@ -15,97 +18,69 @@
 </head>
 
 <body>
-
-    <!-- nav bar -->
-
-    <header>
-        <img class="logo" src="images_assets/logo.png" alt="logo">
-        <ul class="navbar">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Volunteer Opportunities</a></li>
-            <li><a href="#">Find Organisations</a></li>
-            <li><a href="#">RSVP'd</a></li>
-            <li><a href="#">Updates</a></li>
-        </ul>
-        <div class="profileMenu">
-            <a href="#">
-                <div class="profile">
-                    <p>Name</p>
-                    <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                </div>
-            </a>
-            <div class="bx bx-menu" id="menu-icon"></div>
-        </div>
-
-    </header>
-
-    <h1>Settings</h1>
-
-    <div class="box">
-        <b>Change details</b>
-
-        <div class="userInfo">
-            <p>Email</p>
-            <input type="text" id = "email" placeholder="New Email">
-            <input type="text" id = "emailConfirm" placeholder="Confirm New Email">
-        </div>
-
-        <div class="userInfo">
-            <p>Name</p>
-            <input type="text" id = "firstName" placeholder="First Name">
-            <input type="text" id = "lastName" placeholder="Last Name">
-        </div>
-
-        <div class="userInfo">
-            <p>Reset Password</p>
-            <input type="text" id = "password" placeholder="Current Password">
-            <input type="text" id = "newPassword" placeholder="New Password">
-            <input type="text" id = "newPasswordConfirm" placeholder="Confirm New Password">
-        </div>
+    <div id="app">
+        <header-component></header-component>
 
 
-        <div class="userInfo">
-            <p>Location</p>
-            <input type="text" id = "suburb" placeholder="Suburb">
-            <input type="text" id = "state" placeholder="State">
-            <input type="text" id = "postcode" placeholder="Postcode">
-            <input type="text" id = "country" placeholder="Country">
-        </div>
+        <h1>Settings</h1>
 
-        <p class = "errorInput"></p>
+        <div class="box">
+            <b>Change details</b>
 
-        <div class="checkAndSave">
-            <div class="checkContainer">
-                <input type="checkbox" id="emailBox">
-                <label for="emailBox">Opt out of email notifications</label>
+            <div class="userInfo">
+                <p>Email</p>
+                <input type="text" id="email" placeholder="New Email">
+                <input type="text" id="emailConfirm" placeholder="Confirm New Email">
             </div>
-            <button class="saveButton" onclick = "saveDetails();">Save</button>
+
+            <div class="userInfo">
+                <p>Name</p>
+                <input type="text" id="firstName" placeholder="First Name">
+                <input type="text" id="lastName" placeholder="Last Name">
+            </div>
+
+            <div class="userInfo">
+                <p>Reset Password</p>
+                <input type="text" id="password" placeholder="Current Password">
+                <input type="text" id="newPassword" placeholder="New Password">
+                <input type="text" id="newPasswordConfirm" placeholder="Confirm New Password">
+            </div>
+
+
+            <div class="userInfo">
+                <p>Location</p>
+                <input type="text" id="suburb" placeholder="Suburb">
+                <input type="text" id="state" placeholder="State">
+                <input type="text" id="postcode" placeholder="Postcode">
+                <input type="text" id="country" placeholder="Country">
+            </div>
+
+            <p class="errorInput"></p>
+
+            <div class="checkAndSave">
+                <div class="checkContainer">
+                    <input type="checkbox" id="emailBox">
+                    <label for="emailBox">Opt out of email notifications</label>
+                </div>
+                <button class="saveButton" onclick="saveDetails();">Save</button>
+            </div>
+
+            <hr>
+
+            <b>Delete account</b>
+
+            <div class="userInfo">
+                <input type="text" placeholder="Email" id="deleteEmail">
+                <input type="text" placeholder="Password" id="deletePassword">
+            </div>
+
+            <p class="errorInput2"></p>
+
+            <button class="deleteButton" onclick="deleteAccount();">Delete Account</button>
+
         </div>
 
-        <hr>
-
-        <b>Delete account</b>
-
-        <div class="userInfo">
-            <input type="text" placeholder="Email" id="deleteEmail">
-            <input type="text" placeholder="Password" id="deletePassword">
-        </div>
-
-        <p class = "errorInput2"></p>
-
-        <button class="deleteButton" onclick = "deleteAccount();">Delete Account</button>
-
-    </div>
-
-    <!-- footer -->
-    <div class="footer">
-        <p>Home</p>
-        <p>Volunteer Opportunites</p>
-        <p>Find Organisations</p>
-        <p>RSVP'd</p>
-        <p>Updates</p>
-        <p>Contact Us</p>
-        <p id="logoutFooter">Logout</p>
+        <footer-component></footer-component>
     </div>
 
 </body>

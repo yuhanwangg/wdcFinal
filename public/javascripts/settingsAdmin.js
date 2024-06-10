@@ -1,3 +1,10 @@
+
+document.addEventListener('DOMContentLoaded', function () {
+    new Vue({
+        el: '#app'
+    });
+});
+
 function checkDuplicateEmail(email) {
     return new Promise((resolve, reject) => {
         var xhttp = new XMLHttpRequest();
@@ -200,3 +207,4 @@ function deleteAccount() {
     xhttp.send(JSON.stringify({ password: password, email: email }));
 
 }
+

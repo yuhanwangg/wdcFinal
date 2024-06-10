@@ -47,7 +47,6 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES (1,'Georgia','McLeod','georgia.mcleod314@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$Wvr+iNTe9GrbVXxiSZVJ0w$n6thAyn7p1J38LJ0K7dBf92/e2T2rNf1bjvi44Y8Nv8'),(2,'Georgia','McLeod','georgia1.mcleod314@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$RuB05vmn5eQoxATyV1sL8w$ph1NOxloyBFTwsNBWcNWxy8jdvMjkdyc3hT5O3WoHA4');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,6 +167,7 @@ CREATE TABLE `Organisations` (
   `password` varchar(255) DEFAULT NULL,
   `description` varchar(750) DEFAULT NULL,
   `imgPath` varchar(1024) DEFAULT NULL,
+  `googleUser` tinyint DEFAULT '0',
   PRIMARY KEY (`orgID`),
   UNIQUE KEY `orgName` (`orgName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -179,7 +179,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png');
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png',0);
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,6 +261,7 @@ CREATE TABLE `User` (
   `country` varchar(100) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `googleUser` tinyint DEFAULT '0',
   PRIMARY KEY (`userID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -271,7 +272,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','password'),(2,'Lucy','Fidock','03/06/2004','Rostrevor','SA','5073','Australia','lucy.fidock@mail','mypass');
+INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','password',0),(2,'Lucy','Fidock','03/06/2004','Rostrevor','SA','5073','Australia','lucy.fidock@mail','mypass',0);
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -284,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-08 11:18:56
+-- Dump completed on 2024-06-10  6:11:15

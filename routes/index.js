@@ -2620,6 +2620,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
     const email = payload['email'];
     const name = payload['name'];
     const space = "";
+
    // const dob = payload['birthdate'];
 
     //get connection
@@ -2707,7 +2708,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
             }
             console.log("the new user id is " + currUserId);
 
-            var query = "INSERT INTO User (userID, firstName, lastName, email, googleUser) VALUES (?, ?, ?, ?);";
+            var query = "INSERT INTO User (userID, firstName, lastName, email, googleUser) VALUES (?, ?, ?, ?, ?);";
 
             connection.query(query, [currUserId, name, space, email, 1], function (err5, returnVal) {
               connection.release();

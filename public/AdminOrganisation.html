@@ -6,7 +6,7 @@
     <title>Admin - Organisations</title>
     <!-- vue script -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-
+    <link rel="icon" type="image/x-icon" href="/images_assets/favicon.svg">
 
     <link rel="stylesheet" href="stylesheets/AdminOrganisation.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
@@ -33,14 +33,15 @@
             <div class="searchBar">
                 <input id="orgName" type="text" placeholder="Organisation Name">
                 <input id="orgEmail" type="text" placeholder="Email">
-                <input onclick="findOrganisation()" @click="searchOrg()"  type="submit">
+                <input onclick="findOrganisation()" @click="searchOrg()" type="submit">
             </div>
 
             <!-- vue updates the number of organisaitons and number of pages-->
             <div class="orgPages">
                 <div id="numberOfOrgs">
                     <p id="numOrgs">{{ numOrgs }} Organisations</p>
-                    <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
+                    <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="pageNum">Page {{
+                        currPage }}/{{ numPages }}</p>
                 </div>
             </div>
 
@@ -55,7 +56,7 @@
             </div>
 
 
-            <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" class="nextPageButtons" >
+            <div v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" class="nextPageButtons">
                 <button class="previous" @click="backPage()">Previous Page</button>
                 <button class="next" @click="nextPage()">Next Page</button>
             </div>

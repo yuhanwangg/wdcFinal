@@ -5,7 +5,7 @@
     <title>Admin - Users</title>
     <!-- vue script -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-
+    <link rel="icon" type="image/x-icon" href="/images_assets/favicon.svg">
     <link rel="stylesheet" href="stylesheets/AdminUsers.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,11 +33,12 @@
             <input onclick="findUser()" type="submit">
         </div>
 
-         <!-- vue updates the number of users and number of pages-->
-         <div class="usersPages">
+        <!-- vue updates the number of users and number of pages-->
+        <div class="usersPages">
             <div id="numberOfUsers">
                 <p id="numUsers">{{ numUsers }} Users</p>
-                <p v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing" id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
+                <p v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing" id="pageNum">Page {{ currPage
+                    }}/{{ numPages }}</p>
             </div>
         </div>
 
@@ -54,7 +55,7 @@
 
         <div v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing">
             <div v-for="(user, index) in allUsers.slice(sliceStart, sliceEnd)" class="UserBox">
-            <!-- <div v-for="user in allUsers" class="UserBox"> -->
+                <!-- <div v-for="user in allUsers" class="UserBox"> -->
                 <p class="Name">{{ user.firstName }}, {{ user.lastName }}</p>
                 <div class="lastLine">
                     <p>{{ user.email }}</p>
@@ -68,7 +69,7 @@
             <p>{{ notFoundMsg }}</p>
         </div>
 
-        <div v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing" class="nextPageButtons" >
+        <div v-if="!searchedForUser && !userDetailsShowing && !notFoundShowing" class="nextPageButtons">
             <button class="previous" @click="backPage()">Previous Page</button>
             <button class="next" @click="nextPage()">Next Page</button>
         </div>

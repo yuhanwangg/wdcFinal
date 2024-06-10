@@ -1,104 +1,114 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <title>More Information</title>
-        <link rel="stylesheet" href="stylesheets/CreateVolunteerOpportunity.css">
-        <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src = "javascripts/CreateVolunteerOpportunity.js"></script>
+<html lang="en">
 
-    </head>
+<head>
+    <title>More Information</title>
+    <link rel="icon" type="image/x-icon" href="/images_assets/favicon.svg">
+    <link rel="stylesheet" href="stylesheets/CreateVolunteerOpportunity.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="javascripts/CreateVolunteerOpportunity.js"></script>
 
-    <body>
-        <div class="contentWrapper">
-            <!-- nav bar -->
-            <header>
-                <img class="logo" src="images_assets/logo.png" alt="logo">
-                <ul class="navbar">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Volunteer Opportunities</a></li>
-                    <li><a href="#">Find Organisations</a></li>
-                    <li><a href="#">RSVP'd</a></li>
-                    <li><a href="#">Updates</a></li>
-                </ul>
-                <div class="profileMenu">
-                    <a href="#">
-                        <div class="profile">
-                            <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
-                        </div>
-                    </a>
-                    <div class="bx bx-menu" id="menu-icon"></div>
-                </div>
+</head>
 
-            </header>
-
-            <!-- Page Title -->
-            <h1 class="title">Create Volunteer Opportunity Post</h1>
-
-            <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
-            <div class="formBox">
-                <form action="#" method="post">
-                    <div class="formContain">
-                        <textarea class="programBox" id="programName" name="programName" required placeholder="Program Name"></textarea>
-                        <div class="tagHolder">
-                            <select id="addTag" name="addTag">
-                                <option value="" disabled selected>Add Tag</option>
-                                <option value="Hospitality">Hospitality</option>
-                                <option value="Aged Care">Aged Care</option>
-                                <option value="Community Service">Community Service</option>
-                            </select>
-                            <div class="tags">
-                                Added Tags:
-                                <p>Hospitality x</p>
-                                <p>Aged Care x</p>
-                                <p>Community Service x</p>
-                            </div>
-                        </div>
-                        <p class="addressText">Address</p>
-                        <textarea class="addressBox" id="suburb" name="suburb" required placeholder="Suburb"></textarea>
-                        <textarea class="addressBox" id="state" name="state" required placeholder="State"></textarea>
-                        <textarea class="addressBox" id="postcode" name="postcode" required placeholder="Postcode"></textarea>
-                        <textarea class="addressBox" id="country" name="country" required placeholder="Country"></textarea>
-
-                        <div class="commitmentHold">
-                            <select class="commitmentSelect" id="commitment" name="commitment">
-                                <option value="" disabled selected>Commitment</option>
-                                <option value="Casual">Casual</option>
-                                <option value="Part Time">Part Time</option>
-                                <option value="Full Time">Full Time</option>
-                            </select>
-                            <textarea class="commitmentBox" id="timecommitment" name="timecommitment" required placeholder="Time Commitment"></textarea>
-                        </div>
-                        <textarea class="miscBox" id="suitable" name="suitable" required placeholder="Suitable For"></textarea>
-                        <textarea class="miscBox" id="training" name="training" required placeholder="Training"></textarea>
-                        <textarea class="miscBox" id="requirements" name="requirements" required placeholder="Requirements"></textarea>
-                        <textarea class="briefBox" id="briefDescription" name="briefDescription" required placeholder="Brief Description (thumbnail description)"></textarea>
-                        <textarea class="fullBox" id="description" name="description" required placeholder="Complete Description"></textarea>
-
+<body>
+    <div class="contentWrapper">
+        <!-- nav bar -->
+        <header>
+            <img class="logo" src="images_assets/logo.png" alt="logo">
+            <ul class="navbar">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Volunteer Opportunities</a></li>
+                <li><a href="#">Find Organisations</a></li>
+                <li><a href="#">RSVP'd</a></li>
+                <li><a href="#">Updates</a></li>
+            </ul>
+            <div class="profileMenu">
+                <a href="#">
+                    <div class="profile">
+                        <img class="profilPic" src="/images_assets/defaultProfile.jpeg" alt="profilePic">
                     </div>
-                    <select class="eventSelect" id="eventType" name="eventType">
-                        <option value="" disabled selected>Event Type</option>
-                        <option value="Fundraiser">Fundraiser</option>
-                        <option value="Fun Run">Fun Run</option>
-                    </select>
-                </form>
-                <div class="buttonHolder">
-                    <button type="submit" class="closeButton">Close</button>
-                    <button type="submit" class="postButton">Post</button>
-                </div>
+                </a>
+                <div class="bx bx-menu" id="menu-icon"></div>
             </div>
 
+        </header>
+
+        <!-- Page Title -->
+        <h1 class="title">Create Volunteer Opportunity Post</h1>
+
+        <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
+        <div class="formBox">
+            <form action="#" method="post">
+                <div class="formContain">
+                    <textarea class="programBox" id="programName" name="programName" required
+                        placeholder="Program Name"></textarea>
+                    <div class="tagHolder">
+                        <select id="addTag" name="addTag">
+                            <option value="" disabled selected>Add Tag</option>
+                            <option value="Hospitality">Hospitality</option>
+                            <option value="Aged Care">Aged Care</option>
+                            <option value="Community Service">Community Service</option>
+                        </select>
+                        <div class="tags">
+                            Added Tags:
+                            <p>Hospitality x</p>
+                            <p>Aged Care x</p>
+                            <p>Community Service x</p>
+                        </div>
+                    </div>
+                    <p class="addressText">Address</p>
+                    <textarea class="addressBox" id="suburb" name="suburb" required placeholder="Suburb"></textarea>
+                    <textarea class="addressBox" id="state" name="state" required placeholder="State"></textarea>
+                    <textarea class="addressBox" id="postcode" name="postcode" required
+                        placeholder="Postcode"></textarea>
+                    <textarea class="addressBox" id="country" name="country" required placeholder="Country"></textarea>
+
+                    <div class="commitmentHold">
+                        <select class="commitmentSelect" id="commitment" name="commitment">
+                            <option value="" disabled selected>Commitment</option>
+                            <option value="Casual">Casual</option>
+                            <option value="Part Time">Part Time</option>
+                            <option value="Full Time">Full Time</option>
+                        </select>
+                        <textarea class="commitmentBox" id="timecommitment" name="timecommitment" required
+                            placeholder="Time Commitment"></textarea>
+                    </div>
+                    <textarea class="miscBox" id="suitable" name="suitable" required
+                        placeholder="Suitable For"></textarea>
+                    <textarea class="miscBox" id="training" name="training" required placeholder="Training"></textarea>
+                    <textarea class="miscBox" id="requirements" name="requirements" required
+                        placeholder="Requirements"></textarea>
+                    <textarea class="briefBox" id="briefDescription" name="briefDescription" required
+                        placeholder="Brief Description (thumbnail description)"></textarea>
+                    <textarea class="fullBox" id="description" name="description" required
+                        placeholder="Complete Description"></textarea>
+
+                </div>
+                <select class="eventSelect" id="eventType" name="eventType">
+                    <option value="" disabled selected>Event Type</option>
+                    <option value="Fundraiser">Fundraiser</option>
+                    <option value="Fun Run">Fun Run</option>
+                </select>
+            </form>
+            <div class="buttonHolder">
+                <button type="submit" class="closeButton">Close</button>
+                <button type="submit" class="postButton">Post</button>
+            </div>
         </div>
 
-        <!-- footer -->
-        <div class="footer">
-            <p>Home</p>
-            <p>Volunteer Opportunites</p>
-            <p>Find Organisations</p>
-            <p>RSVP'd</p>
-            <p>Contact Us</p>
-            <p>Logout</p>
-        </div>
+    </div>
 
-    </body>
+    <!-- footer -->
+    <div class="footer">
+        <p>Home</p>
+        <p>Volunteer Opportunites</p>
+        <p>Find Organisations</p>
+        <p>RSVP'd</p>
+        <p>Contact Us</p>
+        <p>Logout</p>
+    </div>
+
+</body>
+
 </html>

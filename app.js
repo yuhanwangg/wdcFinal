@@ -20,6 +20,7 @@ var loginRouter = require('./routes/logIn');
 var settingsRouter = require('./routes/settings');
 var updatesRouter = require('./routes/updates');
 var registerBranchRouter = require('./routes/registerBranch');
+var joinedUsersRouter = require('./routes/joinedUsers');
 
 
 const { readFileSync } = require('fs');
@@ -76,6 +77,7 @@ app.use('/settingsOrg.html', checkSession.checkOrganisation);
 app.use('/UpdatesOrganisations.html', checkSession.checkOrganisation);
 app.use('/VolunteerOpportunitiesOrg.html', checkSession.checkOrganisation);
 app.use('/registerBranch.html', checkSession.checkOrganisation);
+app.use('/joinedUser.html', checkSession.checkOrganisation);
 
 //User pages
 app.use('/homeVolunteer.html', checkSession.checkVolunteer);
@@ -97,6 +99,7 @@ app.use('/home', homeGuestRouter);
 app.use('/settings', settingsRouter);
 app.use('/updates', updatesRouter);
 app.use('/registerBranch', registerBranchRouter);
+app.use('/joinedUsers', joinedUsersRouter);
 app.use('/users', usersRouter);
 
 

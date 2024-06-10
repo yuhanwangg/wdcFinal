@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             { name: "Home", url: "/home" },
                             { name: "Opportunities", url: "/opportunities" },
                             { name: "Updates", url: "/updates" },
-                            { name: "Joined Volunteers", url: "/joinedVolunteers" }
+                            { name: "Joined Volunteers", url: "/joinedUsers" }
                         ];
                         this.profile = [
                             { class: "profilPic", source: this.orgLogo, name: this.userName }

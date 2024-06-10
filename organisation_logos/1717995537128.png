@@ -1,0 +1,41 @@
+/* program which allocates and returns a 1d integer array full of zeros.*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// zeros function
+int* zeros(int rows) {
+  // dynamically allocating memory
+  int* array;
+  array = malloc(sizeof(int) * rows);
+
+  // passing length of array
+  for (int i = 0; i < rows; i++) {
+    array[i] = 0;
+  }
+
+  return array;
+}
+
+// printing array function
+void print_array(int* array, int rows) {
+  for (int i = 0; i < rows; i++) {
+    printf("%d ", array[i]);
+  }
+}
+
+int main(void) {
+  int rows = 0;
+  // asking for how big array is
+  printf("Enter length of array: ");
+  scanf("%d", &rows);
+
+  if (rows < 1) {
+    // error checking
+    printf("Error! Too small of an array!");
+  } else {
+    int* array;
+    array = zeros(rows);
+    print_array(array, rows);
+  }
+}

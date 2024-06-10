@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 router.use(bodyParser.json());
 var adminIdCounter = 1;
+const path = require("path");
 
 var mysql = require('mysql');
 
@@ -38,7 +39,32 @@ let transporter = nodemailer.createTransport({
   }
 });
 
-const upload = multer({ dest: 'public/organisation_logos/' });
+// creating destination for storage
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "organisation_logos");
+  },
+  filename: (req, file, cb) => {
+    console.log(file);
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+})
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    if (!allowedTypes.includes(file.mimetype)) {
+      const error = new Error('Invalid file type');
+      error.code = 'INVALID_FILE_TYPE';
+      return cb(error, false);
+    }
+
+    cb(null, true);
+  }
+});
 
 var adminIdCounter = 1;
 
@@ -864,7 +890,7 @@ router.get('/getBranches', function (req, res, next) {
         res.status(404).json({ error: "Organisation not found" });
         return;
       }
-      console.log("ALL GOOD WE ARE RETURNING "  + rows1);
+      console.log("ALL GOOD WE ARE RETURNING " + rows1);
       res.json(rows1);
       return;
     });
@@ -902,7 +928,7 @@ router.get('/getOrgName', function (req, res, next) {
         res.status(404).json({ error: "Organization not found" });
         return;
       }
-      console.log("ALL GOOD WE ARE RETURNING "  + rows1[0] );
+      console.log("ALL GOOD WE ARE RETURNING " + rows1[0]);
       res.json(rows1[0]);
       return;
     });
@@ -936,10 +962,10 @@ router.get('/getOrgLogo', function (req, res, next) {
       if (rows1.length === 0) {
         connection.release();
         // Organization not found
-        res.status(404).json({ error: "Organization not found" });
+        res.status(404).json({ error: "Organisation not fsound" });
         return;
       }
-      console.log("ALL GOOD WE ARE RETURNING "  + rows1[0] );
+      console.log("ALL GOOD WE ARE RETURNING " + rows1[0].imgPath);
       res.json(rows1[0]);
       return;
     });
@@ -1991,8 +2017,8 @@ router.post('/deleteSelfUser', function (req, res, next) {
       //matches
       if (rows.length > 0) {
 
-         //check password matches
-         try {
+        //check password matches
+        try {
           if (await deHashPass(rows[0].password, password)) {
             var query = "DELETE FROM User WHERE userID = ?;";
 
@@ -2168,8 +2194,8 @@ router.post('/deleteSelfOrg', function (req, res, next) {
       //matches
       if (rows.length > 0) {
 
-         //check password matches
-         try {
+        //check password matches
+        try {
           if (await deHashPass(rows[0].password, password)) {
             var query = "DELETE FROM Organisations WHERE orgID = ?;";
 
@@ -2329,8 +2355,8 @@ router.post('/deleteSelfAdmin', function (req, res, next) {
       //matches
       if (rows.length > 0) {
 
-         //check password matches
-         try {
+        //check password matches
+        try {
           if (await deHashPass(rows[0].password, password)) {
             var query = "DELETE FROM Admin WHERE adminID = ?;";
 

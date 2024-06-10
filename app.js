@@ -40,6 +40,8 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use('/organisation_logos', express.static(path.join(__dirname, 'organisation_logos')));
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

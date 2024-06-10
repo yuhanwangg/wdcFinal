@@ -56,9 +56,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 ],
                 sessionUserType: null,
                 isProfileDropDownOpen: false,
+                orgLogo: "",
                 userName: "",
                 verified: false
             };
+        },
+        mounted() {
+            this.fetchSessionData();
         },
         computed: {
             updatedProfile() {
@@ -66,9 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     return { ...item, name: this.userName };
                 });
             }
-        },
-        mounted() {
-            this.fetchSessionData();
         },
         methods: {
             async fetchSessionData() {
@@ -82,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (userTypeResponse.ok) {
                         const userTypeData = await userTypeResponse.json();
                         this.sessionUserType = userTypeData.userType;
-                        console.log("user type: ", this.sessionUserType);
                     } else {
                         throw new Error('Failed to retrieve session user type');
                     }
@@ -101,6 +101,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         throw new Error('Failed to fetch user name');
                     }
 
+                    if (this.sessionUserType === 'organisation') {
+                        const logoResponse = await fetch('/getOrgLogo');
+                        if (logoResponse.ok) {
+                            console.log("hmm?")
+                            const logoData = await logoResponse.json();
+                            this.orgLogo = logoData.imgPath;
+                            this.updateNavigation(this.sessionUserType);
+                        } else {
+                            throw new Error('Failed to fetch orgLogo');
+                        }
+                    }
+
                     this.updateNavigation(this.sessionUserType);
                 } catch (error) {
                     console.error('Error fetching session data:', error);
@@ -116,7 +128,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.isProfileDropDownOpen = !this.isProfileDropDownOpen;
             },
             updateNavigation(userType) {
-                if (userType == null) {
+                console.log("user type: ", userType)
+                if (userType === null) {
+                    console.log('guest user')
                     this.navigation = [
                         { name: "Home", url: "/home" },
                         { name: "Volunteer Opportunities", url: "/opportunities" },
@@ -126,7 +140,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         { icon: "", class: "", source: "", name: "Sign Up", url: "/signUp" },
                         { class: "userLogIn", source: "", icon: "ri-user-fill", name: "Log in", url: "/logIn" }
                     ];
-                } else if (userType == "volunteer") {
+                } else if (userType === "volunteer") {
+                    console.log('volunteer user')
                     this.navigation = [
                         { name: "Home", url: "/home" },
                         { name: "Volunteer Opportunities", url: "/opportunities" },
@@ -135,21 +150,27 @@ document.addEventListener('DOMContentLoaded', function () {
                         { name: "Updates", url: "/updates" }
                     ];
                     this.button = [];
-                } else if (userType == "organisation") {
-                    if (this.verified) {
+                } else if (userType === "organisation") {
+                    console.log('organisation user')
+                    if (this.verified == true) {
+                        console.log("yes, verified! this is an: ", userType);
                         this.navigation = [
                             { name: "Home", url: "/home" },
                             { name: "Opportunities", url: "/opportunities" },
                             { name: "Updates", url: "/updates" },
                             { name: "Joined Volunteers", url: "/joinedVolunteers" }
                         ];
+                        this.profile = [
+                            { class: "profilPic", source: this.orgLogo, name: this.userName }
+                        ]
                     } else {
                         this.navigation = [
                             { name: "Home", url: "/home" }
                         ];
                     }
                     this.button = [];
-                } else if (userType == "admin") {
+                } else if (userType === "admin") {
+                    console.log('admin user')
                     this.navigation = [
                         { name: "Edit Users", url: "/editUser" },
                         { name: "Edit Organisations", url: "/editOrganisations" },
@@ -186,10 +207,10 @@ document.addEventListener('DOMContentLoaded', function () {
             };
         },
         mounted() {
-            this.fetchSessionData();
+            this.fetchSessionDataFooter();
         },
         methods: {
-            async fetchSessionData() {
+            async fetchSessionDataFooter() {
                 try {
                     const [userTypeResponse, verifiedResponse] = await Promise.all([
                         fetch('/sessionUserType'),
@@ -211,13 +232,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         throw new Error('Failed to check verification status');
                     }
 
-                    this.updateNavigation(this.sessionUserType);
+                    this.updateFooter(this.sessionUserType);
                 } catch (error) {
                     console.error('Error fetching session data:', error);
                 }
             },
-            updateNavigation(userType) {
-                if (userType == null) {
+            updateFooter(userType) {
+                if (userType === null) {
                     this.footer = [
                         { name: "Home", url: "/home" },
                         { name: "Volunteer Opportunities", url: "/opportunities" },
@@ -226,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         { name: "Log In", url: "/logIn" },
                         { name: "Contact Us", url: "/contactUs" }
                     ];
-                } else if (userType == "volunteer") {
+                } else if (userType === "volunteer") {
                     this.footer = [
                         { name: "Home", url: "/home" },
                         { name: "Volunteer Opportunities", url: "/opportunities" },
@@ -237,9 +258,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         { name: "Log Out", url: "/logOut" },
                         { name: "Contact Us", url: "/contactUs" }
                     ];
-                } else if (userType == "organisation") {
-                    console.log("is verified? ", this.verified);
-                    if (this.verified) {
+                } else if (userType === "organisation") {
+                    console.log("is verified in footer? ", this.verified);
+                    if (this.verified == true) {
                         this.footer = [
                             { name: "Home", url: "/home" },
                             { name: "Opportunities", url: "/opportunities" },
@@ -255,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             { name: "Contact Us", url: "/contactUs" }
                         ];
                     }
-                } else if (userType == "admin") {
+                } else if (userType === "admin") {
                     this.footer = [
                         { name: "Edit Users", url: "/editUser" },
                         { name: "Edit Organisations", url: "/editOrganisations" },

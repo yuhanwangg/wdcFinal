@@ -305,9 +305,18 @@ input[type=submit]:active {
     justify-content: flex-end;
 }
 
-
-
-
+.noRSVP {
+    display: flex;
+    text-align: center;
+    background-color: #d0aa31;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 500px;
+    padding: 10px;
+    margin: 10px 50px;
+}
 
 @media only screen and (max-width:900px) {
     .searchBar {

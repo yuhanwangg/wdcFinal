@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
             numPosts: 0,
             currPages: 1,
             sliceState: 0,
-            sliceEnd: 4
+            sliceEnd: 4,
+            submitClicked: false
         },
         mounted() {
 
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
         methods: {
             submit() {
                 console.log("WE HAVE CLICKED SUBMIT");
+                this.submitClicked = true;
                 let valid = true;
                 this.location = document.querySelector(".searchLocation").value;
 

@@ -133,7 +133,8 @@
                     <img :src="post.imgPath" class="orgLogo" alt="profilePic">
                 </div>
             </div>
-            <div class="noRSVP" v-if="branches.length===0">
+
+            <div class="noRSVP" v-if="events.length===0 && submitClicked">
                 <p>
                     No RSVP'd events! Join your first volunteering opportunity here!
                 </p>

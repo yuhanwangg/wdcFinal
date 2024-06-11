@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error("network error");
                         }
                         console.log("we've joined!")
+                        let org = this.searchResults.find(org => org.branchID === brID);
+                        if (org) {
+                            org.joined = true;
+                        }
                     })
                     .catch(error => {
                         console.error("error in joining organisation", error);
@@ -84,6 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             throw new Error("network error");
                         }
                         console.log("we've unjoined!")
+                        let org = this.searchResults.find(org => org.branchID === brID);
+                        if (org) {
+                            org.joined = false;
+                        }
                     })
                     .catch(error => {
                         console.error("error in unjoining organisation", error);

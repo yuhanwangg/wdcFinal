@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             generateLink(post) {
                 // Customize this function to generate the link based on the post data
-                return `/MoreInformationOpportunityUser.html?id=${post.oppID}`;
+                return `/MoreInformationOpportunity?id=${post.oppID}`;
             }
         },
         watch: {

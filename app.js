@@ -24,6 +24,7 @@ var joinedUsersRouter = require('./routes/joinedUsers');
 var editUserRouter = require('./routes/editUser');
 var rsvpRouter = require('./routes/rsvpd');
 var successRSVPdRouter = require('./routes/successRSVPd');
+var moreInfoRouter = require('./routes/moreInformation');
 
 const { readFileSync } = require('fs');
 const { validateHeaderName } = require('http');
@@ -108,5 +109,6 @@ app.use('/editUser', editUserRouter);
 app.use('/users', usersRouter);
 app.use('/successRSVPd', successRSVPdRouter);
 app.use('/rsvpd', rsvpRouter);
+app.use('/MoreInformationOpportunity', moreInfoRouter);
 
 module.exports = app;

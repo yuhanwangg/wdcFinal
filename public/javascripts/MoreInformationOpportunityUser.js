@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var xhttp1 = new XMLHttpRequest();
                 xhttp1.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        vueinst.joinOrg = true;
+                        vueinst.joinedOrg = true;
                     } else if (this.status === 409) {
                         alert("You have already joined this Organisation.");
                     } else if (this.status === 404) {

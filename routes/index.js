@@ -3510,32 +3510,36 @@ router.get('/findEmailName', function (req, res, next) {
   });
 });
 
-router.get('/branchPost', function (req, res, next) {
-  console.log("i am here now!!!");
+router.get('/showPosts', function (req, res, next) {
+  console.log("I am here now!!!");
 
   const categories = req.query.categories;
   const commitment = req.query.commitment;
   const location = req.query.location;
-  console.log("thingys");
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  const branchID = req.query.branchID;
+
+  if (!branchID) {
+    res.status(400).json({ error: "Branch ID is required" });
+    return;
+  }
+
   req.pool.getConnection(function (err, connection) {
-    //this is the error handling
     if (err) {
-      console.log("got error!!!!");
+      console.log("Got error!!!!");
       res.sendStatus(500);
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
+    console.log("Connected to pool");
 
-    let query = `SELECT
-    o.oppID,
-    o.oppName,
-    org.orgName,
-    o.tags,
-    o.description,
-    o.thumbnail,
-    org.orgSite
+    let query = `
+    SELECT
+        o.oppID,
+        o.oppName,
+        org.orgName,
+        o.tags,
+        o.description,
+        o.thumbnail,
+        org.orgSite
     FROM
         Opportunities o
     JOIN
@@ -3543,30 +3547,29 @@ router.get('/branchPost', function (req, res, next) {
     JOIN
         Organisations org ON b.orgID = org.orgID
     WHERE
-    b.branchID = ?;`; // Adding a dummy condition to simplify appending AND conditions
+        b.branchID = ?`;
 
-    const queryParams = [];
+    const queryParams = [branchID];
 
     if (categories) {
-      query += ' AND oppType LIKE CONCAT(\'%\', ?, \'%\')';
+      query += ' AND o.tags LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(categories);
     }
 
     if (commitment) {
-      query += ' AND commitment LIKE CONCAT(\'%\', ?, \'%\')';
+      query += ' AND o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(commitment);
     }
 
     if (location) {
-      query += ' AND address LIKE CONCAT(\'%\', ?, \'%\')';
+      query += ' AND o.address LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(location);
     }
 
     query += ';';
 
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
     connection.query(query, queryParams, function (err1, rows, fields) {
-      // Close the connection
+      connection.release();
       console.log(query);
       if (err1) {
         console.log("Error executing query:", err1);
@@ -3575,12 +3578,10 @@ router.get('/branchPost', function (req, res, next) {
       }
 
       if (rows.length === 0) {
-        // No results found
-        res.status(404).json({ error: "Opps not found" });
+        res.status(404).json({ error: "No opportunities found" });
         return;
       }
-
-      // Results found, send back the details
+      console.log(rows);
       res.json(rows);
     });
   });
@@ -3590,7 +3591,8 @@ router.get('/findBranches', function (req, res, next) {
 var userID = req.session.accountID;
   //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
   var query = `SELECT
-  b.branchName
+  b.branchName,
+  b.branchID
   FROM
   Branch b
   JOIN

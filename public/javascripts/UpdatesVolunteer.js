@@ -106,10 +106,10 @@ function getPosts() {
     xhttp1.open("GET", "/getPostsVolunteer?branchID=" + vueinst.selectedBranchID, true);
     xhttp1.send();
 }
-
+let vueinst;
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize Vue instance after the DOM is fully loaded
-    window.vueinst = new Vue({
+    vueinst = new Vue({
         el: "#app",
         data: {
             orgName: '',

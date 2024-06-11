@@ -16,6 +16,14 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `WDCProject`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `WDCProject` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+USE `WDCProject`;
+
+--
 -- Table structure for table `Admin`
 --
 
@@ -91,8 +99,6 @@ CREATE TABLE `FollowedBranches` (
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
   KEY `idx_userID` (`userID`),
-  CONSTRAINT `fk_branches_followed` FOREIGN KEY (`branchID`) REFERENCES `FollowedBranches` (`branchID`) ON DELETE CASCADE,
-  CONSTRAINT `fk_user_branches_followed` FOREIGN KEY (`userID`) REFERENCES `FollowedBranches` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `FollowedBranches_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `FollowedBranches_ibfk_2` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -104,7 +110,7 @@ CREATE TABLE `FollowedBranches` (
 
 LOCK TABLES `FollowedBranches` WRITE;
 /*!40000 ALTER TABLE `FollowedBranches` DISABLE KEYS */;
-INSERT INTO `FollowedBranches` VALUES (3,3,1),(3,6,1);
+INSERT INTO `FollowedBranches` VALUES (3,6,1),(3,3,1),(2,7,1),(3,9,1);
 /*!40000 ALTER TABLE `FollowedBranches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-11  2:33:16
+-- Dump completed on 2024-06-11  3:56:08

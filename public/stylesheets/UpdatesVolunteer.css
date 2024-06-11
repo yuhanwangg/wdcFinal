@@ -22,7 +22,7 @@ h1 {
 }
 
 .postsPages #numberOfPosts {
-    margin-left: auto;
+    margin-left: 175px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -235,6 +235,9 @@ button {
         padding: 0px;
     }
 
+    .postsPages #numberOfPosts {
+        margin-left: 0px;
+    }
     .boxes {
         flex-direction: column;
         padding: 0px;

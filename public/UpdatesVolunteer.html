@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!--  -->
 <head>
     <title>Updates Volunteer</title>
     <!-- vue script -->
@@ -24,12 +24,16 @@
         </header-component>
         <div class="contentWrapper">
             <h1>Updates</h1>
-
+            <div class="postsPages">
+                <div id="numberOfPosts">
+                    <p id="numPosts">{{ numPosts }} Posts</p>
+                    <p id="pageNum">Page {{ currPage }}/{{ numPages }}</p>
+                </div>
+            </div>
 
             <!-- Branch boxes and post updates -->
             <div class="boxes" v-if="">
                 <div class="dropdown">
-                    <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
                     <select class="dropbtn" @change="choseBranch($event)">
                         <option v-for="(branch, index) in branches" v-bind:value="branch.branchID"
                             v-bind:selected="index === 0">{{branch.orgName}} — {{ branch.branchName}}</option>

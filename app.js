@@ -66,6 +66,7 @@ app.use('/AdminEditUsers.html', checkSession.adminEditUserPage);
 app.use('/AdminOrganisation.html', checkSession.checkAdmin);
 app.use('/AdminUsers.html', checkSession.checkAdmin);
 app.use('/settingsAdmin.html', checkSession.checkAdmin);
+app.use('/editUser', checkSession.checkAdmin);
 
 //organisation pages
 app.use('/CreateVolunteerOpportunity.html', checkSession.checkOrganisation);

@@ -5,6 +5,11 @@ function getFollowedBranch() {
         .then(response => response.json())
         .then(data => {
             vueinst.branches = data;
+            if (vueinst.branches.length > 0) {
+                vueinst.selectedBranchName = vueinst.branches[0].branchName;
+                vueinst.selectedBranchID = vueinst.branches[0].branchID;
+                getPosts();
+            }
         })
         .catch(error => console.error('Error fetching followed branches:', error));
 }
@@ -47,10 +52,6 @@ function getOrgLogo() {
 
 
 function getPosts() {
-
-    //console.log("WE ARE RIGHT HERE!!! went into get Posts function");
-    // //console.log("the selected branch is" + vueinst.selectedBranchName);
-
     //get the user details
     var xhttp1 = new XMLHttpRequest();
     xhttp1.onreadystatechange = function () {
@@ -122,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
         methods: {
             choseBranch(event) {
                 this.selectedBranchID = event.target.value;
+                console.log("the selected branch is" + vueinst.selectedBranchID);
                 // //console.log("in the methods, the selected branch name is " + this.selectedBranchName);
                 getPosts();
             },
@@ -155,17 +157,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-                // Hide the "New Post" and the branch selector box if it's not the first page
-                var newPostBox = document.querySelector('.newPost');
-                var newPostTitle = document.querySelector('h2');
+                // Hide the branch selector box if it's not the first page
                 var branchSelector = document.querySelector('.dropdown');
                 if (vueinst.currPage !== 0) {
-                    newPostBox.classList.add('hidden');
-                    newPostTitle.classList.add('hidden');
                     branchSelector.classList.add('hidden');
                 } else {
-                    newPostBox.classList.remove('hidden');
-                    newPostTitle.classList.remove('hidden');
                     branchSelector.classList.remove('hidden');
                 }
 
@@ -199,18 +195,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-                    // Hide the "New Post" and the branch selector box if it's not the first page
-                    var newPostBox = document.querySelector('.newPost');
-                    var newPostTitle = document.querySelector('h2');
+                    // Hide the branch selector box if it's not the first page
                     var branchSelector = document.querySelector('.dropdown');
                     //console.log("IN THE BACK PAGE: currPage is " + vueinst.currPage);
                     if (vueinst.currPage !== 1) {
-                        newPostBox.classList.add('hidden');
-                        newPostTitle.classList.add('hidden');
                         branchSelector.classList.add('hidden');
                     } else {
-                        newPostBox.classList.remove('hidden');
-                        newPostTitle.classList.remove('hidden');
                         branchSelector.classList.remove('hidden');
                     }
                 }

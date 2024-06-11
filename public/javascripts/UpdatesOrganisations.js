@@ -66,7 +66,7 @@ function getBranches() {
 function getPosts() {
 
     //console.log("WE ARE RIGHT HERE!!! went into get Posts function");
-    // //console.log("the selected branch is" + vueinst.selectedBranchName);
+
 
     //get the user details
     var xhttp1 = new XMLHttpRequest();

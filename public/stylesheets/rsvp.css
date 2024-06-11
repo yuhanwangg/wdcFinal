@@ -306,6 +306,7 @@ input[type=submit]:active {
 }
 
 .noRSVP {
+    box-sizing: border-box;
     display: flex;
     text-align: center;
     background-color: #d0aa31;
@@ -316,6 +317,7 @@ input[type=submit]:active {
     width: 500px;
     padding: 10px;
     margin: 10px 50px;
+    margin-left: 175px;
 }
 
 @media only screen and (max-width:900px) {

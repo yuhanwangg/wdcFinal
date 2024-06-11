@@ -147,6 +147,13 @@ input[type=submit]:active {
     margin-top: 20px;
 }
 
+.joined {
+    background-color: green;
+    /* Change this to your desired color */
+    color: white;
+    /* Change this to your desired text color */
+}
+
 
 @media only screen and (max-width:900px) {
     .searchBar {

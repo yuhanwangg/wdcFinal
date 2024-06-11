@@ -1763,6 +1763,23 @@ router.post('/updateUserInfo', async function (req, res, next) {
 
     }
 
+    if (updateEmailPreference == 1) {
+      const query = 'UPDATE FollowedBranches SET emailSubscribed = 0 WHERE userID = ?;';
+
+      await connection.query(query, [accountID], function (err, returnVal) {
+        //connection.release();
+
+        if (err) {
+          console.log("error updating email preference", err);
+          res.sendStatus(500);
+          return;
+        }
+        console.log("email preference updated");
+      });
+
+    }
+
+
     console.log("got to the end");
     //if connection has not been released, release it
     //if ((connection && connection.threadId)) {

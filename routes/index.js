@@ -3009,27 +3009,69 @@ router.post("/unjoinOrgBranch", function (req, res, next) {
 
 router.get('/getPostsVolunteer', function (req, res, next) {
   // get the followed updates depending on the branch
+
   let branchID = req.query.branchID;
-  // Construct the SQL query to fetch posts based on branchID
+  let userID = req.session.accountID;
+  //all updates from all branches
+
   let sqlQuery = `
-    SELECT Updates.*, Organisations.imgPath
-    FROM Updates
-    JOIN Branch ON Updates.branchID = Branch.branchID
-    JOIN Organisations ON Branch.orgID = Organisations.orgID
-    WHERE Updates.branchID = ${branchID}`;
+    SELECT
+        Updates.*,
+        Organisations.orgName,
+        Branch.branchName,
+        Organisations.imgPath
+    FROM
+        Updates
+    JOIN
+        Branch ON Updates.branchID = Branch.branchID
+    JOIN
+        Organisations ON Branch.orgID = Organisations.orgID
+    LEFT JOIN
+        FollowedBranches ON Updates.branchID = FollowedBranches.branchID
+            AND FollowedBranches.userID = ?
+    WHERE
+        Updates.private = 0
+        OR
+        (Updates.private = 1 AND FollowedBranches.userID IS NOT NULL);
+    `;
+  // Construct the SQL query to fetch posts based on branchID
+  if (branchID !== '-1') {
+    console.log("NEW QUERY");
+    sqlQuery = `
+      SELECT Updates.*, Organisations.orgName,
+      Branch.branchName, Organisations.imgPath
+      FROM Updates
+      JOIN Branch ON Updates.branchID = Branch.branchID
+      JOIN Organisations ON Branch.orgID = Organisations.orgID
+      WHERE Updates.branchID = ?`;
+  }
 
   // Execute the SQL query
-  connection.query(sqlQuery, (err, results) => {
-    if (err) {
-      // Handle errors
-      console.error("Error fetching posts:", err);
-      res.status(500).json({ error: "Failed to fetch posts" });
-    } else {
-      // Send the fetched posts as JSON response
-      res.json(results);
-    }
-  });
+  if (branchID === '-1') {
+    connection.query(sqlQuery, [userID], (err, results) => {
+      if (err) {
+        // Handle errors
+        console.error("Error fetching posts:", err);
+        res.status(500).json({ error: "Failed to fetch posts" });
+      } else {
+        // Send the fetched posts as JSON response
+        res.json(results);
+      }
+    });
+  } else {
+    connection.query(sqlQuery, [branchID], (err, results) => {
+      if (err) {
+        // Handle errors
+        console.error("Error fetching posts:", err);
+        res.status(500).json({ error: "Failed to fetch posts" });
+      } else {
+        // Send the fetched posts as JSON response
+        res.json(results);
+      }
+    });
+  }
 })
+
 
 router.get('/getFollowedBranch', function (req, res, next) {
   // get the followed updates depending on the branch

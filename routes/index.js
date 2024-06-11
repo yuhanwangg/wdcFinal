@@ -2922,4 +2922,58 @@ router.get('/getFollowedBranch', function (req, res, next) {
   });
 })
 
+router.post('/findRSVP', function (req, res, next) {
+  const { commitments, tags, location } = req.body;
+  const userID = req.session.accountID;
+
+  // Construct the WHERE clause of the query based on the provided criteria
+  let whereClause = '';
+
+  // Add conditions for commitments
+  if (commitments && commitments.length > 0) {
+    const commitmentConditions = commitments.map(commitment => `commitment LIKE '%${commitment.text}%'`);
+    whereClause += `(${commitmentConditions.join(' OR ')})`;
+  }
+
+  // Add conditions for tags
+  if (tags && tags.length > 0) {
+    const tagConditions = tags.map(tag => `tags LIKE '%${tag.text}%'`);
+    if (whereClause) {
+      whereClause += ' AND ';
+    }
+    whereClause += `(${tagConditions.join(' OR ')})`;
+  }
+
+  // Add conditions for location
+  if (location) {
+    if (whereClause) {
+      whereClause += ' AND ';
+    }
+    whereClause += `address LIKE '%${location}%'`;
+  }
+
+  // Construct the SQL query with the WHERE clause and join operation
+  let query = `
+    SELECT *
+    FROM Opportunities AS o
+    JOIN RSVPD AS r ON o.oppID = r.oppID
+    WHERE r.userID = ${userID}
+  `;
+
+  // Add the WHERE clause conditions if they exist
+  if (whereClause.length > 0) {
+    query += ` AND ${whereClause}`;
+  }
+
+  // Execute the query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).json({ error: 'An error occurred while searching for opportunities' });
+      return;
+    }
+    res.json(results);
+  });
+});
+
 module.exports = router;

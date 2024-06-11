@@ -3022,4 +3022,43 @@ router.post('/findRSVP', function (req, res, next) {
   });
 });
 
+router.get('/checkGoogleUser', function (req, res, next) {
+  let accID = req.session.accountID;
+
+  //query to extract googleUser value
+  let query = `SELECT googleUser FROM User WHERE userID = ${accID}`;
+
+  // Execute the SQL query
+  connection.query(query, (err, results) => {
+    if (err) {
+      // Handle errors
+      console.error("Error fetching googleUser", err);
+      res.status(500).json({ error: "Failed to get googleUser" });
+    } else {
+      // Send the fetched followed branches as JSON response
+      res.json(results);
+    }
+  });
+})
+
+router.get('/checkGoogleOrg', function (req, res, next) {
+  let accID = req.session.accountID;
+
+  //query to extract googleUser value
+  let query = `SELECT googleUser FROM Organisations WHERE orgID = ${accID}`;
+
+  // Execute the SQL query
+  connection.query(query, (err, results) => {
+    if (err) {
+      // Handle errors
+      console.error("Error fetching googleUser", err);
+      res.status(500).json({ error: "Failed to get googleUser" });
+    } else {
+      // Send the fetched followed branches as JSON response
+      res.json(results);
+    }
+  });
+})
+
+
 module.exports = router;

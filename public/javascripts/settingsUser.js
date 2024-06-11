@@ -57,6 +57,35 @@ function checkPassword(password) {
     });
 }
 
+function checkIfGoogleUser() {
+    return new Promise((resolve, reject) => {
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    var val = JSON.parse(this.responseText);
+                    console.log("this is the value", val);
+                    if (val[0].googleUser == 1) {
+                        console.log("is google user")
+                        resolve(true);
+                    } else {
+                        console.log("is not google user")
+                        resolve(false);
+                    }
+                } else {
+                    console.error("Fail. Status:", this.status);
+                    resolve(false);
+                }
+            }
+        };
+
+        xhttp.open("GET", "/checkGoogleUser", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    });
+}
+
 async function saveDetails() {
     var message = document.getElementsByClassName("errorInput")[0];
 
@@ -132,6 +161,16 @@ async function saveDetails() {
         message.style.display = "block";
         message.textContent = "Please enter information";
         return;
+    }
+
+    var googleUser = await checkIfGoogleUser();
+    if (googleUser) {
+        if ( updateEmail || updatePassword ) {
+            message.style.display = "block";
+            message.textContent = "Cannot edit email or password of google account";
+            message.style.color = "red";
+            return;
+        }
     }
 
     if (updateEmail) {

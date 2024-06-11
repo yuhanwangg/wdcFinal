@@ -139,5 +139,5 @@ function checkDeleteUser() {
 }
 
 function backToUsers() {
-    window.location.href = "AdminUsers.html";
+    window.location.href = "/editUser";
 }

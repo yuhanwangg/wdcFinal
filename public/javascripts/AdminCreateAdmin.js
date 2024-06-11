@@ -67,7 +67,7 @@ function createAdmin() {
 }
 
 function goToAdminCreate() {
-    window.location.href = "AdminCreateAdmin.html";
+    window.location.href = "/home";
 }
 
 function showNotAllFilledMsg() {

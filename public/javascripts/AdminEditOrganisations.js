@@ -217,5 +217,5 @@ function checkDeleteOrganisatoin() {
 }
 
 function backToOrganisations() {
-    window.location.href = "AdminOrganisation.html";
+    window.location.href = "/organisations";
 }

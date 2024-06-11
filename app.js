@@ -23,6 +23,7 @@ var registerBranchRouter = require('./routes/registerBranch');
 var joinedUsersRouter = require('./routes/joinedUsers');
 var editUserRouter = require('./routes/editUser');
 var rsvpRouter = require('./routes/rsvpd');
+var successRSVPdRouter = require('./routes/successRSVPd');
 
 const { readFileSync } = require('fs');
 const { validateHeaderName } = require('http');
@@ -87,6 +88,7 @@ app.use('/MoreInformationOpportunityUser.html', checkSession.checkVolunteer);
 app.use('/rsvp.html', checkSession.checkVolunteer);
 app.use('/settingsUser.html', checkSession.checkVolunteer);
 app.use('/successRSVPd.html', checkSession.checkVolunteer);
+app.use('/successRSVPd.html', checkSession.checkVolunteer);
 app.use('/VolunteerOpportunitiesUser.html', checkSession.checkVolunteer);
 
 
@@ -104,8 +106,7 @@ app.use('/registerBranch', registerBranchRouter);
 app.use('/joinedUsers', joinedUsersRouter);
 app.use('/editUser', editUserRouter);
 app.use('/users', usersRouter);
+app.use('/successRSVPd', successRSVPdRouter);
 app.use('/rsvpd', rsvpRouter);
-
-
 
 module.exports = app;

@@ -1,182 +1,57 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Volunteer Opportunites</title>
-    <link rel="stylesheet" href="stylesheets/VolunteerOpportunitiesOrg.css">
-    <link rel="icon" type="image/x-icon" href="/images_assets/favicon.svg">
+    <title>Volunteer Opportunities</title>
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <link rel="stylesheet" href="stylesheets/VolunteerOpportunitiesGuest.css">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesheets/main.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="javascripts/headerFooter.js"></script>
-    <script src="javascripts/VolunteerOpportunitiesOrg.js"></script>
-
+    <script src="javascripts/VolunteerOpportunitiesUser.js" defer></script>
 </head>
 
 <body>
     <div id="app">
-        <header-component>
-        </header-component>
-        <div class="contentWrapper">
+        <header-component></header-component>
+        <div class="contentHold">
+            <div class="contentLeft">
+                <!-- Current Branch Dropdown -->
+                <div class="dropdown">
+                    <select class="dropbtn" v-model="selectedBranch" @change="choseBranch">
+                        <option v-for="branch in branches" :value="branch" :key="branch">
+                            {{ branch }}
+                        </option>
+                    </select>
+                </div>
 
-            <!-- Page Title -->
-            <h1 class="title">Volunteer Opportunites</h1>
+                <!-- Result and Page Count-->
+                <div class="countContainer">
+                    <p class="searchCount">{{ totalPosts }} Posts</p>
+                    <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
+                </div>
 
-            <!-- Search Bar -->
-            <div class="searchBar">
-                <input type="text" placeholder="Categories">
-                <input type="text" placeholder="Time Commitment">
-                <input type="text" placeholder="Location">
-                <input type="submit" value="Search">
-            </div>
-
-            <div class="contentHold">
-                <div class="contentLeft">
-                    <!-- Current Branch Dropdown -->
-                    <div class="dropdown">
-                        <!-- <button onclick="showBranchOptions()" class="dropbtn">Current Branch ▼ </button> -->
-                        <select class="dropbtn">
-                            <option value="Branch1" onclick="choseBranch(this)" selected>Branch Name 1</option>
-                            <option value="Branch2" onclick="choseBranch(this)">Branch Name 2</option>
-                            <option value="Branch3" onclick="choseBranch(this)">Branch Name 3</option>
-                            <option value="Branch4" onclick="choseBranch(this)">Branch Name 4</option>
-                        </select>
+                <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
+                <div class="opportunityBox" v-for="opportunity in opportunities" :key="opportunity.id">
+                    <div class="contentLeft">
+                        <a :href="opportunity.link" class="organisationName"><b>{{ opportunity.programName }}</b></a>
+                        <p>{{ opportunity.organisationName }}</p>
+                        <div class="tags">
+                            <span class="opportunityTag" v-for="tag in opportunity.tags" :key="tag">{{ tag }}</span>
+                        </div>
+                        <p>{{ opportunity.description }}</p>
                     </div>
-
-                    <!-- Result and Page Count-->
-                    <div class="countContainer">
-                        <p class="searchCount">100 Posts</p>
-                        <p class="pageCount">Page 1/42</p>
-                    </div>
-
-                    <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="" class="miniLogo">
-                        </div>
-                    </div>
-
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="" class="miniLogo">
-                        </div>
-                    </div>
-
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="" class="miniLogo">
-                        </div>
-                    </div>
-
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="" class="miniLogo">
-                        </div>
-                    </div>
-
-                    <div class="opportunityBox">
-                        <div class="contentLeft">
-                            <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                            <p>Organisation Name</p>
-                            <div class="tags">
-                                <span class="opportunityTag">Tag 1</span>
-                                <span class="opportunityTag">Tag 2</span>
-                                <span class="opportunityTag">Tag 3</span>
-                            </div>
-                            <p>
-                                Description of program that extends really far so they can put in lots of words so they
-                                are
-                                long and they go for multiple lines. Repeating lots of information but in a super
-                                concise
-                                way.
-                                this looks so good with multiple lines. Click for more info!
-                            </p>
-                        </div>
-                        <div class="logoJoin">
-                            <img src="exampleLogo.png" alt="" class="miniLogo">
-                        </div>
+                    <div class="logoJoin">
+                        <img :src="opportunity.logo" alt="" class="miniLogo">
                     </div>
                 </div>
-                <button class="postButton" type="submit">Create Post</button>
             </div>
-
-            <!-- Next Button -->
-
-            <button class="nextButton" type="submit">Next Page</button>
-
         </div>
-        <!-- footer -->
         <footer-component></footer-component>
-
     </div>
 </body>
 

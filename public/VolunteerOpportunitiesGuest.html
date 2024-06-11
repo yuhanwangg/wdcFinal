@@ -1,151 +1,60 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Volunteer Opportunites</title>
+    <title>Volunteer Opportunities</title>
     <link rel="stylesheet" href="stylesheets/main.css">
     <link rel="stylesheet" href="stylesheets/VolunteerOpportunitiesGuest.css">
-    <link rel="icon" type="image/x-icon" href="/images_assets/favicon.svg">
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="javascripts/headerFooter.js"></script>
-    <script src="javascripts/VolunteerOpportunitiesGuest.js"></script>
-
+    <script src="javascripts/VolunteerOpportunitiesGuest.js" defer></script>
 </head>
 
 <body>
     <div id="app">
-        <header-component>
-        </header-component>
+        <header-component></header-component>
         <div class="contentWrapper">
             <!-- Page Title -->
-            <h1 class="title">Volunteer Opportunites</h1>
-
+            <h1 class="title">Volunteer Opportunities</h1>
             <!-- Search Bar -->
             <div class="searchBar">
-                <input type="text" placeholder="Categories">
-                <input type="text" placeholder="Time Commitment">
-                <input type="text" placeholder="Location">
-                <input type="submit" value="Search">
+                <input id="categories" type="text" placeholder="Categories">
+                <input id="commitment" type="text" placeholder="Time Commitment">
+                <input id="location" type="text" placeholder="Location">
+                <input onclick="searchPosts()" type="submit" value="Search">
             </div>
-
             <!-- Result and Page Count-->
-            <p class="searchCount">100 Search Results Match</p>
-            <p class="pageCount">Page 1/42</p>
-
+            <p class="searchCount">{{ totalResults }} Search Results Match</p>
+            <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
             <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
-            <div class="opportunityBox">
+
+            <div v-for="post in results" :key="post.oppID" class="opportunityBox">
                 <div class="contentLeft">
-                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                    <p>Organisation Name</p>
+                    <a :href="generateLink(post)" class="organisationName"><b>{{ post.oppName }}</b></a>
+                    <p>{{ post.organisationName }}</p>
                     <div class="tags">
-                        <span class="opportunityTag">Tag 1</span>
-                        <span class="opportunityTag">Tag 2</span>
-                        <span class="opportunityTag">Tag 3</span>
+                        <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{ tag.trim()
+                            }}</span>
                     </div>
-                    <p>
-                        Description of program that extends really far so they can put in lots of words so they are
-                        long and they go for multiple lines. Repeating lots of information but in a super concise way.
-                        this looks so good with multiple lines. Click for more info!
-                    </p>
+                    <p>{{ post.description }}</p>
                 </div>
                 <div class="logoJoin">
-                    <img src="exampleLogo.png" alt="" class="miniLogo">
+                    <img :src="post.thumbnail" alt="logo" class="miniLogo">
                 </div>
             </div>
 
-            <div class="opportunityBox">
-                <div class="contentLeft">
-                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                    <p>Organisation Name</p>
-                    <div class="tags">
-                        <span class="opportunityTag">Tag 1</span>
-                        <span class="opportunityTag">Tag 2</span>
-                        <span class="opportunityTag">Tag 3</span>
-                    </div>
-                    <p>
-                        Description of program that extends really far so they can put in lots of words so they are
-                        long and they go for multiple lines. Repeating lots of information but in a super concise way.
-                        this looks so good with multiple lines. Click for more info!
-                    </p>
-                </div>
-                <div class="logoJoin">
-                    <img src="exampleLogo.png" alt="" class="miniLogo">
-                </div>
-            </div>
-
-            <div class="opportunityBox">
-                <div class="contentLeft">
-                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                    <p>Organisation Name</p>
-                    <div class="tags">
-                        <span class="opportunityTag">Tag 1</span>
-                        <span class="opportunityTag">Tag 2</span>
-                        <span class="opportunityTag">Tag 3</span>
-                    </div>
-                    <p>
-                        Description of program that extends really far so they can put in lots of words so they are
-                        long and they go for multiple lines. Repeating lots of information but in a super concise way.
-                        this looks so good with multiple lines. Click for more info!
-                    </p>
-                </div>
-                <div class="logoJoin">
-                    <img src="exampleLogo.png" alt="" class="miniLogo">
-                </div>
-            </div>
-
-            <div class="opportunityBox">
-                <div class="contentLeft">
-                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                    <p>Organisation Name</p>
-                    <div class="tags">
-                        <span class="opportunityTag">Tag 1</span>
-                        <span class="opportunityTag">Tag 2</span>
-                        <span class="opportunityTag">Tag 3</span>
-                    </div>
-                    <p>
-                        Description of program that extends really far so they can put in lots of words so they are
-                        long and they go for multiple lines. Repeating lots of information but in a super concise way.
-                        this looks so good with multiple lines. Click for more info!
-                    </p>
-                </div>
-                <div class="logoJoin">
-                    <img src="exampleLogo.png" alt="" class="miniLogo">
-                </div>
-            </div>
-
-            <div class="opportunityBox">
-                <div class="contentLeft">
-                    <a href="link.com" class="organisationName"><b>Program Name</b></a>
-                    <p>Organisation Name</p>
-                    <div class="tags">
-                        <span class="opportunityTag">Tag 1</span>
-                        <span class="opportunityTag">Tag 2</span>
-                        <span class="opportunityTag">Tag 3</span>
-                    </div>
-                    <p>
-                        Description of program that extends really far so they can put in lots of words so they are
-                        long and they go for multiple lines. Repeating lots of information but in a super concise way.
-                        this looks so good with multiple lines. Click for more info!
-                    </p>
-                </div>
-                <div class="logoJoin">
-                    <img src="exampleLogo.png" alt="" class="miniLogo">
-                </div>
-            </div>
 
             <!-- Next Button -->
-
-            <button class="nextButton" type="submit">Next Page</button>
-
+            <button class="nextButton" @click="nextPage" :disabled="currentPage === totalPages">Next Page</button>
+            <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1">Previous Page</button>
             <!-- footer -->
         </div>
-
         <footer-component></footer-component>
-
     </div>
 </body>
 

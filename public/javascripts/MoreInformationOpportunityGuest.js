@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 xhttp1.send();
             },
             login() {
-                window.location.href = 'login.html';
+                window.location.href = '/login';
             },
             back() {
                 window.history.back();

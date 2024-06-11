@@ -3236,6 +3236,383 @@ router.post('/deleteGoogleOrg', function (req, res, next) {
   }
 });
 
+router.get('/searchPosts', function (req, res, next) {
+  console.log("i am here now!!!");
 
+  const categories = req.query.categories;
+  const commitment = req.query.commitment;
+  const location = req.query.location;
+  console.log("thingys");
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+    console.log("connected to pool");
+    //this is the query which i can change
+
+    let query = `SELECT oppID,
+      oppName,
+      tags,
+      dates,
+      address,
+      commitment,
+      suitability,
+      training,
+      requirements,
+      thumbnail,
+      Opportunities.description,
+      Opportunities.branchID,
+      branchName,
+      org.orgName as organisationName
+      FROM Opportunities
+      JOIN Branch b ON Opportunities.branchID = b.branchID
+      JOIN Organisations org ON org.orgID = b.orgID
+      WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
+
+    const queryParams = [];
+
+    if (categories) {
+      query += ' AND oppType LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(categories);
+    }
+
+    if (commitment) {
+      query += ' AND commitment LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(commitment);
+    }
+
+    if (location) {
+      query += ' AND address LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(location);
+    }
+
+    query += ';';
+
+
+
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, queryParams, function (err1, rows, fields) {
+      // Close the connection
+      console.log(query);
+      connection.release();
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length === 0) {
+        // No results found
+        res.status(404).json({ error: "Opps not found" });
+        return;
+      }
+
+      // Results found, send back the details
+      res.json(rows);
+    });
+  });
+});
+
+router.get('/searchSpecificPost', function (req, res, next) {
+  console.log("new page laoded");
+
+  const ID = req.query.id;
+  console.log(ID);
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+    console.log("connected to pool");
+    //this is the query which i can change
+
+    let query = `SELECT oppName,
+      tags,
+      address,
+      commitment,
+      suitability,
+      training,
+      requirements,
+      thumbnail,
+      Opportunities.description,
+      Opportunities.branchID,
+      branchName,
+      org.orgName as organisationName
+      FROM Opportunities
+      JOIN Branch b ON Opportunities.branchID = b.branchID
+      JOIN Organisations org ON org.orgID = b.orgID
+      WHERE oppID = ?;`; // Adding a dummy condition to simplify appending AND conditions
+
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, [ID], function (err1, rows, fields) {
+      // Close the connection
+      console.log(query);
+      connection.release();
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length === 0) {
+        // No results found
+        res.status(404).json({ error: "Opp not found" });
+        return;
+      }
+      res.json(rows[0]);
+    });
+  });
+});
+
+router.post('/addRSVP', (req, res) => {
+  const { oppID } = req.body;
+  const userID = req.session.accountID;
+
+  req.pool.getConnection(function (err, connection) {
+    if (!userID || !oppID) {
+        return res.status(400).send({ error: true, message: 'Please provide userID and oppID' });
+    }
+    const check = 'SELECT * FROM RSVPD WHERE userID = ? AND oppID = ?;';
+    connection.query(check, [userID, oppID], (err, reults) => {
+      if (err) {
+        console.error('Error checking RSVPD:', err);
+        return res.status(500).send({ error: true, message: 'Database insertion failed' });
+      }
+      if (reults.length > 0) {
+        return res.status(409).send({ error: true, message: 'RSVP already exists' });
+      }
+
+      const query = 'INSERT INTO RSVPD (userID, oppID) VALUES (?, ?);';
+      connection.query(query, [userID, oppID], (err, results) => {
+          if (err) {
+              console.error('Error inserting into RSVPD:', err);
+              return res.status(500).send({ error: true, message: 'Database insertion failed' });
+          }
+          res.send({ error: false, message: 'RSVP added successfully', data: results });
+      });
+    });
+  });
+});
+
+router.post("/removeRSVP", function (req, res, next) {
+  // first get user ID, branch ID and org ID
+  let userID = req.session.accountID;
+  const { oppID } = req.body;
+
+  let query = "DELETE FROM RSVPD WHERE userID = ? AND oppID = ?";
+  connection.query(query, [userID, oppID], function (err, result) {
+    if (err) {
+      console.error('Error unjoining branch:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    res.json({ message: 'Successfully unRSVPD' });
+  });
+});
+
+router.get('/checkRSVP', function (req, res, next) {
+  console.log("checkrsvp");
+
+  const oppID = req.query.id;
+  const userID = req.session.accountID;
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = `SELECT * FROM RSVPD WHERE userID = ? AND oppID = ?;`; // Adding a dummy condition to simplify appending AND conditions
+
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, [userID, oppID], function (err1, rows, fields) {
+      // Close the connection
+      connection.release();
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length > 0) {
+        // Results found
+        res.json(true);
+      } else {
+        // No results found
+        res.json(false);
+      }
+    });
+  });
+});
+
+router.get('/checkOrg', function (req, res, next) {
+  console.log("checkOrg");
+
+  const branchID = req.query.id;
+  const userID = req.session.accountID;
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+
+    let query = `SELECT * FROM FollowedBranches WHERE userID = ? AND branchID = ?;`; // Adding a dummy condition to simplify appending AND conditions
+
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, [userID, branchID], function (err1, rows, fields) {
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length > 0) {
+        // Results found
+        console.log("org found");
+        res.json(true);
+      } else {
+        // No results found
+        res.json(false);
+      }
+    });
+  });
+});
+
+router.get('/findEmailName', function (req, res, next) {
+  const query = 'SELECT o.oppName, u.email FROM RSVPD r JOIN Opportunities o ON r.oppID = o.oppID JOIN User u ON r.userID = u.userID WHERE r.userID = ? AND r.oppID = ?;';
+  const userID = req.session.accountID;
+  const oppID = req.query.id;
+  connection.query(query, [userID, oppID], function (err1, rows, fields) {
+    // Close the connection
+    if (err1) {
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    if (rows.length === 0) {
+      // No results found
+      res.status(404).json({ error: "Opps not found" });
+      return;
+    }
+    res.json(rows[0]);
+  });
+});
+
+router.get('/branchPost', function (req, res, next) {
+  console.log("i am here now!!!");
+
+  const categories = req.query.categories;
+  const commitment = req.query.commitment;
+  const location = req.query.location;
+  console.log("thingys");
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+    console.log("connected to pool");
+    //this is the query which i can change
+
+    let query = `SELECT
+    o.oppID,
+    o.oppName,
+    org.orgName,
+    o.tags,
+    o.description,
+    o.thumbnail,
+    org.orgSite
+    FROM
+        Opportunities o
+    JOIN
+        Branch b ON o.branchID = b.branchID
+    JOIN
+        Organisations org ON b.orgID = org.orgID
+    WHERE
+    b.branchID = ?;`; // Adding a dummy condition to simplify appending AND conditions
+
+    const queryParams = [];
+
+    if (categories) {
+      query += ' AND oppType LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(categories);
+    }
+
+    if (commitment) {
+      query += ' AND commitment LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(commitment);
+    }
+
+    if (location) {
+      query += ' AND address LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(location);
+    }
+
+    query += ';';
+
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, queryParams, function (err1, rows, fields) {
+      // Close the connection
+      console.log(query);
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length === 0) {
+        // No results found
+        res.status(404).json({ error: "Opps not found" });
+        return;
+      }
+
+      // Results found, send back the details
+      res.json(rows);
+    });
+  });
+});
+
+router.get('/findBranches', function (req, res, next) {
+var userID = req.session.accountID;
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  var query = `SELECT
+  b.branchName
+  FROM
+  Branch b
+  JOIN
+  Organisations org ON b.orgID = org.orgID
+  WHERE
+  org.orgID = ?;`
+  connection.query(query, userID, function (err1, rows, fields) {
+    if (err1) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    if (rows.length === 0) {
+      // No results found
+      res.status(404).json({ error: "Opps not found" });
+      return;
+    }
+
+    // Results found, send back the details
+    res.json(rows);
+  });
+});
 
 module.exports = router;

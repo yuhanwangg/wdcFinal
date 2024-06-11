@@ -16,14 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `WDCProject`
---
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `WDCProject` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-
-USE `WDCProject`;
-
---
 -- Table structure for table `Admin`
 --
 
@@ -47,6 +39,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
+INSERT INTO `Admin` VALUES (1,'Admin','Admin','admin@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$MplNzhLBUH4LMTkg86kHhQ$PNnE6/n7uBrQLR8/sT7aWJ6vW/FZxMghqxPB58VW1EU'),(2,'Admin2','Admin2','admin2@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$oTawQX2ITGXkn5OEWjV5Vw$o0WAQvHbjz50rPRt2w1G9kjzD1vw1J8ssO0vsb3qtF8');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +72,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
-INSERT INTO `Branch` VALUES (3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(6,'Melbourne','Melbourne','VIC','5067','Australia',1,1);
+INSERT INTO `Branch` VALUES (3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(6,'Melbourne','Melbourne','VIC','5067','Australia',1,1),(7,'YuhanCorp','so ','cool','6969','yapcity',2,1),(8,'Sydney Branch','Sydney','NSW','2000','Australia',2,1),(9,'Brisbane Branch','Brisbane','QLD','4000','Australia',2,1),(10,'hkas','Adelaide','SA','5073','Australia',2,0),(11,'another one','hsadk','jkasd','600','njasd',2,0),(12,'one more','prett','please','696420','yooo',2,0),(13,'one more','prett','please','38942','yooo',2,0),(14,'yoo','gran','turismo','900','jdlsf',2,0),(15,'one mroe','test','opls','904','jdnsf',2,0),(16,'yoo','Adelaide','SA','5073','Australia',2,0);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,6 +104,7 @@ CREATE TABLE `FollowedBranches` (
 
 LOCK TABLES `FollowedBranches` WRITE;
 /*!40000 ALTER TABLE `FollowedBranches` DISABLE KEYS */;
+INSERT INTO `FollowedBranches` VALUES (3,3,1),(3,6,1);
 /*!40000 ALTER TABLE `FollowedBranches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +126,6 @@ CREATE TABLE `Opportunities` (
   `requirements` varchar(500) DEFAULT NULL,
   `thumbnail` varchar(500) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `oppType` varchar(255) DEFAULT NULL,
   `dates` varchar(255) DEFAULT NULL,
   `branchID` int DEFAULT NULL,
   PRIMARY KEY (`oppID`),
@@ -179,7 +172,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png',0);
+INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png',0),(2,'YuhanCorp','www.big.com','test@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$rfpLc+G5JRxVDEk5Z7I03A$fBt7WOBVrC9tuSC4Cb6CYUGfQ2Jrxvq9FucSno+GE8g','i am so big','organisation_logos/1718022083666.png',0);
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,7 +232,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-INSERT INTO `Updates` VALUES (2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM');
+INSERT INTO `Updates` VALUES (2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM'),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM'),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM'),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM'),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM'),(7,'jamie\'s hand','yes',7,'June 10, 2024 at 9:51 PM'),(8,'jamie\'s hand','yes',7,'June 10, 2024 at 9:51 PM'),(9,'YAY','yesYAY',7,'June 10, 2024 at 9:52 PM'),(10,'dsfsdfd','dsfsdf',8,'June 11, 2024 at 3:01 AM');
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,7 +265,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','password',0),(2,'Lucy','Fidock','03/06/2004','Rostrevor','SA','5073','Australia','lucy.fidock@mail','mypass',0);
+INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','password',0),(2,'Lucy','Fidock','03/06/2004','Rostrevor','SA','5073','Australia','lucy.fidock@mail','mypass',0),(3,'Yuhan Wang','',NULL,NULL,NULL,NULL,NULL,'wyuhan18@gmail.com',NULL,1);
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -285,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-10  6:11:15
+-- Dump completed on 2024-06-11  2:33:16

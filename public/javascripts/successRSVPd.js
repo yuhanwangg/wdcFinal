@@ -1,3 +1,5 @@
+const { text } = require("express");
+
 document.addEventListener("DOMContentLoaded", function () {
     const vueinst = new Vue({
         el: '#app',
@@ -27,6 +29,28 @@ document.addEventListener("DOMContentLoaded", function () {
             browse() {
                 window.location.href = '/opportunities';
             },
+            confirmationEmail() {
+                var xhttp1 = new XMLHttpRequest();
+                const urlParams = new URLSearchParams(window.location.search);
+                const oppID = urlParams.get('id');
+                var subject = "RSVP Confirmation";
+                var inside = "We are writing to say thank you for RSVPing with us."
+                xhttp1.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+
+                    } else if (this.status === 404) {
+                        vueinst.notFoundShowing = true;
+                    }
+                };
+
+                xhttp1.open("POST", "/emailConfirmation", true);
+                xhttp1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp1.send(JSON.stringify({
+                    subject: subject,
+                    text: inside,
+                    oppID: oppID,
+                 }));
+            }
         },
         mounted() {
             this.searchUser();

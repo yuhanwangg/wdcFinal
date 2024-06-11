@@ -3744,28 +3744,60 @@ router.post('/createEvent', function (req, res, next) {
 router.get('/getAddress', function (req, res, next) {
   var branchID = req.body;
     //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    var query = `SELECT
-    address
-    FROM
-    Opportunities
-    WHERE
-    oppID = ?;`
-    connection.query(query, oppID, function (err1, rows, fields) {
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
+  var query = `SELECT
+  address
+  FROM
+  Opportunities
+  WHERE
+  oppID = ?;`
+  connection.query(query, oppID, function (err1, rows, fields) {
+    if (err1) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
 
-      if (rows.length === 0) {
-        // No results found
-        res.status(404).json({ error: "Addy not found" });
-        return;
-      }
-      console.log(json(rows[0]));
-      // Results found, send back the details
-      res.json(rows[0]);
-    });
+    if (rows.length === 0) {
+      // No results found
+      res.status(404).json({ error: "Addy not found" });
+      return;
+    }
+    console.log(json(rows[0]));
+    // Results found, send back the details
+    res.json(rows[0]);
   });
+});
+
+router.post('/emailConfirmation', function (req, res, next) {
+  //find the email list
+  var userID = req.session.accountID;
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  console.log("connected to pool");
+  //this is the query which i can change
+  var query = "SELECT email FROM User WHERE userID = ?;";
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  connection.query(query, [userID], function (err1, rows, fields) {
+
+    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
+    if (err1) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    if (rows.length > 0) {
+      // Extract email addresses from the result rows
+      const emailList = rows.map(row => row.email);
+      // Organization found, send back the details
+      let info = transporter.sendMail({
+        from: "heartfelthelpers@outlook.com", //sender address
+        to: emailList.join(','), //list of recievers
+        subject: req.body.subject, //subject line
+        text: req.body.text, //plain text body
+      })
+    }
+    return;
+  });
+});
 
 module.exports = router;

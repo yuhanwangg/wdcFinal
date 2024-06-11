@@ -16,6 +16,7 @@ function getFollowedBranch() {
 
 //using session tokens
 function getOrgName() {
+    console.log("THE SELECTED BRANCH ID LOOOOOOOK HEERRRRRRREEEEE IS :  " + vueinst.selectedBranchID);
     var xhttp1 = new XMLHttpRequest();
     xhttp1.onreadystatechange = function () {
         //console.log("xhttp1 called");
@@ -24,11 +25,12 @@ function getOrgName() {
             console.log("RETUNRED THE ORGNAME " + JSON.parse(this.responseText).orgName);
             vueinst.orgName = JSON.parse(this.responseText).orgName;
 
+            console.log("FINAL THE ORGNAME " +  vueinst.orgName);
         } else if (this.status === 404) {
             //console.log("went into 404 else statement, couldn't find the org's name");
         }
     };
-    xhttp1.open("GET", "/getOrgName", true);
+    xhttp1.open("GET", "/getOrgNameVolunteers?selectedBranchID=" + vueinst.selectedBranchID, true);
     xhttp1.send();
 }
 
@@ -91,6 +93,7 @@ function getPosts() {
                     previousPageButton.style.display = 'block';
                 }
             }
+            getOrgName();
 
         } else if (this.status === 404) {
             //console.log("went into 404 else statement, couldn't find the branch");

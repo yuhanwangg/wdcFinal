@@ -760,6 +760,52 @@ router.get('/getOrgName', function (req, res, next) {
   });
 });
 
+router.get('/getOrgNameVolunteers', function (req, res, next) {
+  console.log("I am in the getOrgName request in index.js!!!");
+  const branchID = req.query.selectedBranchID;
+  console.log("The branchID is " + branchID);
+
+  console.log("Connected to pool in org branch requests");
+
+  // First query to get the orgID
+  var query = "SELECT orgID FROM Branch WHERE branchID = ?;";
+  connection.query(query, [branchID], function (err1, rows1) {
+      if (err1) {
+          console.log("Error executing ID query:", err1);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+      }
+
+      if (rows1.length === 0) {
+          // Organization not found
+          res.status(404).json({ error: "Organization not found" });
+          return;
+      }
+
+      var orgID = rows1[0].orgID; // Extract orgID from rows1
+      var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
+      connection.query(query, [orgID], function (err2, rows2) {
+          if (err2) {
+              console.log("Error executing organization name query:", err2);
+              res.status(500).json({ error: "Internal Server Error" });
+              return;
+          }
+
+          if (rows2.length === 0) {
+              // Organization name not found
+              res.status(404).json({ error: "Organization name not found" });
+              return;
+          }
+
+          var orgName = rows2[0].orgName; // Extract orgName from rows2
+          console.log("Returning organization name:", orgName);
+          res.json({ orgName: orgName });
+      });
+  });
+});
+
+
+
 router.get('/getOrgLogo', function (req, res, next) {
   console.log("i am in the getOrgLogo requests index.js!!!");
   const orgID = req.session.accountID;

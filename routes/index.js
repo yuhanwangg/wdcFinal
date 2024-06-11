@@ -2676,26 +2676,56 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
               }
               console.log("the new org id is " + currOrgId);
 
-              var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
+              //get last branch id
+              var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
 
-              connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
-                connection.release();
+              connection.query(mostRecentBranchId, async function (err5, result5) {
 
+                //error handling
                 if (err5) {
-                  console.log("error inserting user", err5);
+                  connection.release();
+                  console.log("Got error while fetching branchID: ", err5);
                   res.sendStatus(500);
                   return;
                 }
 
-                req.session.user = email;
-                req.session.userType = "organisation";
-                req.session.accountID = currOrgId;
-                //send an empty response, not needing to return anything, or can send a message for clarity
-                res.send("successfully added");
-                return;
+                let currBranchId = 1;
+                if (result5.length > 0) {
+                  currBranchId = result5[0].branchID + 1;
+                }
+                console.log("the new branch id is " + currBranchId);
 
+                var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
+
+                connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
+                  //connection.release();
+
+                  if (err5) {
+                    console.log("error inserting user", err5);
+                    res.sendStatus(500);
+                    return;
+                  }
+
+                  var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, instated) VALUES (?, ?, ?, ?);";
+
+                  connection.query(queryBranch, [currOrgId, "Main Branch", currBranchId, 1], function (err7, returnVal) {
+                    connection.release();
+
+                    if (err7) {
+                      console.log("error inserting branch", err7);
+                      res.sendStatus(500);
+                      return;
+                    }
+
+                    req.session.user = email;
+                    req.session.userType = "organisation";
+                    req.session.accountID = currOrgId;
+                    //send an empty response, not needing to return anything, or can send a message for clarity
+                    res.send("successfully added");
+                    return;
+                  });
+                });
               });
-
             });
           });
         });

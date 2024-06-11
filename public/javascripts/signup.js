@@ -284,9 +284,9 @@ function sendInfo() {
                         console.log("Added successfully!");
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email already in use");
+                        console.log("Email and/or organisation name already in use");
                         message.style.display = "block";
-                        message.textContent = "Email already in use";
+                        message.textContent = "Email and/or organisation name already in use";
                     } else {
                         console.error("Failed to add user. Status:", this.status);
                     }
@@ -312,7 +312,6 @@ function sendInfo() {
     }
 
 }
-
 
 function googleSignUp(response) {
 

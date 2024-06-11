@@ -1176,92 +1176,109 @@ router.post('/addOrg', function (req, res, next) {
           }
           // });
 
-          //get last org id
-          var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
-
-          connection.query(mostRecentOrgId, function (err4, result4) {
-
-            //error handling
-            if (err4) {
+          checkNamePresent = "SELECT * FROM Organisations WHERE orgName = ?;";
+          connection.query(checkNamePresent, [name], function (err42, result42) {
+            if (err42) {
               connection.release();
-              console.log("Got error while fetching orgID: ", err4);
+              console.log("Error checking for orgName: ", err42);
               res.sendStatus(500);
               return;
             }
 
-            let currOrgId = 1;
-            if (result4.length > 0) {
-              currOrgId = result4[0].orgID + 1;
+            //name exists
+            if (result42.length > 0) {
+              connection.release();
+              console.log("Organisation Name in use");
+              res.status(400).send("Organisation Name in use");
+              return;
             }
-            console.log("the new org id is " + currOrgId);
 
-            //get last branch id
-            var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
+            //get last org id
+            var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
 
-            connection.query(mostRecentBranchId, async function (err5, result5) {
+            connection.query(mostRecentOrgId, function (err4, result4) {
 
               //error handling
-              if (err5) {
+              if (err4) {
                 connection.release();
-                console.log("Got error while fetching branchID: ", err5);
+                console.log("Got error while fetching orgID: ", err4);
                 res.sendStatus(500);
                 return;
               }
 
-              let currBranchId = 1;
-              if (result5.length > 0) {
-                currBranchId = result5[0].branchID + 1;
+              let currOrgId = 1;
+              if (result4.length > 0) {
+                currOrgId = result4[0].orgID + 1;
               }
-              console.log("the new branch id is " + currBranchId);
+              console.log("the new org id is " + currOrgId);
 
-              //hash password
-              var hash;
+              //get last branch id
+              var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
 
-              try {
-                hash = await hashPass(password);
-              } catch (err) {
-                console.log("error in hash");
-                res.sendStatus(500);
-                return;
-              }
+              connection.query(mostRecentBranchId, async function (err5, result5) {
 
-              var query = "INSERT INTO Organisations (orgID, orgName, email, password) VALUES (?, ?, ?, ?);";
-
-              connection.query(query, [currOrgId, name, email, hash], function (err6, returnVal) {
-                // connection.release();
-
-                if (err6) {
+                //error handling
+                if (err5) {
                   connection.release();
-                  console.log("error inserting org", err6);
-                  res.sendStatus(500);
-                  return;
-                }
-                //send an empty response, not needing to return anything, or can send a message for clarity
-                // res.send("organisation successfully added");
-                // return;
-
-              });
-
-              var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, suburb, state, postcode, country, instated) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-
-              connection.query(queryBranch, [currOrgId, name, currBranchId, suburb, state, postcode, country, 1], function (err7, returnVal) {
-                connection.release();
-
-                if (err7) {
-                  console.log("error inserting branch", err7);
+                  console.log("Got error while fetching branchID: ", err5);
                   res.sendStatus(500);
                   return;
                 }
 
-                req.session.user = email;
-                req.session.userType = "organisation";
-                req.session.accountID = currOrgId;
-                console.log(req.session.user, req.session.userType, req.session.accountID);
+                let currBranchId = 1;
+                if (result5.length > 0) {
+                  currBranchId = result5[0].branchID + 1;
+                }
+                console.log("the new branch id is " + currBranchId);
 
-                //send an empty response, not needing to return anything, or can send a message for clarity
-                res.send("branch and org successfully added");
-                return;
+                //hash password
+                var hash;
 
+                try {
+                  hash = await hashPass(password);
+                } catch (err) {
+                  console.log("error in hash");
+                  res.sendStatus(500);
+                  return;
+                }
+
+                var query = "INSERT INTO Organisations (orgID, orgName, email, password) VALUES (?, ?, ?, ?);";
+
+                connection.query(query, [currOrgId, name, email, hash], function (err6, returnVal) {
+                  // connection.release();
+
+                  if (err6) {
+                    connection.release();
+                    console.log("error inserting org", err6);
+                    res.sendStatus(500);
+                    return;
+                  }
+                  //send an empty response, not needing to return anything, or can send a message for clarity
+                  // res.send("organisation successfully added");
+                  // return;
+
+                });
+
+                var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, suburb, state, postcode, country, instated) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+                connection.query(queryBranch, [currOrgId, name, currBranchId, suburb, state, postcode, country, 1], function (err7, returnVal) {
+                  connection.release();
+
+                  if (err7) {
+                    console.log("error inserting branch", err7);
+                    res.sendStatus(500);
+                    return;
+                  }
+
+                  req.session.user = email;
+                  req.session.userType = "organisation";
+                  req.session.accountID = currOrgId;
+                  console.log(req.session.user, req.session.userType, req.session.accountID);
+
+                  //send an empty response, not needing to return anything, or can send a message for clarity
+                  res.send("branch and org successfully added");
+                  return;
+                });
               });
             });
           });
@@ -1274,6 +1291,7 @@ router.post('/addOrg', function (req, res, next) {
   });
 
 });
+
 
 //login
 router.post('/login', async function (req, res, next) {

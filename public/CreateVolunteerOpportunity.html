@@ -28,6 +28,11 @@
             <h1 class="title">Create Volunteer Opportunity Post</h1>
         <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
             <div class="formBox">
+                <div class="dropdown">
+                    <select class="dropbtn" v-model="selectedBranch" @change="choseBranch" required placeholder="Select a Branch">
+                        <option v-for="branch in branches" :key="branch.branchID" :value="{ branchID: branch.branchID, branchName: branch.branchName }">{{ branch.branchName }}</option>
+                    </select>
+                </div>
                 <form action="#" method="post">
                   <div class="formContain">
                     <textarea class="programBox" v-model="programName" required placeholder="Program Name"></textarea>
@@ -48,15 +53,7 @@
                     <textarea class="addressBox" v-model="suburb" required placeholder="Suburb"></textarea>
                     <textarea class="addressBox" v-model="state" required placeholder="State"></textarea>
                     <textarea class="addressBox" v-model="postcode" required placeholder="Postcode"></textarea>
-                    <div class="commitmentHold">
-                      <select class="commitmentSelect" v-model="commitment" name="commitment">
-                        <option value="" disabled selected>Commitment</option>
-                        <option value="Casual">Casual</option>
-                        <option value="Part Time">Part Time</option>
-                        <option value="Full Time">Full Time</option>
-                      </select>
-                      <textarea class="commitmentBox" v-model="timeCommitment" required placeholder="Time Commitment"></textarea>
-                    </div>
+                    <textarea class="miscBox" v-model="timeCommitment" required placeholder="Time Commitment"></textarea>
                     <textarea class="miscBox" v-model="suitable" required placeholder="Suitable For"></textarea>
                     <textarea class="miscBox" v-model="training" required placeholder="Training"></textarea>
                     <textarea class="miscBox" v-model="requirements" required placeholder="Requirements"></textarea>

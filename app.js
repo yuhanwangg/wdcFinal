@@ -24,7 +24,9 @@ var joinedUsersRouter = require('./routes/joinedUsers');
 var editUserRouter = require('./routes/editUser');
 var rsvpRouter = require('./routes/rsvpd');
 var successRSVPdRouter = require('./routes/successRSVPd');
+var createEventRouter = require('./routes/createEvent');
 var moreInfoRouter = require('./routes/moreInformation');
+var creationSuccessRouter = require('./routes/creationSuccess');
 
 const { readFileSync } = require('fs');
 const { validateHeaderName } = require('http');
@@ -82,6 +84,8 @@ app.use('/UpdatesOrganisations.html', checkSession.checkOrganisation);
 app.use('/VolunteerOpportunitiesOrg.html', checkSession.checkOrganisation);
 app.use('/registerBranch.html', checkSession.checkOrganisation);
 app.use('/joinedUser.html', checkSession.checkOrganisation);
+app.use('/creationSuccess.html', checkSession.checkOrganisation);
+app.use('/CreateVolunteerOpportunity.html', checkSession.checkOrganisation);
 
 //User pages
 app.use('/homeVolunteer.html', checkSession.checkVolunteer);
@@ -108,6 +112,8 @@ app.use('/joinedUsers', joinedUsersRouter);
 app.use('/editUser', editUserRouter);
 app.use('/users', usersRouter);
 app.use('/successRSVPd', successRSVPdRouter);
+app.use('/creationSuccess', creationSuccessRouter);
+app.use('/creationEvent', createEventRouter);
 app.use('/rsvpd', rsvpRouter);
 app.use('/MoreInformationOpportunity', moreInfoRouter);
 

@@ -3677,8 +3677,7 @@ router.post("/removeUserOrg", function (req, res, next) {
 router.post('/createEvent', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   // const { branchName, updateName, updateMsg, dateCreated } = req.body;
-  const branchID = req.session.accountID;
-  const { oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates} = req.body;
+  const { oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID } = req.body;
   // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
   //get the last created and used updateID
 

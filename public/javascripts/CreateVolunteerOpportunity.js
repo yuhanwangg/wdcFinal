@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
             state: '',
             postcode: '',
             stadd: '',
-            commitment: '',
             timeCommitment: '',
             suitable: '',
             training: '',
@@ -17,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
             thumbnail: '',
             description: '',
             dates: '',
+            branches: [],
+            selectedBranch: null,
         },
         methods: {
             addTag() {
@@ -24,13 +25,27 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.addedTags.push(this.selectedTag);
             }
             },
+            findBranches() {
+                var xhttp1 = new XMLHttpRequest();
+                xhttp1.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        vueinst.branches = JSON.parse(this.responseText);
+                    } else if (this.status === 404) {
+                        vueinst.notFoundShowing = true;
+                    }
+                };
+
+                var searchQ = "/findBranches";
+
+                xhttp1.open("GET", searchQ, true);
+                xhttp1.send();
+            },
             closeForm() {
                 window.history.back();
             },
             submitForm() {
                 var addressform = vueinst.stadd.concat(", ", vueinst.suburb, ", ", vueinst.state, ", ", vueinst.postcode);
                 var tags = vueinst.addedTags.join(", ");
-                console.log(addressform);
 
                 var xhttp1 = new XMLHttpRequest();
                 xhttp1.onreadystatechange = function () {
@@ -49,15 +64,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     oppName: vueinst.programName,
                     tags: tags,
                     address: addressform,
-                    commitment: vueinst.commitment,
+                    commitment: vueinst.timecommitment,
                     suitability: vueinst.suitable,
                     training: vueinst.training,
                     requirements: vueinst.requirements,
                     thumbnail: vueinst.thumbnail,
                     description: vueinst.description,
                     dates: vueinst.dates,
+                    branchID: vueinst.selectedBranch.branchID,
                 }));
             },
         },
+        mounted() {
+            this.findBranches();
+        }
     });
 });

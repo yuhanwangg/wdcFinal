@@ -383,3 +383,87 @@ input[type=submit]:active {
     align-items: center;
     flex-wrap:wrap;
 }
+
+
+@media only screen and (max-width:900px) {
+
+    .successBox,
+    button {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #breadcrumb {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 1280px) {
+    header {
+        padding: 14px 2%;
+        transition: .2s;
+    }
+
+    .navbar a {
+        padding: 5px 0;
+        margin: 0px 20px;
+    }
+}
+
+@media (max-width: 1090px) {
+    #menu-icon {
+        display: block;
+    }
+
+    .navbar {
+        position: absolute;
+        top: 110%;
+        right: -100%;
+        width: 270px;
+        height: 29vh;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-radius: 10px;
+        transition: all .3s ease;
+    }
+
+
+    .navbar a {
+        display: block;
+        margin: 12px 0;
+        padding: 10px 25px;
+        transition: all .3s ease;
+        color: black;
+    }
+
+    .navbar a:hover {
+        color: #F7B733;
+        transform: translateY(2px);
+    }
+
+    .navbar a.active {
+        color: #4ABDAC;
+    }
+
+    .navbar.open {
+        right: 2%;
+    }
+
+    .breadcrumb {
+        padding-left:0px;
+    }
+
+    #emailNotifications {
+        margin-left:0px;
+    }
+}

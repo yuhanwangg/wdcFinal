@@ -114,15 +114,15 @@ input[type=submit]:active {
     border-radius: 5px;
     background-color: #BABABA;
     border: none;
-    width: 55px;
-    height: 20px;
+    /* width: 55px;
+    height: 20px; */
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     font-size: 1em;
-    margin-bottom: 5px;
-    margin-right: 5px;
+    /* margin-bottom: 5px;
+    margin-right: 5px; */
 }
 
 .opportunityBox .Name {

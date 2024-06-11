@@ -3617,4 +3617,87 @@ var userID = req.session.accountID;
   });
 });
 
+router.get('/searchUsers', function (req, res, next) {
+  const ID = req.query.id;
+  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
+  req.pool.getConnection(function (err, connection) {
+    //this is the error handling
+    if (err) {
+      console.log("got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+    console.log("connected to pool");
+    //this is the query which i can change
+
+    let query = `SELECT User.firstName, User.lastName, User.userID
+    FROM User
+    JOIN RSVPD ON User.userID = RSVPD.userID
+    JOIN Opportunities ON RSVPD.oppID = Opportunities.oppID
+    WHERE Opportunities.oppID = ?;`; // Adding a dummy condition to simplify appending AND conditions
+
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    connection.query(query, [ID], function (err1, rows, fields) {
+      // Close the connection
+      console.log(query);
+      connection.release();
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length === 0) {
+        // No results found
+        res.status(404).json({ error: "Opp not found" });
+        return;
+      }
+      res.json(rows);
+    });
+  });
+});
+
+router.post("/removeUserOrg", function (req, res, next) {
+  // first get user ID, branch ID and org ID
+  const { userID, oppID } = req.body;
+  console.log(userID);
+  console.log(oppID);
+  let query = "DELETE FROM RSVPD WHERE userID = ? AND oppID = ?";
+  connection.query(query, [userID, oppID], function (err, result) {
+    console.log(query);
+    if (err) {
+      console.error('Error unjoining branch:', err);
+      res.status(500).json({ error: 'Internal server error' });
+      return;
+    }
+    res.json({ message: 'Successfully unRSVPD' });
+  });
+});
+
+router.post('/createEvent', function (req, res, next) {
+  //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
+  // const { branchName, updateName, updateMsg, dateCreated } = req.body;
+  const branchID = req.session.accountID;
+  const { oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates} = req.body;
+  // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
+  //get the last created and used updateID
+
+  var newPostQuery = "INSERT INTO Opportunities (oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+  //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
+  //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+  connection.query(newPostQuery, [oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID], function (err2, returnVal) {
+
+    //error handling
+    if (err2) {
+      //release the query, don't need access to the database anymore
+      console.log("Got error while inserting new post: ", err2);
+      res.sendStatus(500);
+      return;
+    }
+
+      res.json({ message: 'Successfully Created Event' });
+  });
+});
+
 module.exports = router;

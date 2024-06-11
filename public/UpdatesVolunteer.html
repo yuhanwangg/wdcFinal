@@ -36,6 +36,9 @@
             <div class="boxes" v-if="">
                 <div class="dropdown">
                     <select class="dropbtn" @change="choseBranch($event)">
+                        <!-- Add "All Branches" option -->
+                        <option value="-1" selected>All Heartfelt Helper Branches</option>
+
                         <option v-for="(branch, index) in branches" v-bind:value="branch.branchID"
                             v-bind:selected="index === 0">{{branch.orgName}} — {{ branch.branchName}}</option>
                     </select>
@@ -50,8 +53,9 @@
                         <div class="postInfo">
                             <p class="title">{{ post.updateName}}</p>
                             <div class="extraDetails">
-                                <p>{{ orgName }}</p>
+                                <p>{{ post.orgName }} - {{ post.branchName }}</p>
                                 <p>{{ post.dateCreated }}</p>
+                                <p v-if="post.private" id="privateMsg">Members only update</p>
                             </div>
                             <p>{{ post.updateMsg }}</p>
                         </div>

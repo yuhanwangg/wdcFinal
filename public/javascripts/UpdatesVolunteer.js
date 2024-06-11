@@ -1,4 +1,5 @@
 /*global Vue*/
+//
 function getFollowedBranch() {
     // get user id from route and then search for all followed branches
     fetch('/getFollowedBranch')
@@ -126,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         methods: {
             choseBranch(event) {
                 this.selectedBranchID = event.target.value;
-                console.log("the selected branch is" + vueinst.selectedBranchID);
+                //console.log("the selected branch is" + vueinst.selectedBranchID);
                 // //console.log("in the methods, the selected branch name is " + this.selectedBranchName);
                 getPosts();
             },

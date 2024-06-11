@@ -54,6 +54,9 @@
                     <div class="charLeft">
                         <p>Characters left: <span class="descCount">750</span></p>
                     </div>
+
+                    <input type="checkbox" id="MembersOnly" name="MembersOnlyBox">
+                    <label id="MembersOnlyLabel" for="MembersOnlyBox">Members Only</label>
                     <input type="submit" @click="post()" value="Post">
                 </div>
                 <!-- these are posts that are created using ajax -->
@@ -65,6 +68,7 @@
                             <div class="extraDetails">
                                 <p>{{ orgName }}</p>
                                 <p>{{ post.dateCreated }}</p>
+                                <p v-if="post.private" id="privateMsg">Members only update</p>
                             </div>
                             <p>{{ post.updateMsg }}</p>
                         </div>

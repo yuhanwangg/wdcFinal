@@ -30,6 +30,24 @@ h1 {
 
 .postsPages #numberOfPosts p:first-child {
     margin-right: 40px;
+
+}
+
+#MembersOnly {
+    margin-right: auto;
+    font-weight: bold;
+    color:#FC4A1A;
+}
+
+#MembersOnlyLabel {
+    margin-right: auto;
+    font-weight: bold;
+    color:#FC4A1A;
+}
+
+#privateMsg {
+    font-weight: bold;
+    color:#FC4A1A;
 }
 
 .boxes {

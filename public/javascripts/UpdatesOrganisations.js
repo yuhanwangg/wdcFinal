@@ -151,7 +151,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 var updateTitleInput = document.querySelector('.newPost input[type="text"]').value;
                 var updateMessageInput = document.querySelector('.newPost textarea').value;
-
+                var privateUpdate = document.getElementById('MembersOnly');
+                if (privateUpdate.checked) {
+                    privateUpdate = 1;
+                }
+                else {
+                    privateUpdate = 0;
+                }
                 var currentDate = new Date();
                 // Format the date and time as desired (e.g., "May 9, 2024 10:30 AM")
                 var formattedDate = currentDate.toLocaleString('en-US', {
@@ -202,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 xhttp1.open("POST", "/createNewPost");
                 // //console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + vueinst.selectedBranchName + " " + orgID + " " + updateTitleInput + " " + updateMessageInput + " " + formattedDate);
                 xhttp1.setRequestHeader("Content-type", "application/json");
-                xhttp1.send(JSON.stringify({ branchID: vueinst.selectedBranchID, updateName: updateTitleInput, updateMsg: updateMessageInput, dateCreated: formattedDate }));
+                xhttp1.send(JSON.stringify({ branchID: vueinst.selectedBranchID, updateName: updateTitleInput, updateMsg: updateMessageInput, dateCreated: formattedDate, privateUpdate: privateUpdate }));
 
 
                 //send the new post to all users following the branch

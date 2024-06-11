@@ -180,6 +180,11 @@ input[type=submit]:active {
     font-weight: bold;
 }
 
+#privateMsg {
+    font-weight: bold;
+    color:#FC4A1A;
+}
+
 button {
     border-radius: 20px;
     border: none;

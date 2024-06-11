@@ -34,7 +34,7 @@ let transporter = nodemailer.createTransport({
   host: 'smtp-mail.outlook.com',
   port: 587,
   auth: {
-    user: 'heartfelthelpers@outlook.com',
+    user: 'HeartFeltHelpersVolunteering@outlook.com',
     pass: 'WDCProject'
   }
 });
@@ -891,7 +891,7 @@ router.post('/createNewPost', function (req, res, next) {
 
 router.post('/email', function (req, res, next) {
   let info = transporter.sendMail({
-    from: "heartfelthelpers@outlook.com", //sender address
+    from: "HeartFeltHelpersVolunteering@outlook.com", //sender address
     to: req.body.email, //list of recievers
     subject: req.body.subject, //subject line
     text: req.body.text, //plain text body

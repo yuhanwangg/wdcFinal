@@ -34,9 +34,32 @@ document.addEventListener('DOMContentLoaded', function () {
             submitClicked: false
         },
         mounted() {
-
+            this.loadRSVPs();
         },
         methods: {
+
+            loadRSVPs() {
+
+                fetch('/getRSVPD', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        this.events = data;
+                        console.log("returned data on load: ", data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching RSVPs:', error);
+                    });
+            },
             submit() {
                 console.log("WE HAVE CLICKED SUBMIT");
                 this.submitClicked = true;
@@ -49,16 +72,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     const selectedOptions = customSelect.querySelectorAll(".option.active");
                     const isCommitmentSelect = customSelect === customSelects[1];
 
-                    if (selectedOptions.length === 0) {
-                        const tagErrorMsg = customSelect.querySelector(".tag_error_msg");
-                        tagErrorMsg.textContent = "This field is required";
-                        tagErrorMsg.style.display = "block";
-                        valid = false;
-                    } else {
-                        const tagErrorMsg = customSelect.querySelector(".tag_error_msg");
-                        tagErrorMsg.textContent = "";
-                        tagErrorMsg.style.display = "none";
-                    }
+                    // if (selectedOptions.length === 0) {
+                    //     const tagErrorMsg = customSelect.querySelector(".tag_error_msg");
+                    //     tagErrorMsg.textContent = "This field is required";
+                    //     tagErrorMsg.style.display = "block";
+                    //     valid = false;
+                    // } else {
+                    //     const tagErrorMsg = customSelect.querySelector(".tag_error_msg");
+                    //     tagErrorMsg.textContent = "";
+                    //     tagErrorMsg.style.display = "none";
+                    // }
 
                     selectedOptions.forEach(function (option) {
                         if (isCommitmentSelect) {
@@ -82,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         location: this.location
                     };
 
-                    console.log(requestData);
+                    console.log("the data sent: ", requestData);
 
                     fetch('/findRSVP', {
                         method: 'POST',

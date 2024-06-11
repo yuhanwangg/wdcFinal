@@ -22,84 +22,88 @@
         <header-component></header-component>
 
         <div class="content">
-            <h1>Your RSVPs</h1>
+            <div class="topTitle">
+                <h1 class="left">Your RSVPs</h1>
+                <button @click="loadRSVPs">Show All</button>
+            </div>
+        </div>
 
-            <!-- search bar ALSO NEED TO ADD DROP DOWN IMPLEMENTATION-->
-            <!-- <div class="searchBar">
+        <!-- search bar ALSO NEED TO ADD DROP DOWN IMPLEMENTATION-->
+        <!-- <div class="searchBar">
                 <input id="Categories" type="text" placeholder="Categories">
                 <input id="Commitment" type="text" placeholder="Time Commitment">
                 <input id="Location" type="text" placeholder="Location">
                 <input type="submit">
             </div> -->
-            <div class="container">
-                <div class="custom-select">
-                    <div class="select-box">
-                        <input type="text" class="tags_input" name="tags" hidden />
-                        <div class="selected-options">
-                        </div>
-                        <div class="arrow">
-                            <i id="downArrow" class="bx bxs-chevron-down"></i>
-                        </div>
+        <div class="container">
+            <div class="custom-select">
+                <div class="select-box">
+                    <input type="text" class="tags_input" name="tags" hidden />
+                    <div class="selected-options">
                     </div>
-                    <div class="options">
-                        <div class="option-search-tags">
-                            <input type="text" class="search-tags" placeholder="Search tags...">
-                            <button type="button" class="clear">
-                                <i class="bx bxs-x"></i>
-                            </button>
-                        </div>
-                        <div class="option all-tags" data-value="All">Select All</div>
-                        <div class="option" data-value="Aged Care">Aged Care</div>
-                        <div class="option" data-value="Animal Shelter">Animal Shelter</div>
-                        <div class="option" data-value="Food Bank">Food Bank</div>
-                        <div class="option" data-value="Health">Health</div>
-                        <div class="option" data-value="Youth Group">Youth Group</div>
-                        <div class="option" data-value="Shelters">Shelters</div>
-                        <div class="option" data-value="Ocean Cleanup">Ocean Cleanup</div>
-                        <div class="no-result-message" style="display:none;">No result match</div>
+                    <div class="arrow">
+                        <i id="downArrow" class="bx bxs-chevron-down"></i>
                     </div>
-                    <span class="tag_error_msg error"></span>
                 </div>
-
-                <div class="custom-select">
-                    <div class="select-box">
-                        <input type="text" class="tags_input" name="tags" hidden />
-                        <div class="selected-options">
-                        </div>
-                        <div class="arrow">
-                            <i id="downArrow" class="bx bxs-chevron-down"></i>
-                        </div>
+                <div class="options">
+                    <div class="option-search-tags">
+                        <input type="text" class="search-tags" placeholder="Search tags...">
+                        <button type="button" class="clear">
+                            <i class="bx bxs-x"></i>
+                        </button>
                     </div>
-                    <div class="options">
-                        <div class="option-search-tags">
-                            <input type="text" class="search-tags" placeholder="Search tags...">
-                            <button type="button" class="clear">
-                                <i class="bx bxs-x"></i>
-                            </button>
-                        </div>
-                        <div class="option all-tags" data-value="All">Select All</div>
-                        <div class="option" data-value="Less than 1 hour">Less than 1 hour</div>
-                        <div class="option" data-value="1-2 hours">1-2 hours</div>
-                        <div class="option" data-value="2-4 hours">2-4 hours</div>
-                        <div class="option" data-value="4+ hours">4+ hours</div>
-                        <div class="option" data-value="Full day">Full day</div>
-                        <div class="option" data-value="Weekly">Weekly</div>
-                        <div class="no-result-message" style="display:none;">No result match</div>
-                    </div>
-                    <span class="tag_error_msg error"></span>
+                    <div class="option all-tags" data-value="All">Select All</div>
+                    <div class="option" data-value="Aged Care">Aged Care</div>
+                    <div class="option" data-value="Animal Shelter">Animal Shelter</div>
+                    <div class="option" data-value="Food Bank">Food Bank</div>
+                    <div class="option" data-value="Health">Health</div>
+                    <div class="option" data-value="Youth Group">Youth Group</div>
+                    <div class="option" data-value="Shelters">Shelters</div>
+                    <div class="option" data-value="Ocean Cleanup">Ocean Cleanup</div>
+                    <div class="no-result-message" style="display:none;">No result match</div>
                 </div>
-
-                <div class="searchCity">
-                    <form class="searchForm">
-                        <input type="text" placeholder="Search Location..." class="searchLocation">
-                    </form>
-                </div>
-                <input type="button" class="btn_submit" value="Submit" @click="submit" />
+                <span class="tag_error_msg error"></span>
             </div>
 
+            <div class="custom-select">
+                <div class="select-box">
+                    <input type="text" class="tags_input" name="tags" hidden />
+                    <div class="selected-options">
+                    </div>
+                    <div class="arrow">
+                        <i id="downArrow" class="bx bxs-chevron-down"></i>
+                    </div>
+                </div>
+                <div class="options">
+                    <div class="option-search-tags">
+                        <input type="text" class="search-tags" placeholder="Search tags...">
+                        <button type="button" class="clear">
+                            <i class="bx bxs-x"></i>
+                        </button>
+                    </div>
+                    <div class="option all-tags" data-value="All">Select All</div>
+                    <div class="option" data-value="Less than 1 hour">Less than 1 hour</div>
+                    <div class="option" data-value="1-2 hours">1-2 hours</div>
+                    <div class="option" data-value="2-4 hours">2-4 hours</div>
+                    <div class="option" data-value="4+ hours">4+ hours</div>
+                    <div class="option" data-value="Full day">Full day</div>
+                    <div class="option" data-value="Weekly">Weekly</div>
+                    <div class="no-result-message" style="display:none;">No result match</div>
+                </div>
+                <span class="tag_error_msg error"></span>
+            </div>
+
+            <div class="searchCity">
+                <form class="searchForm">
+                    <input type="text" placeholder="Search Location..." class="searchLocation">
+                </form>
+            </div>
+            <input type="button" class="btn_submit" value="Submit" @click="submit" />
+        </div>
 
 
-            <!-- User box, filled using AJAX, should be empty <p> tags
+
+        <!-- User box, filled using AJAX, should be empty <p> tags
             <div class="UserBox">
                 <div class="contentLeft">
                     <a href="link.com" class="programName"><b>Program Name</b></a>
@@ -120,30 +124,29 @@
             </div>
 
  -->
-            <div class="UserBox" v-for="post in events">
-                <div class="contentLeft">
-                    <b @click="goTo('/opportunities')">{{post.oppName}}</b>
-                    <p>{{post.orgName}}</p>
-                    <div class="tags"><span v-for="tag in post.tags.split(',')" :key="tag.trim()"
-                            class="opportunityTag">{{
-                            tag.trim() }}</span></div>
-                    <p>{{post.description}}</p> <a href="link.com" class="moreInfo"><b>Click for more info!</b></a>
-                </div>
-                <div class="logoJoin">
-                    <img :src="post.imgPath" class="orgLogo" alt="profilePic">
-                </div>
+        <div class="UserBox" v-for="post in events">
+            <div class="contentLeft">
+                <b @click="goTo('/opportunities')">{{post.oppName}}</b>
+                <p>{{post.orgName}}</p>
+                <div class="tags"><span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{
+                        tag.trim() }}</span></div>
+                <p>{{post.description}}</p> <a href="link.com" class="moreInfo"><b>Click for more info!</b></a>
             </div>
-
-            <div class="noRSVP" v-if="events.length===0 && submitClicked">
-                <p>
-                    No RSVP'd events! Join your first volunteering opportunity here!
-                </p>
+            <div class="logoJoin">
+                <img :src="post.imgPath" class="orgLogo" alt="profilePic">
             </div>
-
-            <!-- <p class="pageNo">Page 1/3</p> -->
-
         </div>
-        <footer-component></footer-component>
+
+        <div class="noRSVP" v-if="events.length===0 && submitClicked">
+            <p>
+                No RSVP'd events! Join your first volunteering opportunity here!
+            </p>
+        </div>
+
+        <!-- <p class="pageNo">Page 1/3</p> -->
+
+    </div>
+    <footer-component></footer-component>
     </div>
 
 </body>

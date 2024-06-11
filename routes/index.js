@@ -770,37 +770,37 @@ router.get('/getOrgNameVolunteers', function (req, res, next) {
   // First query to get the orgID
   var query = "SELECT orgID FROM Branch WHERE branchID = ?;";
   connection.query(query, [branchID], function (err1, rows1) {
-      if (err1) {
-          console.log("Error executing ID query:", err1);
-          res.status(500).json({ error: "Internal Server Error" });
-          return;
+    if (err1) {
+      console.log("Error executing ID query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    if (rows1.length === 0) {
+      // Organization not found
+      res.status(404).json({ error: "Organization not found" });
+      return;
+    }
+
+    var orgID = rows1[0].orgID; // Extract orgID from rows1
+    var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
+    connection.query(query, [orgID], function (err2, rows2) {
+      if (err2) {
+        console.log("Error executing organization name query:", err2);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
       }
 
-      if (rows1.length === 0) {
-          // Organization not found
-          res.status(404).json({ error: "Organization not found" });
-          return;
+      if (rows2.length === 0) {
+        // Organization name not found
+        res.status(404).json({ error: "Organization name not found" });
+        return;
       }
 
-      var orgID = rows1[0].orgID; // Extract orgID from rows1
-      var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
-      connection.query(query, [orgID], function (err2, rows2) {
-          if (err2) {
-              console.log("Error executing organization name query:", err2);
-              res.status(500).json({ error: "Internal Server Error" });
-              return;
-          }
-
-          if (rows2.length === 0) {
-              // Organization name not found
-              res.status(404).json({ error: "Organization name not found" });
-              return;
-          }
-
-          var orgName = rows2[0].orgName; // Extract orgName from rows2
-          console.log("Returning organization name:", orgName);
-          res.json({ orgName: orgName });
-      });
+      var orgName = rows2[0].orgName; // Extract orgName from rows2
+      console.log("Returning organization name:", orgName);
+      res.json({ orgName: orgName });
+    });
   });
 });
 
@@ -3033,7 +3033,7 @@ router.post('/findRSVP', function (req, res, next) {
   if (tags && tags.length > 0) {
     const tagConditions = tags.map(tag => `tags LIKE '%${tag.text}%'`);
     if (whereClause) {
-      whereClause += ' AND ';
+      whereClause += ' OR ';
     }
     whereClause += `(${tagConditions.join(' OR ')})`;
   }
@@ -3041,7 +3041,7 @@ router.post('/findRSVP', function (req, res, next) {
   // Add conditions for location
   if (location) {
     if (whereClause) {
-      whereClause += ' AND ';
+      whereClause += ' OR ';
     }
     whereClause += `address LIKE '%${location}%'`;
   }
@@ -3056,7 +3056,7 @@ router.post('/findRSVP', function (req, res, next) {
 
   // Add the WHERE clause conditions if they exist
   if (whereClause.length > 0) {
-    query += ` AND ${whereClause}`;
+    query += ` AND (${whereClause})`;
   }
 
   // Execute the query
@@ -3105,6 +3105,26 @@ router.get('/checkGoogleOrg', function (req, res, next) {
       // Send the fetched followed branches as JSON response
       res.json(results);
     }
+  });
+})
+
+router.get('/getRSVPD', function (req, res, next) {
+  const userID = req.session.accountID;
+
+  const query = `
+    SELECT o.*
+    FROM Opportunities AS o
+    JOIN RSVPD AS r ON o.oppID = r.oppID
+    WHERE r.userID = ?
+  `;
+
+  connection.query(query, [userID], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).json({ error: 'An error occurred while retrieving opportunities' });
+      return;
+    }
+    res.json(results);
   });
 })
 

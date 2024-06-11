@@ -53,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
 
-
                 // Hide the user selector box if it's not the first page
                 var searchBar = document.querySelector('.searchBar');
                 if (vueinst.currPage !== 0) {
@@ -90,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         nextPageButton.style.display = 'block';
                     }
 
-
                     // Hide the search bar selector box if it's not the first page
                     var searchBar = document.querySelector('.searchBar');
                     //console.log("IN THE BACK PAGE: currPage is " + vueinst.currPage);
@@ -114,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 //set the vue value to have the JSON array of posts, reverse it so that the most recent (id > value) is at the front
                 vueinst.allOrgs = JSON.parse(this.responseText).reverse();
                 console.log("VALUES BEING PASSED ARE:");
-                vueinst.allOrgs.forEach(function (org) {
+                vueinst.allOrgs.forEach(function(org) {
                     console.log(org);
                 });
 
@@ -168,7 +166,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Attach the findUser function to the window so it can be called from HTML
     window.getAllOrgNames = getAllOrgNames;
 
-    new Vue({
-        el: '#app',
-    });
+    // new Vue({
+    //     el: '#app',
+    // });
 });
+

@@ -39,7 +39,7 @@
             <!-- vue updates the number of organisaitons and number of pages-->
             <div class="orgPages">
                 <div id="numberOfOrgs">
-                    <p id="numOrgs">{{ numOrgs }} Organisations</p>
+                    <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="numOrgs">{{ numOrgs }} Organisations</p>
                     <p v-if="!searchedForOrgVue && !orgDetailsShowingVue && !notFoundShowingVue" id="pageNum">Page {{
                         currPage }}/{{ numPages }}</p>
                 </div>

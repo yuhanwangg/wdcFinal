@@ -294,6 +294,29 @@ s .title {
     transition: .2s;
 }
 
+.contactBtn {
+    font-size: 22px;
+    color: white;
+    padding: 15px;
+    background-color: #FC4A1A;
+    width: 100%;
+    font-weight: 500;
+    text-align: start;
+    border-radius: 10px;
+    border-style: none;
+    margin-bottom: 10px;
+}
+
+.contactBtn a {
+    color: white;
+}
+
+.contactBtn:hover {
+    background: #ed4618;
+    transform: translateY(2px);
+    transition: .2s;
+}
+
 @media (max-width:1300px) {
     .update img {
         display: none;

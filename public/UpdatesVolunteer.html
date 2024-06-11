@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <!--  -->
+
 <head>
     <title>Updates Volunteer</title>
     <!-- vue script -->
@@ -37,8 +38,8 @@
                     <select class="dropbtn" @change="choseBranch($event)">
                         <option v-for="(branch, index) in branches" v-bind:value="branch.branchID"
                             v-bind:selected="index === 0">{{branch.orgName}} — {{ branch.branchName}}</option>
+                    </select>
                 </div>
-                </select>
             </div>
 
             <div class="posts">
@@ -63,12 +64,9 @@
             <button class="previous" @click="backPage()">Previous Page</button>
             <button class="next" @click="nextPage()">Next Page</button>
         </div>
+        <!-- footer -->
+        <footer-component></footer-component>
     </div>
-
-    <!-- footer -->
-    <footer-component></footer-component>
-    </div>
-
 </body>
 
 </html>

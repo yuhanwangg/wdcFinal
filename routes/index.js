@@ -3741,4 +3741,31 @@ router.post('/createEvent', function (req, res, next) {
   });
 });
 
+router.get('/getAddress', function (req, res, next) {
+  var branchID = req.body;
+    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+    var query = `SELECT
+    address
+    FROM
+    Opportunities
+    WHERE
+    oppID = ?;`
+    connection.query(query, oppID, function (err1, rows, fields) {
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+      }
+
+      if (rows.length === 0) {
+        // No results found
+        res.status(404).json({ error: "Addy not found" });
+        return;
+      }
+      console.log(json(rows[0]));
+      // Results found, send back the details
+      res.json(rows[0]);
+    });
+  });
+
 module.exports = router;

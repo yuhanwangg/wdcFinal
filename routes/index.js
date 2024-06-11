@@ -3112,9 +3112,11 @@ router.get('/getRSVPD', function (req, res, next) {
   const userID = req.session.accountID;
 
   const query = `
-    SELECT o.*
+    SELECT o.*, b.branchName, b.suburb AS branchSuburb, b.state AS branchState, org.orgName AS orgName
     FROM Opportunities AS o
     JOIN RSVPD AS r ON o.oppID = r.oppID
+    JOIN Branch AS b ON o.branchID = b.branchID
+    JOIN Organisations AS org ON b.orgID = org.orgID
     WHERE r.userID = ?
   `;
 

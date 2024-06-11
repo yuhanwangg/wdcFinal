@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error fetching user count:', error);
                 });
             // Fetch recent posts from server
-            fetch('/recentPostsVolun')
+            fetch('/getRSVPD')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

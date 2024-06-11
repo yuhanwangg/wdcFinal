@@ -38,6 +38,7 @@ function selectOrg() {
     document.getElementsByClassName("organisationButton")[0].style.outline.style = "solid";
 }
 
+
 function sendInfo() {
     //success or not all filled in message
 
@@ -284,9 +285,9 @@ function sendInfo() {
                         console.log("Added successfully!");
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email already in use");
+                        console.log("Email or name already in use");
                         message.style.display = "block";
-                        message.textContent = "Email already in use";
+                        message.textContent = "Email or name already in use";
                     } else {
                         console.error("Failed to add user. Status:", this.status);
                     }
@@ -364,9 +365,9 @@ function googleSignUp(response) {
                         //var response = JSON.parse(this.responseText);
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email already in use");
+                        console.log("Email or name already in use");
                         message.style.display = "block";
-                        message.textContent = "Email already in use";
+                        message.textContent = "Email or name already in use";
                     } else {
                         console.error("Failed to login. Status:", this.status);
                     }

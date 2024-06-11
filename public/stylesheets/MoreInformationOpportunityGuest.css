@@ -155,6 +155,7 @@ input[type=submit]:active {
 .contentLeft {
     display:flex;
     flex-direction:column;
+    width: 40%;
 }
 
 .miniLogo {
@@ -309,6 +310,7 @@ input[type=submit]:active {
     float: left;
     margin-left: 14%;
     margin-top: 1%;
+    outline:auto;
 }
 
 .rightSide {
@@ -361,4 +363,8 @@ input[type=submit]:active {
     height:165px;
     align-items: center;
     flex-wrap:wrap;
+}
+
+.map {
+  height: 180px;
 }

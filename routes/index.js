@@ -1275,10 +1275,11 @@ router.post('/addOrg', function (req, res, next) {
                   req.session.accountID = currOrgId;
                   console.log(req.session.user, req.session.userType, req.session.accountID);
 
-                  //send an empty response, not needing to return anything, or can send a message for clarity
-                  res.send("branch and org successfully added");
-                  return;
-                });
+                //send an empty response, not needing to return anything, or can send a message for clarity
+                res.send("branch and org successfully added");
+                return;
+
+              });
               });
             });
           });
@@ -2423,7 +2424,7 @@ router.post('/loginGoogle', async function (req, res, next) {
           if (result2.length > 0) {
             console.log("email in organisation");
             req.session.userType = "organisation";
-            req.session.userID = result2[0].orgID;
+            req.session.accountID = result2[0].orgID;
             req.session.user = result2[0].email;
             handleResponse(200, "Login successful");
             return;
@@ -2441,7 +2442,7 @@ router.post('/loginGoogle', async function (req, res, next) {
             if (result3.length > 0) {
               console.log("email in admin");
               req.session.userType = "admin";
-              req.session.userID = result3[0].adminID;
+              req.session.accountID = result3[0].adminID;
               req.session.user = result3[0].email;
               handleResponse(200, "Login successful");
               return;
@@ -2673,74 +2674,94 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
               res.status(400).send("email in use");
               return;
             }
-            // });
 
-            //get last user id
-            var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
-
-            connection.query(mostRecentOrgId, async function (err4, result) {
-
-              //error handling
-              if (err4) {
+            // check if name already present in org database NEW
+            var checkPresent = "SELECT orgName FROM Organisations WHERE orgName = ?;";
+            connection.query(checkPresent, [name], function (err3, result3) {
+              if (err3) {
                 connection.release();
-                console.log("Got error while fetching orgID: ", err4);
+                console.log("Error checking for name: ", err3);
                 res.sendStatus(500);
                 return;
               }
 
-              let currOrgId = 1;
-              if (result.length > 0) {
-                currOrgId = result[0].orgID + 1;
+              //name already exists
+              if (result3.length > 0) {
+                connection.release();
+                console.log("name in use");
+                res.status(400).send("name in use");
+                return;
               }
-              console.log("the new org id is " + currOrgId);
+              // }); end of NEW
+              // });
 
-              //get last branch id
-              var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
+              //get last user id
+              var mostRecentOrgId = "SELECT orgID FROM Organisations ORDER BY orgID DESC LIMIT 1;";
 
-              connection.query(mostRecentBranchId, async function (err5, result5) {
+              connection.query(mostRecentOrgId, async function (err4, result) {
 
                 //error handling
-                if (err5) {
+                if (err4) {
                   connection.release();
-                  console.log("Got error while fetching branchID: ", err5);
+                  console.log("Got error while fetching orgID: ", err4);
                   res.sendStatus(500);
                   return;
                 }
 
-                let currBranchId = 1;
-                if (result5.length > 0) {
-                  currBranchId = result5[0].branchID + 1;
+                let currOrgId = 1;
+                if (result.length > 0) {
+                  currOrgId = result[0].orgID + 1;
                 }
-                console.log("the new branch id is " + currBranchId);
+                console.log("the new org id is " + currOrgId);
 
-                var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
+                //get last branch id
+                var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
 
-                connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
-                  //connection.release();
+                connection.query(mostRecentBranchId, async function (err5, result5) {
 
+                  //error handling
                   if (err5) {
-                    console.log("error inserting user", err5);
+                    connection.release();
+                    console.log("Got error while fetching branchID: ", err5);
                     res.sendStatus(500);
                     return;
                   }
 
-                  var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, instated) VALUES (?, ?, ?, ?);";
+                  let currBranchId = 1;
+                  if (result5.length > 0) {
+                    currBranchId = result5[0].branchID + 1;
+                  }
+                  console.log("the new branch id is " + currBranchId);
 
-                  connection.query(queryBranch, [currOrgId, "Main Branch", currBranchId, 1], function (err7, returnVal) {
-                    connection.release();
+                  var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
 
-                    if (err7) {
-                      console.log("error inserting branch", err7);
+                  connection.query(query, [currOrgId, name, email, 1], function (err5, returnVal) {
+                    //connection.release();
+
+                    if (err5) {
+                      console.log("error inserting user", err5);
                       res.sendStatus(500);
                       return;
                     }
 
-                    req.session.user = email;
-                    req.session.userType = "organisation";
-                    req.session.accountID = currOrgId;
-                    //send an empty response, not needing to return anything, or can send a message for clarity
-                    res.send("successfully added");
-                    return;
+                    var queryBranch = "INSERT INTO Branch (orgID, branchName, branchID, instated) VALUES (?, ?, ?, ?);";
+
+                    connection.query(queryBranch, [currOrgId, "Main Branch", currBranchId, 1], function (err7, returnVal) {
+                      connection.release();
+
+                      if (err7) {
+                        console.log("error inserting branch", err7);
+                        res.sendStatus(500);
+                        return;
+                      }
+
+                      req.session.user = email;
+                      req.session.userType = "organisation";
+                      req.session.accountID = currOrgId;
+                      //send an empty response, not needing to return anything, or can send a message for clarity
+                      res.send("successfully added");
+                      return;
+                    });
                   });
                 });
               });
@@ -3129,6 +3150,75 @@ router.get('/getRSVPD', function (req, res, next) {
     res.json(results);
   });
 })
+
+router.post('/deleteGoogleUser', function (req, res, next) {
+  //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
+  const userID = req.session.accountID;
+
+  console.log("went into /deleteUser and userID = " + userID);
+
+  if (userID > 0) {
+    //get the connection again
+
+    //changed query
+    var query = "DELETE FROM User WHERE userID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [userID], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
+      //error handling
+      if (err1) {
+        res.sendStatus(500);
+        return;
+      }
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      req.session.user = null;
+      req.session.userType = null;
+      req.session.accountID = null;
+      res.send("successfully deleted");
+    });
+  }
+  else {
+    res.status(404).json({ error: "User not found" });
+    return
+  }
+});
+
+router.post('/deleteGoogleOrg', function (req, res, next) {
+  //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
+  const orgID = req.session.accountID;
+
+  console.log("went into /deleteOrg and orgID = " + orgID);
+
+  if (orgID > 0) {
+    //get the connection again
+
+    //changed query
+    var query = "DELETE FROM Organisations WHERE orgID = ?;";
+
+    //using our connection apply the query to the database, we need the array [first_name, last_name] to be the placeholder values of ? ?
+    //err1 is the error, rows is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
+    connection.query(query, [orgID], function (err1, rows, fields) {
+      //release the query, don't need access to the database anymore
+      //error handling
+      if (err1) {
+        res.sendStatus(500);
+        return;
+      }
+      //send an empty response, not needing to return anything, or can send a message for clarity
+      req.session.user = null;
+      req.session.userType = null;
+      req.session.accountID = null;
+      res.send("successfully deleted");
+    });
+  }
+  else {
+    res.status(404).json({ error: "User not found" });
+    return
+  }
+});
+
 
 
 module.exports = router;

@@ -226,33 +226,75 @@ async function saveDetails() {
     }
 }
 
-function deleteAccount() {
+async function deleteAccount() {
     var message = document.getElementsByClassName("errorInput2")[0];
 
     var email = document.getElementById("deleteEmail").value;
     var password = document.getElementById("deletePassword").value;
 
-    var xhttp = new XMLHttpRequest();
+    var googleUser = await checkIfGoogleUser();
+    if (googleUser) {
+        var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                console.log("Deleted successfully!");
-                message.style.display = "block";
-                message.textContent = "Account deleted successfully";
-                message.style.color = "black";
-                window.location.href = "/home";
-            } else if (this.status == 400) {
-                message.style.display = "block";
-                message.textContent = "Details incorrect";
-            } else {
-                console.error("Failed to delete. Status:", this.status);
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    console.log("Deleted successfully!");
+                    message.style.display = "block";
+                    message.textContent = "Account deleted successfully";
+                    message.style.color = "black";
+                    window.location.href = "/home";
+                } else {
+                    console.error("Failed to delete. Status:", this.status);
+                }
             }
-        }
-    };
+        };
 
-    xhttp.open("POST", "/deleteSelfOrg", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify({ password: password, email: email }));
+        xhttp.open("POST", "/deleteGoogleOrg", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    } else {
+
+        if (email && password) {
+
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    if (this.status == 200) {
+                        console.log("Deleted successfully!");
+                        message.style.display = "block";
+                        message.textContent = "Account deleted successfully";
+                        message.style.color = "black";
+                        window.location.href = "/home";
+                    } else if (this.status == 400) {
+                        message.style.display = "block";
+                        message.textContent = "Details incorrect";
+                    } else {
+                        console.error("Failed to delete. Status:", this.status);
+                    }
+                }
+            };
+
+            xhttp.open("POST", "/deleteSelfOrg", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send(JSON.stringify({ password: password, email: email }));
+
+        } else {
+            message.style.display = "block";
+            message.textContent = "Please enter an email and password";
+        }
+
+    }
 
 }
+
+async function onPageLoad() {
+
+    var googleUser = await checkIfGoogleUser();
+    if (googleUser) {
+        document.getElementById("deleteInput").style.display = "none";
+    }
+
+}
+window.onload = onPageLoad;

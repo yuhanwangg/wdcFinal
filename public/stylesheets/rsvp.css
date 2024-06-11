@@ -378,7 +378,12 @@ input[type=submit]:active {
     }
 
     .custom-select {
-        margin: 5% 10%;
+        width: 200%;
+    }
+
+    .container {
+        margin: 0% 10%;
+
     }
 }
 

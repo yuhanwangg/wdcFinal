@@ -21,11 +21,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     .bindPopup('A marker on OpenStreetMap')
                     .openPopup();
             });
+        },
+        methods: {
+            updateMap(position) {
+                console.log("ot ramg ot");
+                if (this.map && this.marker) {
+                    const { lat, lng } = position;
+                    this.map.setView([lat, lng], 13);
+                    this.marker.setLatLng([lat, lng])
+                        .bindPopup(`A marker on OpenStreetMap at (${lat}, ${lng})`)
+                        .openPopup();
+                }
+            }
         }
     });
-
-    //commit test
-
 
     const vueinst = new Vue({
         el: '#app',

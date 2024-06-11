@@ -93,7 +93,7 @@ h1 {
 .posts {
     display: flex;
     flex-direction: column;
-    /* width:80%; */
+    padding: 0px 175px;
 }
 
 .newPost {
@@ -228,19 +228,25 @@ button {
 
 @media only screen and (max-width:900px) {
     h1 {
-        padding: 0px;
+        padding: 0% 10%;
+    }
+
+    .pages {
+        margin: 5% 10%;
     }
 
     .postsPages {
         padding: 0px;
+        margin-left: 10px;
     }
 
     .postsPages #numberOfPosts {
-        margin-left: 0px;
+        margin-left: 10%;
     }
+
     .boxes {
         flex-direction: column;
-        padding: 0px;
+        padding: 10%;
     }
 
     .branchList {
@@ -263,5 +269,16 @@ button {
         padding-right: 0;
     }
 
+    .oldPosts {
+        padding: 5% 10%;
+    }
 
+    .allPosts {
+        margin: 0% 10%;
+    }
+
+    .posts {
+        margin: 0px;
+        padding: 0px;
+    }
 }

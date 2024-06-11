@@ -185,6 +185,10 @@ input[type=submit]:active {
 
 
 @media only screen and (max-width:900px) {
+    h1 {
+        padding: 75px 10% 10px 10%;
+    }
+
     .searchBar {
         height: auto;
         padding-left: 15px;
@@ -199,8 +203,8 @@ input[type=submit]:active {
     }
 
     .UserBox {
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 10%;
+        margin-right: 10%;
     }
 
 

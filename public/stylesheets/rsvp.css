@@ -48,6 +48,7 @@ a {
     box-sizing: border-box;
     display: flex;
     align-items: flex-start;
+    flex-direction: row;
     gap: 20px;
     align-items: center;
     margin: 0px 175px;
@@ -65,21 +66,23 @@ a {
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-    height: 56px;
+    height: 70px;
     padding: 0 10px;
     cursor: pointer;
 }
 
 .searchCity {
+    width: 30%;
     background-color: white;
     border: 1px solid #ced4da;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
-    height: 56px;
+    height: 70px;
     padding: 0 10px;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .searchLocation {
@@ -350,12 +353,6 @@ input[type=submit]:active {
 }
 
 @media only screen and (max-width:900px) {
-    .searchBar {
-        height: auto;
-        padding-left: 15px;
-        padding-right: 15px;
-        line-height: 45px;
-    }
 
     input,
     input[type=submit] {
@@ -370,10 +367,49 @@ input[type=submit]:active {
 
 }
 
+@media (max-width:700px) {
+    .topTitle {
+        flex-direction: column;
+        margin: 10% 0%;
+    }
+
+    .topTitle button {
+        margin-left: 50px;
+    }
+
+    .custom-select {
+        margin: 5% 10%;
+    }
+}
+
+@media (max-width:1090px) {
+    .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .content {
+        padding: 0px;
+    }
+
+    .content h1 {
+        padding: 0px 10%;
+    }
+
+    .custom-select {
+        width: 100%;
+    }
+
+    .searchCity {
+        width: 100%;
+    }
+}
+
 @media (max-width: 1280px) {
 
     .bottom {
         padding-left: 10%;
         padding-right: 10%;
     }
+
 }

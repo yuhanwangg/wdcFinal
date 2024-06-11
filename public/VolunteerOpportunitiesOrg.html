@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,39 +28,43 @@
                 <input onclick="showPosts()" type="submit" value="Search">
             </div>
 
-            <div class="dropdown">
-                <select class="dropbtn" v-model="selectedBranch" @change="choseBranch">
-                    <option v-for="branch in branches" :key="branch.branchID" :value="{ branchID: branch.branchID, branchName: branch.branchName }">{{ branch.branchName }}</option>
-                </select>
-            </div>
-
-            <!-- Result and Page Count-->
-            <p class="searchCount">{{ totalResults }} Search Results Match</p>
-            <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
-            <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
-
-            <div v-for="post in results" :key="post.oppID" class="opportunityBox">
+            <div class="contentHold">
                 <div class="contentLeft">
-                    <a :href="generateLink(post)" class="organisationName"><b>{{ post.oppName }}</b></a>
-                    <p>{{ post.organisationName }}</p>
-                    <div class="tags">
-                        <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{ tag.trim()
-                            }}</span>
+                    <div class="dropdown">
+                        <select class="dropbtn" v-model="selectedBranch" @change="choseBranch">
+                            <option v-for="branch in branches" :key="branch.branchID" :value="{ branchID: branch.branchID, branchName: branch.branchName }">{{ branch.branchName }}</option>
+                        </select>
                     </div>
-                    <p>{{ post.description }}</p>
+
+                    <!-- Result and Page Count-->
+                    <p class="searchCount">{{ totalResults }} Search Results Match</p>
+                    <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
+                    <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
+
+                    <div v-for="post in results" :key="post.oppID" class="opportunityBox">
+                        <div class="contentLeft">
+                            <a :href="generateLink(post)" class="organisationName"><b>{{ post.oppName }}</b></a>
+                            <p>{{ post.organisationName }}</p>
+                            <div class="tags">
+                                <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{ tag.trim()
+                                    }}</span>
+                            </div>
+                            <p>{{ post.description }}</p>
+                        </div>
+                        <div class="logoJoin">
+                            <img :src="post.thumbnail" alt="logo" class="miniLogo">
+                        </div>
+                    </div>
+
                 </div>
-                <div class="logoJoin">
-                    <img :src="post.thumbnail" alt="logo" class="miniLogo">
-                </div>
+                <button class="postButton" type="submit" @click="createPost">Create Post</button>
+
             </div>
-
-
             <!-- Next Button -->
-            <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages" :disabled="currentPage === totalPages">Next Page</button>
-            <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1">Previous Page</button>
-            <!-- footer -->
+            <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages" :disabled="currentPage === totalPages" type="submit">Next Page</button>
+            <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1" type="submit">Previous Page</button>
         </div>
-        <button class="postButton" type="submit" @click="createPost">Create Post</button>
+        <!-- footer -->
         <footer-component></footer-component>
     </div>
 </body>

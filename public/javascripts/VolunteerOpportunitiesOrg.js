@@ -103,6 +103,9 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             choseBranch() {
                 showPosts();
+            },
+            createPost() {
+                window.location.href = '/CreateVolunteerOpportunity';
             }
         },
         watch: {

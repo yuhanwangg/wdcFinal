@@ -39,7 +39,6 @@ var dbConnectionPool = mysql.createPool({
     database: 'WDCProject'
 });
 
-
 var app = express();
 
 app.use(function (req, res, next) {
@@ -93,9 +92,7 @@ app.use('/MoreInformationOpportunityUser.html', checkSession.checkVolunteer);
 app.use('/rsvp.html', checkSession.checkVolunteer);
 app.use('/settingsUser.html', checkSession.checkVolunteer);
 app.use('/successRSVPd.html', checkSession.checkVolunteer);
-app.use('/successRSVPd.html', checkSession.checkVolunteer);
 app.use('/VolunteerOpportunitiesUser.html', checkSession.checkVolunteer);
-
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -113,7 +110,7 @@ app.use('/editUser', editUserRouter);
 app.use('/users', usersRouter);
 app.use('/successRSVPd', successRSVPdRouter);
 app.use('/creationSuccess', creationSuccessRouter);
-app.use('/creationEvent', createEventRouter);
+app.use('/CreateVolunteerOpportunity', createEventRouter);
 app.use('/rsvpd', rsvpRouter);
 app.use('/MoreInformationOpportunity', moreInfoRouter);
 

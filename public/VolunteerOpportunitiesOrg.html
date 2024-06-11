@@ -57,11 +57,11 @@
 
 
             <!-- Next Button -->
-            <button class="nextButton" @click="nextPage" :disabled="currentPage === totalPages">Next Page</button>
+            <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages" :disabled="currentPage === totalPages">Next Page</button>
             <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1">Previous Page</button>
             <!-- footer -->
         </div>
-        <!-- <button class="postButton" type="submit" @click="createPost">Create Post</button> -->
+        <button class="postButton" type="submit" @click="createPost">Create Post</button>
         <footer-component></footer-component>
     </div>
 </body>

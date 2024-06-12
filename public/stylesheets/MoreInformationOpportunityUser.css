@@ -190,6 +190,7 @@ input[type=submit]:active {
 .contentLeft {
     display:flex;
     flex-direction:column;
+    padding-right: 50%;
 }
 
 .miniLogo {
@@ -254,7 +255,7 @@ input[type=submit]:active {
     border:none;
     width: 55px;
     height:20px;
-    display: inline-flex;
+    display: inline-box;
     align-items: center;
     justify-content: center;
     font-weight:bold;
@@ -270,7 +271,6 @@ input[type=submit]:active {
 }
 
 .buttonHolder {
-    position: absolute;
     display: flex;
     flex-direction: row;
     align-items: flex-end;

@@ -3254,6 +3254,7 @@ router.get('/searchPosts', function (req, res, next) {
     console.log("connected to pool");
     //this is the query which i can change
 
+
     let query = `SELECT oppID,
       oppName,
       tags,

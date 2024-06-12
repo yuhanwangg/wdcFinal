@@ -743,11 +743,13 @@ router.get('/getOrgName', function (req, res, next) {
   var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
   connection.query(query, [orgID], function (err1, rows1) {
 
+
     if (err1) {
       console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
+
 
     if (rows1.length === 0) {
       // Organization not found
@@ -758,7 +760,8 @@ router.get('/getOrgName', function (req, res, next) {
     res.json(rows1[0]);
     return;
   });
-});
+ });
+
 
 router.get('/getOrgNameVolunteers', function (req, res, next) {
   console.log("I am in the getOrgName request in index.js!!!");

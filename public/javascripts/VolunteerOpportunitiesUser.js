@@ -7,6 +7,22 @@ document.addEventListener("DOMContentLoaded", function () {
             currentPage: 1,
             pageSize: 1, // Number of results per page
         },
+        mounted() {
+            fetch('/allOpportunities')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('network error')
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('received all opportunities')
+                    this.results = data;
+                })
+                .catch(error => {
+                    console.error("error in getting all opportunities")
+                })
+        },
         computed: {
             totalResults() {
                 return this.savedResults.length;

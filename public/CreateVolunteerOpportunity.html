@@ -87,9 +87,9 @@
           <textarea class="briefBox" v-model="briefDescription" required
             placeholder="Brief Description (thumbnail description)"></textarea>
           <textarea class="fullBox" v-model="description" required placeholder="Complete Description"></textarea>
+          <textarea class="miscBox" v-model="dates" required placeholder="Dates"></textarea>
+        </form>
       </div>
-      <textarea class="miscBox" v-model="dates" required placeholder="Dates"></textarea>
-      </form>
       <div class="buttonHolder">
         <button type="button" class="closeButton" @click="closeForm">Close</button>
         <button type="submit" class="postButton" @click="submitForm">Post</button>

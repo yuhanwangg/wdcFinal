@@ -118,5 +118,5 @@ module.exports = {
   checkAdmin,
   adminEditOrgPage,
   adminEditUserPage,
-  orgVerifyNoVerify
+  orgVerifyNoVerify,
 };

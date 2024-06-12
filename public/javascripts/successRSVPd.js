@@ -28,15 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
             browse() {
                 const checkbox = document.getElementById('emailNotifications');
 
-<<<<<<< HEAD
-                    // Check if the checkbox is checked
-                    const isChecked = checkbox.checked;
-
-                    // Handle the value
-                    if (isChecked) {
-                        this.confirmationEmail();
-                    }
-=======
                 // Check if the checkbox is checked
                 const isChecked = checkbox.checked;
 
@@ -44,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (isChecked) {
                     this.confirmationEmail();
                 }
->>>>>>> 292938dd198412cf4de415d36602c5a76d9ae770
                 window.location.href = '/opportunities';
             },
             confirmationEmail() {

@@ -401,6 +401,11 @@ input[type=submit]:active {
         padding: 5px 0;
         margin: 0px 20px;
     }
+    
+    .opportunityBox {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 }
 
 @media (max-width: 1090px) {
@@ -451,4 +456,7 @@ input[type=submit]:active {
     #emailNotifications {
         margin-left:0px;
     }
+
+
+
 }

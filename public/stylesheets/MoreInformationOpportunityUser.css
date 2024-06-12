@@ -404,6 +404,18 @@ input[type=submit]:active {
         flex-direction: column;
         justify-content: flex-start;
     }
+
+    .searchBar {
+        height: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+        line-height: 45px;
+    }
+    .searchBar input,
+    .searchBar input[type=submit] {
+        width: 100%;
+        margin: auto;
+    }
 }
 
 @media (max-width: 1280px) {
@@ -465,5 +477,10 @@ input[type=submit]:active {
 
     #emailNotifications {
         margin-left:0px;
+    }
+
+    .opportunityBox {
+        margin-left: 0px;
+        margin-right: 0px;
     }
 }

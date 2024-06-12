@@ -3293,29 +3293,26 @@ router.get('/searchPosts', function (req, res, next) {
     // handle for different session token
     var session = req.session.userType;
 
-    const queryParams = [];
-    let query = '';
-
-    query = `SELECT oppID,
-      oppName,
-      tags,
-      dates,
-      address,
-      commitment,
-      suitability,
-      training,
-      requirements,
-      thumbnail,
-      Opportunities.description,
-      Opportunities.branchID,
-      b.branchName as branchName,
-      org.orgName as orgName,
-      org.imgPath as imgPath,
-      private
-      FROM Opportunities
-      JOIN Branch b ON Opportunities.branchID = b.branchID
-      JOIN Organisations org ON org.orgID = b.orgID
-      WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
+    let query = `SELECT oppID,
+  oppName,
+  tags,
+  dates,
+  address,
+  commitment,
+  suitability,
+  training,
+  requirements,
+  thumbnail,
+  Opportunities.description,
+  Opportunities.branchID,
+  branchName,
+  org.orgName as organisationName,
+  org.imgPath,
+  private
+  FROM Opportunities
+  JOIN Branch b ON Opportunities.branchID = b.branchID
+  JOIN Organisations org ON org.orgID = b.orgID
+  WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
 
     if (session === 'volunteer') {
       query += ` AND (private = 0 OR
@@ -3591,6 +3588,8 @@ router.get('/showPosts', function (req, res, next) {
                 o.tags,
                 o.description,
                 o.thumbnail,
+                org.orgSite,
+                private
                 org.orgSite,
                 private
             FROM

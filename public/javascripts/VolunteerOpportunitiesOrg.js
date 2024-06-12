@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Update the Vue instance's savedResults property
                 vueinst.savedResults = JSON.parse(this.responseText);
             } else if (this.status === 404) {
+                console.log("THERE ARE NO POSTS TO SHOW");
+                vueinst.savedResults = []; // Clear savedResults if no posts found
+                vueinst.numPosts = 0;
                 vueinst.notFoundShowing = true;
             }
         };
@@ -51,16 +54,21 @@ document.addEventListener("DOMContentLoaded", function () {
             results: [],
             savedResults: [],
             currentPage: 1,
-            pageSize: 1, // Number of results per page
+            pageSize: 6, // Number of results per page
             branches: [],
-            selectedBranch: null, // Selected branch ID
+            numPosts: 0,
+            selectedBranch: -1
         },
         computed: {
             totalResults() {
                 return this.savedResults.length;
             },
             totalPages() {
-                return Math.ceil(this.totalResults / this.pageSize);
+                var pageNum = Math.ceil(this.totalResults / this.pageSize);
+                if (pageNum === 0) {
+                    pageNum = 1;
+                }
+                return pageNum;
             },
             paginatedResults() {
                 const start = (this.currentPage - 1) * this.pageSize;
@@ -112,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
             branches(newBranches) {
                 console.log("branches updated:", newBranches); // Add this line for debugging
                 if (newBranches.length > 0) {
-                    this.selectedBranch = newBranches[0].branchID;
+                    this.selectedBranch = newBranches[0];
                     showPosts();
                 }
             },

@@ -121,24 +121,23 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `Opportunities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Opportunities` (
-  `oppID` int NOT NULL,
-  `oppName` varchar(255) DEFAULT NULL,
-  `tags` varchar(255) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `commitment` varchar(500) DEFAULT NULL,
-  `suitability` varchar(500) DEFAULT NULL,
-  `training` varchar(500) DEFAULT NULL,
-  `requirements` varchar(500) DEFAULT NULL,
-  `thumbnail` varchar(500) DEFAULT NULL,
-  `description` varchar(100) DEFAULT NULL,
-  `dates` varchar(255) DEFAULT NULL,
-  `branchID` int DEFAULT NULL,
-  PRIMARY KEY (`oppID`),
-  KEY `branchID` (`branchID`),
-  KEY `idx_branchID` (`branchID`),
-  CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,
-  CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
+CREATE TABLE Opportunities (
+  oppID int AUTO_INCREMENT PRIMARY KEY,
+  oppName varchar(255) DEFAULT NULL,
+  tags varchar(255) DEFAULT NULL,
+  address varchar(255) DEFAULT NULL,
+  commitment varchar(500) DEFAULT NULL,
+  suitability varchar(500) DEFAULT NULL,
+  training varchar(500) DEFAULT NULL,
+  requirements varchar(500) DEFAULT NULL,
+  thumbnail varchar(500) DEFAULT NULL,
+  description varchar(100) DEFAULT NULL,
+  dates varchar(255) DEFAULT NULL,
+  branchID int DEFAULT NULL,
+  KEY branchID (branchID),
+  KEY idx_branchID (branchID),
+  CONSTRAINT fk_organisation_opportunities FOREIGN KEY (branchID) REFERENCES Opportunities (branchID) ON DELETE CASCADE,
+  CONSTRAINT Opportunities_ibfk_1 FOREIGN KEY (branchID) REFERENCES Branch (branchID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

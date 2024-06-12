@@ -3287,6 +3287,7 @@ router.get('/searchPosts', function (req, res, next) {
   const categories = req.query.categories;
   const commitment = req.query.commitment;
   const location = req.query.location;
+
   console.log("thingys");
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
   req.pool.getConnection(function (err, connection) {
@@ -3296,8 +3297,6 @@ router.get('/searchPosts', function (req, res, next) {
       res.sendStatus(500);
       return;
     }
-    console.log("connected to pool");
-    //this is the query which i can change
 
     let query = `SELECT oppID,
       oppName,
@@ -3336,7 +3335,6 @@ router.get('/searchPosts', function (req, res, next) {
     }
 
     query += ';';
-
 
 
     //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
@@ -3562,75 +3560,94 @@ router.get('/showPosts', function (req, res, next) {
   const commitment = req.query.commitment;
   const location = req.query.location;
   const branchID = req.query.branchID;
-
-  if (!branchID) {
-    res.status(400).json({ error: "Branch ID is required" });
-    return;
+  if (branchID === '-1' || branchID === undefined || branchID === "undefined" || branchID === "") {
+    console.log("IT IS UNDEFINED");
   }
 
+
   req.pool.getConnection(function (err, connection) {
-    if (err) {
-      console.log("Got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("Connected to pool");
+      if (err) {
+          console.log("Got error!!!!");
+          res.sendStatus(500);
+          return;
+      }
+      console.log("Connected to pool");
 
-    let query = `
-    SELECT
-        o.oppID,
-        o.oppName,
-        org.orgName,
-        o.tags,
-        o.description,
-        o.thumbnail,
-        org.orgSite
-    FROM
-        Opportunities o
-    JOIN
-        Branch b ON o.branchID = b.branchID
-    JOIN
-        Organisations org ON b.orgID = org.orgID
-    WHERE
-        b.branchID = ?`;
+      let query = `
+          SELECT
+              o.oppID,
+              o.oppName,
+              org.orgName,
+              o.tags,
+              o.description,
+              o.thumbnail,
+              org.orgSite
+          FROM
+              Opportunities o
+          JOIN
+              Branch b ON o.branchID = b.branchID
+          JOIN
+              Organisations org ON b.orgID = org.orgID`;
 
-    const queryParams = [branchID];
+      const queryParams = [];
 
-    if (categories) {
-      query += ' AND o.tags LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(categories);
-    }
-
-    if (commitment) {
-      query += ' AND o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(commitment);
-    }
-
-    if (location) {
-      query += ' AND o.address LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(location);
-    }
-
-    query += ';';
-
-    connection.query(query, queryParams, function (err1, rows, fields) {
-      connection.release();
-      console.log(query);
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
+      if (branchID !== '-1' && branchID !== undefined && branchID !== "undefined" && branchID !== "") {
+          query += ' WHERE b.branchID = ?';
+          queryParams.push(branchID);
       }
 
-      if (rows.length === 0) {
-        res.status(404).json({ error: "No opportunities found" });
-        return;
+      if (categories) {
+          if (queryParams.length === 0) {
+              query += ' WHERE';
+          } else {
+              query += ' AND';
+          }
+          query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
+          queryParams.push(categories);
       }
-      console.log(rows);
-      res.json(rows);
-    });
+
+      if (commitment) {
+          if (queryParams.length === 0) {
+              query += ' WHERE';
+          } else {
+              query += ' AND';
+          }
+          query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
+          queryParams.push(commitment);
+      }
+
+      if (location) {
+          if (queryParams.length === 0) {
+              query += ' WHERE';
+          } else {
+              query += ' AND';
+          }
+          query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
+          queryParams.push(location);
+      }
+
+      query += ';';
+
+      connection.query(query, queryParams, function (err1, rows, fields) {
+          connection.release();
+          console.log(query);
+          if (err1) {
+              console.log("Error executing query:", err1);
+              res.status(500).json({ error: "Internal Server Error" });
+              return;
+          }
+
+          if (rows.length === 0) {
+              res.status(404).json({ error: "No opportunities found" });
+              return;
+          }
+          console.log(rows);
+          console.log("HELOOOOOOOOO")
+          res.json(rows);
+      });
   });
 });
+
 
 router.get('/findBranches', function (req, res, next) {
 var userID = req.session.accountID;

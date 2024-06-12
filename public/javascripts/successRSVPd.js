@@ -1,3 +1,4 @@
+//
 document.addEventListener("DOMContentLoaded", function () {
     const vueinst = new Vue({
         el: '#app',
@@ -25,6 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 xhttp1.send();
             },
             browse() {
+                const checkbox = document.getElementById('emailNotifications');
+
+                // Check if the checkbox is checked
+                const isChecked = checkbox.checked;
+
+                // Handle the value
+                if (isChecked) {
+                    this.confirmationEmail();
+                }
                 window.location.href = '/opportunities';
             },
             confirmationEmail() {
@@ -47,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     subject: subject,
                     text: inside,
                     oppID: oppID,
-                 }));
+                }));
             }
         },
         mounted() {

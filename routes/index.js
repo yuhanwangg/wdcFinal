@@ -3832,8 +3832,30 @@ router.get('/allOpportunities', function (req, res, next) {
   if (req.session.userType === 'organisation') {
     let orgID = req.session.accountID;
     // only show posts you have made
+    let query = `SELECT o.*
+                FROM Opportunities o
+                JOIN Branch b ON o.branchID = b.branchID
+                JOIN Organisations org ON b.orgID = org.orgID
+                WHERE org.orgID = ?;`;
+    connection.query(query, [orgID], function (err, results) {
+      if (err) {
+        console.log("error in executing the queyr", err)
+        res.status(500).json({ error: "internal server error" })
+        return;
+      }
+      res.json(results);
+    })
   } else {
     // show all posts regards
+    let query = 'SELECT * FROM Opportunities';
+    connection.query(query, function (err, results) {
+      if (err) {
+        console.log("error in executing the queyr", err)
+        res.status(500).json({ error: "internal server error" })
+        return;
+      }
+      res.json(results);
+    })
   }
 })
 

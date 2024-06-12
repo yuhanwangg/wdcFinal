@@ -20,6 +20,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 return this.savedResults.slice(start, end);
             },
         },
+        mounted() {
+            fetch('/allOpportunities')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('network error')
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('received all opportunities')
+                    this.results = data;
+                })
+                .catch(error => {
+                    console.error("error in getting all opportunities")
+                })
+        },
         methods: {
             nextPage() {
                 if (this.currentPage < this.totalPages) {

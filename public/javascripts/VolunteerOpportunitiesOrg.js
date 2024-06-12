@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         xhttp1.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log("Response:", this.responseText); // Add this line for debugging
-            // Update the Vue instance's savedResults property
+                // Update the Vue instance's savedResults property
                 // Update the Vue instance's savedResults property
                 vueinst.savedResults = JSON.parse(this.responseText);
             } else if (this.status === 404) {
@@ -75,6 +75,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 const end = start + this.pageSize;
                 return this.savedResults.slice(start, end);
             },
+        },
+        mounted() {
+            fetch('/allOpportunities')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('network error')
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('received all opportunities')
+                    this.results = data;
+                })
+                .catch(error => {
+                    console.error("error in getting all opportunities")
+                })
         },
         methods: {
             findBranches() {

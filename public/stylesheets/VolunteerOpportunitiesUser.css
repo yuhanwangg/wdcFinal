@@ -84,6 +84,7 @@ input[type=submit]:active {
     height: 120px;
     width: 250px;
     border: none;
+    margin-left: auto;
 }
 
 .contentLeft {

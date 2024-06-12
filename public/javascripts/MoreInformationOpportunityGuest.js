@@ -55,6 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             back() {
                 window.history.back();
+            },
+            searchPosts() {
+                window.location.href = '/opportunities';
             }
         },
         mounted() {

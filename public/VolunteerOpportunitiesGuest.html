@@ -1,7 +1,7 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <!--  -->
+
 <head>
     <title>Volunteer Opportunities</title>
     <link rel="stylesheet" href="stylesheets/main.css">
@@ -23,10 +23,27 @@
             <h1 class="title">Volunteer Opportunities</h1>
             <!-- Search Bar -->
             <div class="searchBar">
-                <input id="categories" type="text" placeholder="Categories">
-                <input id="commitment" type="text" placeholder="Time Commitment">
+                <select name="useTag" required id="categories">
+                    <option value="" disabled selected>Select a Tag</option>
+                    <option value="Aged Care">Aged Care</option>
+                    <option value="Animal Shelter">Animal Shelter</option>
+                    <option value="Food Bank">Food Bank</option>
+                    <option value="Health">Health</option>
+                    <option value="Youth Group">Youth Group</option>
+                    <option value="Shelters">Shelters</option>
+                    <option value="Ocean Cleanup">Ocean Cleanup</option>
+                </select>
+                <select class="commitmentSelect" id="commitment" name="commitment" required>
+                    <option value="" disabled selected>Time Commitment</option>
+                    <option value="Less than 1 hour">Less than 1 hour</option>
+                    <option value="1-2 hours">1-2 hours</option>
+                    <option value="2-4 hours">2-4 hours</option>
+                    <option value="4+ hours">4+ hours</option>
+                    <option value="Full day">Full day</option>
+                    <option value="Weekly">Weekly</option>
+                </select>
                 <input id="location" type="text" placeholder="Location">
-                <input onclick="searchPosts()" type="submit" value="Search">
+                <input @click="searchPosts()" type="submit" value="Search">
             </div>
             <!-- Result and Page Count-->
             <p class="searchCount">{{ totalResults }} Search Results Match</p>
@@ -50,8 +67,10 @@
 
 
             <!-- Next Button -->
-            <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages" :disabled="currentPage === totalPages">Next Page</button>
-            <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1">Previous Page</button>
+            <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages"
+                :disabled="currentPage === totalPages">Next Page</button>
+            <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1">Previous
+                Page</button>
             <!-- footer -->
         </div>
         <footer-component></footer-component>

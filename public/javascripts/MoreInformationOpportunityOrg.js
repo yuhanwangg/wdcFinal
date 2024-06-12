@@ -129,6 +129,9 @@ document.addEventListener("DOMContentLoaded", async function () {
             },
             back() {
                 window.location.href = '/opportunities';
+            },
+            searchPosts() {
+                window.location.href = '/opportunities';
             }
         },
         mounted() {

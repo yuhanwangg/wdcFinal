@@ -12,6 +12,15 @@ h1 {
     padding-top: 4.8%;
 }
 
+.searchBar select {
+    border-radius: 20px;
+    width: 20%;
+    height: 2em;
+    text-indent: 15px;
+    border: none;
+    margin-right: 10px;
+}
+
 .searchBar {
     background-color: #4ABDAC;
     height: 55px;
@@ -90,7 +99,7 @@ input[type=submit]:active {
     display: flex;
     flex-direction: row;
     padding-left: 175px;
-    padding-right:175px;
+    padding-right: 175px;
     justify-content: space-between;
 }
 
@@ -167,17 +176,17 @@ input[type=submit]:active {
 }
 
 .postButton {
-    border-radius:20px;
-    width:8em;
+    border-radius: 20px;
+    width: 8em;
     height: 2em;
     text-indent: 15px;
-    border:none;
-    background-color:#FC4A1A;
-    color:white;
-    text-indent:0px;
-    margin:auto;
+    border: none;
+    background-color: #FC4A1A;
+    color: white;
+    text-indent: 0px;
+    margin: auto;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     float: right;
@@ -269,12 +278,14 @@ input[type=submit]:active {
         padding: 5px 0;
         margin: 0px 20px;
     }
+
     .opportunityBox {
-        margin-left:0px;
-        margin-right:5px;
+        margin-left: 0px;
+        margin-right: 5px;
     }
+
     #searchMatchInfo {
-        padding:5px;
+        padding: 5px;
 
     }
 
@@ -324,18 +335,18 @@ input[type=submit]:active {
     }
 
     .breadcrumb {
-        padding-left:0px;
+        padding-left: 0px;
     }
 
     #emailNotifications {
-        margin-left:0px;
+        margin-left: 0px;
     }
 
     .postButton {
         margin-right: 0;
-        margin-left:10px;
-        height:5%;
-        width:110%;
+        margin-left: 10px;
+        height: 5%;
+        width: 110%;
     }
 
     .prevButton {
@@ -347,6 +358,6 @@ input[type=submit]:active {
     }
 
     .title {
-        padding-left:0;
+        padding-left: 0;
     }
 }

@@ -3278,7 +3278,7 @@ router.get('/searchPosts', function (req, res, next) {
     const queryParams = [];
 
     if (categories) {
-      query += ' AND oppType LIKE CONCAT(\'%\', ?, \'%\')';
+      query += ' AND tags LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(categories);
     }
 
@@ -3848,6 +3848,7 @@ router.get('/allOpportunities', function (req, res, next) {
   } else {
     // show all posts regards
     let query = 'SELECT * FROM Opportunities';
+    // only select if user id is
     connection.query(query, function (err, results) {
       if (err) {
         console.log("error in executing the queyr", err)

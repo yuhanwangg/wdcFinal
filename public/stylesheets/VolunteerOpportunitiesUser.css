@@ -23,6 +23,15 @@ h1 {
     padding-top: 4.8%;
 }
 
+.searchBar select {
+    border-radius: 20px;
+    width: 20%;
+    height: 2em;
+    text-indent: 15px;
+    border: none;
+    margin-right: 10px;
+}
+
 .searchBar {
     background-color: #4ABDAC;
     height: 55px;
@@ -268,10 +277,10 @@ input[type=submit]:active {
     }
 
     .breadcrumb {
-        padding-left:0px;
+        padding-left: 0px;
     }
 
     #emailNotifications {
-        margin-left:0px;
+        margin-left: 0px;
     }
 }

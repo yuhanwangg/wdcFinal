@@ -184,6 +184,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 xhttp1.open("GET", searchQ, true);
                 xhttp1.send();
             },
+            searchPosts() {
+                window.location.href = '/opportunities';
+            }
         },
         mounted() {
             this.searchSpecificPost();

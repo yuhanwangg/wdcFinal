@@ -139,7 +139,7 @@
 
         <div v-for="post in events" class="UserBox">
             <div class="contentLeft">
-                <a :href="post.link" class="programName"><b>{{ post.oppName }}</b></a>
+                <a href=# @click="goToOppLink(post.oppID)" class="programName"><b>{{ post.oppName }}</b></a>
                 <p class="organisationName"><b>{{ post.orgName }} - {{ post.branchName }}</b></p>
                 <div class="tags">
                     <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{

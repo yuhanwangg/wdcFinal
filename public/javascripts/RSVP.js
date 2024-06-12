@@ -123,6 +123,10 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             goTo(location) {
                 window.location.href = location;
+            },
+            goToOppLink(oppID) {
+                var link = '/MoreInformationOpportunity?id=' + oppID;
+                window.location.href = link;
             }
         }
     })

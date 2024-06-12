@@ -39,9 +39,13 @@
                     <div class="tagHolder">
                       <select v-model="selectedTag" @change="addTag" name="addTag">
                         <option value="" disabled selected>Add Tag</option>
-                        <option value="Hospitality">Hospitality</option>
                         <option value="Aged Care">Aged Care</option>
-                        <option value="Community Service">Community Service</option>
+                        <option value="Animal Shelter">Animal Shelter</option>
+                        <option value="Food Bank">Food Bank</option>
+                        <option value="Health">Health</option>
+                        <option value="Youth Group">Youth Group</option>
+                        <option value="Shelters">Shelters</option>
+                        <option value="Ocean Cleanup">Ocean Cleanup</option>
                       </select>
                       <div class="tags">
                         Added Tags:
@@ -53,7 +57,17 @@
                     <textarea class="addressBox" v-model="suburb" required placeholder="Suburb"></textarea>
                     <textarea class="addressBox" v-model="state" required placeholder="State"></textarea>
                     <textarea class="addressBox" v-model="postcode" required placeholder="Postcode"></textarea>
-                    <textarea class="miscBox" v-model="timeCommitment" required placeholder="Time Commitment"></textarea>
+                    <div class="commitmentHold">
+                      <select v-model="timeCommitment" class="commitmentSelect" id="commitment" name="commitment">
+                        <option value="" disabled selected>Time Commitment</option>
+                        <option value="Less than 1 hour">Less than 1 hour</option>
+                        <option value="1-2 hours">1-2 hours</option>
+                        <option value="2-4 hours">2-4 hours</option>
+                        <option value="4+ hours">4+ hours</option>
+                        <option value="Full day">Full day</option>
+                        <option value="Weekly">Weekly</option>
+                      </select>
+                    </div>
                     <textarea class="miscBox" v-model="suitable" required placeholder="Suitable For"></textarea>
                     <textarea class="miscBox" v-model="training" required placeholder="Training"></textarea>
                     <textarea class="miscBox" v-model="requirements" required placeholder="Requirements"></textarea>

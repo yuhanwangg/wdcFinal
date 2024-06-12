@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     oppName: vueinst.programName,
                     tags: tags,
                     address: addressform,
-                    commitment: vueinst.timecommitment,
+                    commitment: vueinst.timeCommitment,
                     suitability: vueinst.suitable,
                     training: vueinst.training,
                     requirements: vueinst.requirements,

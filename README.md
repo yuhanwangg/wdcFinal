@@ -15,3 +15,5 @@ To run our program, please install the following packages:
     npm install vue
     npm install express-session
     npm install express mysql
+
+To view our brief overview of the website, please navigate to the final_video folder

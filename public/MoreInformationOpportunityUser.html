@@ -53,7 +53,11 @@
                         <button v-if="joinedOrg" @click="leaveOrg()" type="submit" class="joinButton"><b>Remove Organisation</b></button>
                     </div>
                 </div>
+
                 <div class="rightSide">
+                    <div class="logoJoin">
+                        <img :src="result.imgPath" alt="logo" class="miniLogo">
+                    </div>
                     <div class="detailsBox">
                         <h4>Categories</h4>
                         <div class="tags">
@@ -72,9 +76,7 @@
                             <leaflet-map></leaflet-map>
                         </div>
                     </div>
-                    <div class="logoJoin">
-                        <img :src="result.imgPath" alt="logo" class="miniLogo">
-                    </div>
+
                 </div>
             </div>
 

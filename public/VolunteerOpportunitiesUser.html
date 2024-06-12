@@ -52,12 +52,12 @@
             <div v-for="post in results" :key="post.oppID" class="opportunityBox">
                 <div class="contentLeft">
                     <a :href="generateLink(post)" class="organisationName"><b>{{ post.oppName }}</b></a>
-                    <p>{{ post.organisationName }}</p>
+                    <p v-if="post.private" id="privateMsg">Members only event</p> <!-- Display message if opportunity is private -->
                     <div class="tags">
-                        <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{ tag.trim()
-                            }}</span>
+                        <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
                     </div>
                     <p>{{ post.description }}</p>
+
                 </div>
                 <div class="logoJoin">
                     <img :src="post.imgPath" alt="logo" class="miniLogo">

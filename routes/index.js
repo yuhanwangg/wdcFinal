@@ -3300,24 +3300,25 @@ router.get('/searchPosts', function (req, res, next) {
 
 
     let query = `SELECT oppID,
-      oppName,
-      tags,
-      dates,
-      address,
-      commitment,
-      suitability,
-      training,
-      requirements,
-      thumbnail,
-      Opportunities.description,
-      Opportunities.branchID,
-      branchName,
-      org.orgName as organisationName,
-      org.imgPath
-      FROM Opportunities
-      JOIN Branch b ON Opportunities.branchID = b.branchID
-      JOIN Organisations org ON org.orgID = b.orgID
-      WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
+  oppName,
+  tags,
+  dates,
+  address,
+  commitment,
+  suitability,
+  training,
+  requirements,
+  thumbnail,
+  Opportunities.description,
+  Opportunities.branchID,
+  branchName,
+  org.orgName as organisationName,
+  org.imgPath,
+  private
+  FROM Opportunities
+  JOIN Branch b ON Opportunities.branchID = b.branchID
+  JOIN Organisations org ON org.orgID = b.orgID
+  WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
 
     const queryParams = [];
 
@@ -3580,7 +3581,8 @@ router.get('/showPosts', function (req, res, next) {
                 o.tags,
                 o.description,
                 o.thumbnail,
-                org.orgSite
+                org.orgSite,
+                private
             FROM
                 Opportunities o
             JOIN
@@ -3655,7 +3657,8 @@ router.get('/showPosts', function (req, res, next) {
               o.tags,
               o.description,
               o.thumbnail,
-              org.orgSite
+              org.orgSite,
+              private
           FROM
               Opportunities o
           JOIN
@@ -3939,7 +3942,7 @@ router.get('/allOpportunities', function (req, res, next) {
     // show all posts regards
     // let query = 'SELECT * FROM Opportunities';
     let userID = req.session.accountID;
-    let query = `SELECT o.*
+    let query = `SELECT o.*, o.private
                  FROM Opportunities o
                  JOIN Branch b ON o.branchID = b.branchID
                  LEFT JOIN FollowedBranches fb ON fb.branchID = b.branchID AND fb.userID = ?

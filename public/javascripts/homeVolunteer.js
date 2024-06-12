@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             goOrganisations() {
                 window.location.href = "/organisations";
+            },
+            goRSVP() {
+                window.location.href = "/rsvpd";
             }
         },
         mounted() {

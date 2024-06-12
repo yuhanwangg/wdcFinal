@@ -47,7 +47,7 @@
                     <div v-for="post in branchPosts" :key="post.oppID" class="opportunityBox">
                         <div class="contentLeft">
                             <a :href="post.link" class="programName"><b>{{ post.oppName }}</b></a>
-                            <p class="organisationName">{{ post.organisationName }} - {{ post.branchName }}</p>
+                            <p class="organisationName">{{ post.orgName }} - {{ post.branchName }}</p>
                             <div class="tags">
                                 <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{
                                     tag.trim() }}</span>
@@ -55,7 +55,7 @@
                             <p>{{ post.description }}</p>
                         </div>
                         <div class="logoJoin">
-                            <img :src="post.thumbnail" alt="logo" class="updateLogo">
+                            <img :src="post.imgPath" alt="logo" class="updateLogo">
                             <p>{{ post.dates }}</p>
                         </div>
                     </div>

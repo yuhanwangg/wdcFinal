@@ -33,8 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
             params.push("location=" + encodeURIComponent(searchLocation));
         }
 
-        if (vueinst.selectedBranch) {
+        if (vueinst.selectedBranch.branchID !== 'undefined') {
             params.push("branchID=" + vueinst.selectedBranch.branchID);
+        } else if (vueinst.selectedBranch.branchID === -1 || vueinst.selectedBranch.branchID === 'undefined') {
+            // show only posts from branch rather than any else
+            fetch('/allOpportunities')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('network error')
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('received all opportunities')
+                    vueinst.savedResults = data;
+                })
+                .catch(error => {
+                    console.error("error in getting all opportunities")
+                })
         }
 
         if (params.length > 0) {

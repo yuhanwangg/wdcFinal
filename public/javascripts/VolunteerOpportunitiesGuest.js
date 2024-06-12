@@ -2,23 +2,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const vueinst = new Vue({
         el: '#app',
         data: {
-            results: [],
-            savedResults: [],
-            currentPage: 1,
-            pageSize: 1, // Number of results per page
+            results: []
         },
         computed: {
             totalResults() {
-                return this.savedResults.length;
-            },
-            totalPages() {
-                return Math.ceil(this.totalResults / this.pageSize); s
-            },
-            paginatedResults() {
-                const start = (this.currentPage - 1) * this.pageSize;
-                const end = start + this.pageSize;
-                return this.savedResults.slice(start, end);
-            },
+                return this.results.length;
+            }
         },
         mounted() {
             fetch('/allOpportunities')
@@ -62,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var xhttp1 = new XMLHttpRequest();
                 xhttp1.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        vueinst.savedResults = JSON.parse(this.responseText);
+                        vueinst.results = JSON.parse(this.responseText);
                     } else if (this.status === 404) {
                         vueinst.notFoundShowing = true;
                     }
@@ -91,6 +80,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("bing");
                 xhttp1.send();
             },
+            getAllOpportunities() {
+                fetch('/allOpportunities')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('network error')
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('received all opportunities')
+                        this.results = data;
+                    })
+                    .catch(error => {
+                        console.error("error in getting all opportunities")
+                    })
+            }
         },
         watch: {
             savedResults() {
@@ -104,5 +109,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    window.searchPosts = searchPosts;
+    // window.searchPosts = searchPosts;
 });

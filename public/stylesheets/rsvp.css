@@ -71,6 +71,11 @@ a {
     cursor: pointer;
 }
 
+.updateLogo {
+    width: 50px;
+    height: 50px;
+}
+
 .searchCity {
     width: 30%;
     background-color: white;
@@ -255,10 +260,10 @@ input[type=submit]:active {
 .logoJoin {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
     text-align: center;
-    height: 120px;
-    width: 250px;
+    height: auto;
+    width: auto;
 }
 
 .contentLeft {
@@ -288,7 +293,7 @@ input[type=submit]:active {
 .UserBox {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     border-radius: 20px;
     /* background-color:#D9D9D9; */
     margin-left: 175px;

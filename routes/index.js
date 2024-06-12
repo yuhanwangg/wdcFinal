@@ -87,38 +87,29 @@ router.get('/userCount', function (req, res, next) {
 });
 
 // GET most recent posts
-router.get('/recentPostsVolun', function (req, res, next) {
-  const query = `
-    SELECT
-      o.oppID,
-      o.oppName,
-      o.tags,
-      o.dates,
-      o.address,
-      o.commitment,
-      o.suitability,
-      o.training,
-      o.requirements,
-      o.thumbnail,
-      o.description,
-      o.dates,
-      b.branchID,
-      b.branchName,
-      org.orgName as organisationName
-    FROM Opportunities o
-    JOIN Branch b ON o.branchID = b.branchID
-    JOIN Organisations org ON b.orgID = org.orgID
-    WHERE EXISTS (
-      SELECT 1 FROM FollowedBranches fb
-      WHERE fb.userID = ?
-      AND fb.branchID = o.branchID
-    )
-    ORDER BY o.dates DESC
-    LIMIT 3`;
+router.get('/recentUpdatesVolun', (req, res) => {
+  const query = `SELECT Updates.updateID,
+                   Updates.updateName,
+                   Updates.updateMsg,
+                   Updates.dateCreated,
+                   Organisations.orgName,
+                   Organisations.imgPath,
+                   Branch.branchID,
+                   Branch.branchName
+                   FROM Updates
+                   JOIN Branch ON Updates.branchID = Branch.branchID
+                   JOIN Organisations ON Branch.orgID = Organisations.orgID
+                   WHERE EXISTS (
+                     SELECT 1 FROM FollowedBranches fb
+                     WHERE fb.userID = ?
+                     AND fb.branchID = Updates.branchID
+                   )
+                   ORDER BY Updates.dateCreated DESC
+                   LIMIT 3;`;
 
-  connection.query(query, [req.session.accountID], function (error, results, fields) {
-    if (error) {
-      console.error('Error querying database: ' + error.stack);
+  connection.query(query, [req.session.accountID], (err, results) => {
+    if (err) {
+      console.error('Error querying database: ' + err.stack);
       res.status(500).send('Internal Server Error');
       return;
     }
@@ -2313,7 +2304,6 @@ router.post('/uploadDescLink', function (req, res, next) {
   });
 });
 
-
 router.get('/getUpdates', (req, res) => {
   let organisationID = req.session.accountID;
   //console.log("orgID=", organisationID);
@@ -2324,13 +2314,14 @@ router.get('/getUpdates', (req, res) => {
 
 
   const query = `
-      SELECT u.*
-      FROM Updates u
-      JOIN Branch b ON u.branchID = b.branchID
-      WHERE b.orgID = ? AND u.branchID = ?
-      ORDER BY u.dateCreated DESC
-      LIMIT 3
-    `;
+    SELECT u.*, o.imgPath AS imgPath, org.orgName, b.branchName
+    FROM Updates u
+    JOIN Branch b ON u.branchID = b.branchID
+    JOIN Organisations o ON b.orgID = o.orgID
+    WHERE b.orgID = ? AND u.branchID = ?
+    ORDER BY u.dateCreated DESC
+    LIMIT 3
+  `;
 
   connection.query(query, [organisationID, branchID], function (err, rows) {
 
@@ -2358,9 +2349,10 @@ router.get('/getPosts', (req, res) => {
 
 
   const query = `
-      SELECT o.*
+      SELECT o.*, org.imgPath, org.orgName, b.branchName
       FROM Opportunities o
       JOIN Branch b ON o.branchID = b.branchID
+      JOIN Organisations org ON b.orgID = org.orgID
       WHERE b.orgID = ? AND o.branchID = ?
       ORDER BY o.dates DESC
       LIMIT 3
@@ -3194,7 +3186,7 @@ router.get('/getRSVPD', function (req, res, next) {
   const userID = req.session.accountID;
 
   const query = `
-    SELECT o.*, b.branchName, b.suburb AS branchSuburb, b.state AS branchState, org.orgName AS orgName
+    SELECT o.*, b.branchName, b.suburb AS branchSuburb, b.state AS branchState, org.orgName AS orgName, org.imgPath AS imgPath, org.orgSite AS link
     FROM Opportunities AS o
     JOIN RSVPD AS r ON o.oppID = r.oppID
     JOIN Branch AS b ON o.branchID = b.branchID
@@ -3298,8 +3290,13 @@ router.get('/searchPosts', function (req, res, next) {
     console.log("connected to pool");
     //this is the query which i can change
 
+    // handle for different session token
+    var session = req.session.userType;
 
-    let query = `SELECT oppID,
+    const queryParams = [];
+    let query = '';
+
+    query = `SELECT oppID,
       oppName,
       tags,
       dates,
@@ -3311,15 +3308,26 @@ router.get('/searchPosts', function (req, res, next) {
       thumbnail,
       Opportunities.description,
       Opportunities.branchID,
-      branchName,
-      org.orgName as organisationName,
-      org.imgPath
+      b.branchName as branchName,
+      org.orgName as orgName,
+      org.imgPath as imgPath,
+      private
       FROM Opportunities
       JOIN Branch b ON Opportunities.branchID = b.branchID
       JOIN Organisations org ON org.orgID = b.orgID
       WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
 
-    const queryParams = [];
+    if (session === 'volunteer') {
+      query += ` AND (private = 0 OR
+                Opportunities.branchID IN (SELECT branchID FROM FollowedBranches WHERE userID = ?))`;
+      queryParams.push(req.session.accountID);
+    } else if (session === 'organisation') {
+      query += ` AND (private = 0 OR
+                org.orgID = ?)`;
+      queryParams.push(req.session.accountID);
+    } else { // guest
+      query += ` AND private = 0`;
+    }
 
     if (categories) {
       query += ' AND tags LIKE CONCAT(\'%\', ?, \'%\')';
@@ -3347,14 +3355,17 @@ router.get('/searchPosts', function (req, res, next) {
       if (err1) {
         console.log("Error executing query:", err1);
         res.status(500).json({ error: "Internal Server Error" });
+        res.json([]);
         return;
       }
 
-      if (rows.length === 0) {
-        // No results found
-        res.status(404).json({ error: "Opps not found" });
-        return;
-      }
+      // if (rows.length === 0) {
+      //   // No results found
+      //   res.status(404).json({ error: "Opps not found" });
+      //   return;
+      // }
+
+      // can handle row legnth ==0 in the javascript
 
       // Results found, send back the details
       res.json(rows);
@@ -3580,7 +3591,8 @@ router.get('/showPosts', function (req, res, next) {
                 o.tags,
                 o.description,
                 o.thumbnail,
-                org.orgSite
+                org.orgSite,
+                private
             FROM
                 Opportunities o
             JOIN
@@ -3655,7 +3667,8 @@ router.get('/showPosts', function (req, res, next) {
               o.tags,
               o.description,
               o.thumbnail,
-              org.orgSite
+              org.orgSite,
+              private
           FROM
               Opportunities o
           JOIN
@@ -3922,7 +3935,7 @@ router.get('/allOpportunities', function (req, res, next) {
   if (req.session.userType === 'organisation') {
     let orgID = req.session.accountID;
     // only show posts you have made
-    let query = `SELECT o.*
+    let query = `SELECT o.*, org.imgPath, org.orgName, b.branchName
                 FROM Opportunities o
                 JOIN Branch b ON o.branchID = b.branchID
                 JOIN Organisations org ON b.orgID = org.orgID
@@ -3939,11 +3952,14 @@ router.get('/allOpportunities', function (req, res, next) {
     // show all posts regards
     // let query = 'SELECT * FROM Opportunities';
     let userID = req.session.accountID;
-    let query = `SELECT o.*
-                 FROM Opportunities o
-                 JOIN Branch b ON o.branchID = b.branchID
-                 LEFT JOIN FollowedBranches fb ON fb.branchID = b.branchID AND fb.userID = ?
-                 WHERE o.private = 0 OR fb.userID IS NOT NULL;`;
+    let query = `
+      SELECT o.*, org.imgPath, org.orgName, b.branchName
+      FROM Opportunities o
+      JOIN Branch b ON o.branchID = b.branchID
+      LEFT JOIN FollowedBranches fb ON fb.branchID = b.branchID AND fb.userID = ?
+      JOIN Organisations org ON b.orgID = org.orgID
+      WHERE o.private = 0 OR fb.userID IS NOT NULL;
+    `;
     // only select if user id is
     connection.query(query, [userID], function (err, results) {
       if (err) {
@@ -3955,7 +3971,13 @@ router.get('/allOpportunities', function (req, res, next) {
     })
   } else {
     // show all posts regards
-    let query = 'SELECT * FROM Opportunities WHERE private = 0;';
+    let query = `
+      SELECT o.*, org.imgPath, org.orgName, b.branchName
+      FROM Opportunities o
+      JOIN Branch b ON o.branchID = b.branchID
+      JOIN Organisations org ON b.orgID = org.orgID
+      WHERE o.private = 0;
+    `;
     // only select if user id is
     connection.query(query, function (err, results) {
       if (err) {

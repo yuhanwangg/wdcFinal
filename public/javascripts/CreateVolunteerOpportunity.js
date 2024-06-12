@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         methods: {
             addTag() {
-            if (this.selectedTag && !this.addedTags.includes(this.selectedTag)) {
-                this.addedTags.push(this.selectedTag);
-            }
+                if (this.selectedTag && !this.addedTags.includes(this.selectedTag)) {
+                    this.addedTags.push(this.selectedTag);
+                }
             },
             findBranches() {
                 var xhttp1 = new XMLHttpRequest();

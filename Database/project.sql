@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: WDCProject
 -- ------------------------------------------------------
--- Server version	8.0.32-0ubuntu0.22.04.2
+-- Server version 8.0.32-0ubuntu0.22.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -122,7 +122,7 @@ DROP TABLE IF EXISTS `Opportunities`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `Opportunities` (
-  `oppID` int NOT NULL,
+  `oppID` int NOT NULL AUTO_INCREMENT,
   `oppName` varchar(255) DEFAULT NULL,
   `tags` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
@@ -134,12 +134,14 @@ CREATE TABLE `Opportunities` (
   `description` varchar(100) DEFAULT NULL,
   `dates` varchar(255) DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `latitude` decimal(10,8) DEFAULT NULL,
+  `longitude` decimal(11,8) DEFAULT NULL,
   PRIMARY KEY (`oppID`),
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
   CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,
   CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +150,7 @@ CREATE TABLE `Opportunities` (
 
 LOCK TABLES `Opportunities` WRITE;
 /*!40000 ALTER TABLE `Opportunities` DISABLE KEYS */;
-INSERT INTO `Opportunities` VALUES (1,'Walk the dogs','Community Service','14 Osmond Terrace Norwood SA 5067','everyone','no training','walking','walk the dogs on a leash',NULL,'you can sometimes let the dogs off leash but pls dont','5th october 1997',17);
+INSERT INTO `Opportunities` VALUES (1,'Walk the dogs','Community Service','14 Osmond Terrace Norwood SA 5067','everyone','no training','walking','walk the dogs on a leash',NULL,'you can sometimes let the dogs off leash but pls dont','5th october 1997',17,-34.92123000,138.60583000);
 /*!40000 ALTER TABLE `Opportunities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  0:12:27
+-- Dump completed on 2024-06-12  1:30:05

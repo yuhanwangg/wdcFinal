@@ -1275,11 +1275,11 @@ router.post('/addOrg', function (req, res, next) {
                   req.session.accountID = currOrgId;
                   //console.log(req.session.user, req.session.userType, req.session.accountID);
 
-                //send an empty response, not needing to return anything, or can send a message for clarity
-                res.send("branch and org successfully added");
-                return;
+                  //send an empty response, not needing to return anything, or can send a message for clarity
+                  res.send("branch and org successfully added");
+                  return;
 
-              });
+                });
               });
             });
           });
@@ -3378,7 +3378,7 @@ router.post('/addRSVP', (req, res) => {
 
   req.pool.getConnection(function (err, connection) {
     if (!userID || !oppID) {
-        return res.status(400).send({ error: true, message: 'Please provide userID and oppID' });
+      return res.status(400).send({ error: true, message: 'Please provide userID and oppID' });
     }
     const check = 'SELECT * FROM RSVPD WHERE userID = ? AND oppID = ?;';
     connection.query(check, [userID, oppID], (err, reults) => {
@@ -3392,11 +3392,11 @@ router.post('/addRSVP', (req, res) => {
 
       const query = 'INSERT INTO RSVPD (userID, oppID) VALUES (?, ?);';
       connection.query(query, [userID, oppID], (err, results) => {
-          if (err) {
-              console.error('Error inserting into RSVPD:', err);
-              return res.status(500).send({ error: true, message: 'Database insertion failed' });
-          }
-          res.send({ error: false, message: 'RSVP added successfully', data: results });
+        if (err) {
+          console.error('Error inserting into RSVPD:', err);
+          return res.status(500).send({ error: true, message: 'Database insertion failed' });
+        }
+        res.send({ error: false, message: 'RSVP added successfully', data: results });
       });
     });
   });
@@ -3520,14 +3520,14 @@ router.get('/showPosts', function (req, res, next) {
   const branchID = req.query.branchID;
 
   req.pool.getConnection(function (err, connection) {
-      if (err) {
-          console.log("Got error!!!!");
-          res.sendStatus(500);
-          return;
-      }
-      console.log("Connected to pool");
+    if (err) {
+      console.log("Got error!!!!");
+      res.sendStatus(500);
+      return;
+    }
+    console.log("Connected to pool");
 
-      let query = `
+    let query = `
           SELECT
               o.oppID,
               o.oppName,
@@ -3543,67 +3543,67 @@ router.get('/showPosts', function (req, res, next) {
           JOIN
               Organisations org ON b.orgID = org.orgID`;
 
-      const queryParams = [];
+    const queryParams = [];
 
-      if (branchID !== '-1') {
-          query += ' WHERE b.branchID = ?';
-          queryParams.push(branchID);
+    if (branchID !== '-1') {
+      query += ' WHERE b.branchID = ?';
+      queryParams.push(branchID);
+    }
+
+    if (categories) {
+      if (queryParams.length === 0) {
+        query += ' WHERE';
+      } else {
+        query += ' AND';
+      }
+      query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(categories);
+    }
+
+    if (commitment) {
+      if (queryParams.length === 0) {
+        query += ' WHERE';
+      } else {
+        query += ' AND';
+      }
+      query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(commitment);
+    }
+
+    if (location) {
+      if (queryParams.length === 0) {
+        query += ' WHERE';
+      } else {
+        query += ' AND';
+      }
+      query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
+      queryParams.push(location);
+    }
+
+    query += ';';
+
+    connection.query(query, queryParams, function (err1, rows, fields) {
+      connection.release();
+      console.log(query);
+      if (err1) {
+        console.log("Error executing query:", err1);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
       }
 
-      if (categories) {
-          if (queryParams.length === 0) {
-              query += ' WHERE';
-          } else {
-              query += ' AND';
-          }
-          query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
-          queryParams.push(categories);
+      if (rows.length === 0) {
+        res.status(404).json({ error: "No opportunities found" });
+        return;
       }
-
-      if (commitment) {
-          if (queryParams.length === 0) {
-              query += ' WHERE';
-          } else {
-              query += ' AND';
-          }
-          query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
-          queryParams.push(commitment);
-      }
-
-      if (location) {
-          if (queryParams.length === 0) {
-              query += ' WHERE';
-          } else {
-              query += ' AND';
-          }
-          query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
-          queryParams.push(location);
-      }
-
-      query += ';';
-
-      connection.query(query, queryParams, function (err1, rows, fields) {
-          connection.release();
-          console.log(query);
-          if (err1) {
-              console.log("Error executing query:", err1);
-              res.status(500).json({ error: "Internal Server Error" });
-              return;
-          }
-
-          if (rows.length === 0) {
-              res.status(404).json({ error: "No opportunities found" });
-              return;
-          }
-          console.log(rows);
-          res.json(rows);
-      });
+      console.log(rows);
+      res.json(rows);
+    });
   });
 });
 
 
 router.get('/findBranches', function (req, res, next) {
-var userID = req.session.accountID;
+  var userID = req.session.accountID;
   //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
   var query = `SELECT
   b.branchName,
@@ -3710,13 +3710,13 @@ router.post('/createEvent', function (req, res, next) {
       return;
     }
 
-      res.json({ message: 'Successfully Created Event' });
+    res.json({ message: 'Successfully Created Event' });
   });
 });
 
 router.get('/getAddress', function (req, res, next) {
   var branchID = req.body;
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
+  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
   var query = `SELECT
   address
   FROM
@@ -3772,5 +3772,28 @@ router.post('/emailConfirmation', function (req, res, next) {
     return;
   });
 });
+
+router.post('/getCoords', function (req, res, next) {
+  // search for it from the sql
+  let oppID = req.body.oppID;
+  console.log("WE ARE IN COORDINATES!")
+
+  let query = "SELECT latitude, longitude FROM Opportunities WHERE oppID = ?"
+  connection.query(query, [oppID], function (err, coords) {
+    if (err) {
+      console.log("Error executing query:", err1);
+      res.status(500).json({ error: "Internal Server Error" });
+      return;
+    }
+
+    if (coords.length > 0) {
+      console.log("coords: ", coords[0]);
+      res.json(coords[0]);
+    } else {
+      res.status(404).json({ error: "Coordinates not found" });
+    }
+  })
+});
+
 
 module.exports = router;

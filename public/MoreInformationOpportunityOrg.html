@@ -45,7 +45,7 @@
                         <h3>{{ result.oppName }}</h3>
                         <a :href="result.link" class="organisationName"><b>{{ result.organisationName }}</b></a>
                         <div class="tags">
-                            <span v-for="tag in result.tags.split(' ')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
+                            <span v-for="tag in result.tags.split(', ')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
                         </div>
                         <p>{{ result.address }}</p>
                         <p class="description">{{ result.description }}</p>
@@ -54,7 +54,7 @@
                         <div class="detailsBox">
                             <h4>Categories</h4>
                             <div class="tags">
-                                <span v-for="tag in result.tags.split(' ')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
+                                <span v-for="tag in result.tags.split(', ')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
                             </div>
                             <h4>Time Commitment</h4>
                             <p>{{ result.commitment }}</p>

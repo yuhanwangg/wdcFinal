@@ -3295,7 +3295,6 @@ router.get('/searchPosts', function (req, res, next) {
     query += ';';
 
 
-
     //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
     connection.query(query, queryParams, function (err1, rows, fields) {
       // Close the connection
@@ -3520,14 +3519,18 @@ router.get('/showPosts', function (req, res, next) {
   const commitment = req.query.commitment;
   const location = req.query.location;
   const branchID = req.query.branchID;
+  if (branchID === '-1' || branchID === undefined || branchID === "undefined" || branchID === "") {
+    console.log("IT IS UNDEFINED");
+  }
+
 
   req.pool.getConnection(function (err, connection) {
-    if (err) {
-      console.log("Got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("Connected to pool");
+      if (err) {
+          console.log("Got error!!!!");
+          res.sendStatus(500);
+          return;
+      }
+      console.log("Connected to pool");
 
     let query = `
           SELECT
@@ -3544,13 +3547,13 @@ router.get('/showPosts', function (req, res, next) {
               Branch b ON o.branchID = b.branchID
           JOIN
               Organisations org ON b.orgID = org.orgID`;
+              
+      const queryParams = [];
 
-    const queryParams = [];
-
-    if (branchID !== '-1') {
-      query += ' WHERE b.branchID = ?';
-      queryParams.push(branchID);
-    }
+      if (branchID !== '-1' && branchID !== undefined && branchID !== "undefined" && branchID !== "") {
+          query += ' WHERE b.branchID = ?';
+          queryParams.push(branchID);
+      }
 
     if (categories) {
       if (queryParams.length === 0) {
@@ -3561,6 +3564,15 @@ router.get('/showPosts', function (req, res, next) {
       query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(categories);
     }
+      if (categories) {
+          if (queryParams.length === 0) {
+              query += ' WHERE';
+          } else {
+              query += ' AND';
+          }
+          query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
+          queryParams.push(categories);
+      }
 
     if (commitment) {
       if (queryParams.length === 0) {
@@ -3571,6 +3583,15 @@ router.get('/showPosts', function (req, res, next) {
       query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(commitment);
     }
+      if (commitment) {
+          if (queryParams.length === 0) {
+              query += ' WHERE';
+          } else {
+              query += ' AND';
+          }
+          query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
+          queryParams.push(commitment);
+      }
 
     if (location) {
       if (queryParams.length === 0) {
@@ -3581,25 +3602,35 @@ router.get('/showPosts', function (req, res, next) {
       query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
       queryParams.push(location);
     }
-
-    query += ';';
-
-    connection.query(query, queryParams, function (err1, rows, fields) {
-      connection.release();
-      console.log(query);
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
+      if (location) {
+          if (queryParams.length === 0) {
+              query += ' WHERE';
+          } else {
+              query += ' AND';
+          }
+          query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
+          queryParams.push(location);
       }
 
-      if (rows.length === 0) {
-        res.status(404).json({ error: "No opportunities found" });
-        return;
-      }
-      console.log(rows);
-      res.json(rows);
-    });
+      query += ';';
+
+      connection.query(query, queryParams, function (err1, rows, fields) {
+          connection.release();
+          console.log(query);
+          if (err1) {
+              console.log("Error executing query:", err1);
+              res.status(500).json({ error: "Internal Server Error" });
+              return;
+          }
+
+          if (rows.length === 0) {
+              res.status(404).json({ error: "No opportunities found" });
+              return;
+          }
+          console.log(rows);
+          console.log("HELOOOOOOOOO")
+          res.json(rows);
+      });
   });
 });
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<!--  -->
 <head>
     <title>Volunteer Opportunities</title>
     <link rel="stylesheet" href="stylesheets/main.css">
@@ -31,17 +31,21 @@
             <div class="contentHold">
                 <div class="contentLeft">
                     <div class="dropdown">
-                        <select class="dropbtn" v-model="selectedBranch" @change="choseBranch">
+                        <select class="dropbtn" v-model="selectedBranch" @change="choseBranch($event)">
+                            <option value="-1" selected>All Branches</option>
                             <option v-for="branch in branches" :key="branch.branchID" :value="{ branchID: branch.branchID, branchName: branch.branchName }">{{ branch.branchName }}</option>
                         </select>
                     </div>
 
                     <!-- Result and Page Count-->
-                    <p class="searchCount">{{ totalResults }} Search Results Match</p>
-                    <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
+                    <div id="searchMatchInfo">
+                        <p class="searchCount">{{ totalResults }} Search Results Match</p>
+                        <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
+                    </div>
+
                     <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
 
-                    <div v-for="post in results" :key="post.oppID" class="opportunityBox">
+                    <div v-if="savedResults.length != 0" v-for="post in results" :key="post.oppID" class="opportunityBox">
                         <div class="contentLeft">
                             <a :href="generateLink(post)" class="organisationName"><b>{{ post.oppName }}</b></a>
                             <p>{{ post.organisationName }}</p>
@@ -57,7 +61,10 @@
                     </div>
 
                 </div>
-                <button class="postButton" type="submit" @click="createPost">Create Post</button>
+                <div>
+                    <button class="postButton" type="submit" @click="createPost">Create Post</button>
+                </div>
+
 
             </div>
             <!-- Next Button -->

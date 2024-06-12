@@ -318,13 +318,6 @@ input[type=submit]:active {
         margin-right: 0px;
     }
 
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-
     .searchBar {
         height: auto;
         padding-left: 15px;
@@ -340,15 +333,6 @@ input[type=submit]:active {
 }
 
 @media (max-width: 1280px) {
-    header {
-        padding: 14px 2%;
-        transition: .2s;
-    }
-
-    .navbar a {
-        padding: 5px 0;
-        margin: 0px 20px;
-    }
 
     .opportunityBox {
         margin-left: 0px;

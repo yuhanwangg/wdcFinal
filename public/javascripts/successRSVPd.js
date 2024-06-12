@@ -1,5 +1,3 @@
-const { text } = require("express");
-
 document.addEventListener("DOMContentLoaded", function () {
     const vueinst = new Vue({
         el: '#app',

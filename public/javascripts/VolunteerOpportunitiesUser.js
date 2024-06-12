@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
             pageSize: 1, // Number of results per page
         },
         mounted() {
-            fetch('/allOpportunities')
+            fetch(`/allOpportunities`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('network error')

@@ -9,6 +9,8 @@ router.get("/", (req, res, next) => {
     let sessionToken = req.session.userType;
     if (sessionToken === "organisation") {
         res.sendFile(path.join(__dirname, '..', 'public', 'CreateVolunteerOpportunity.html'));
+    } else {
+        window.location.href = '/home';
     }
 });
 

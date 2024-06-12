@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     console.log("coords: ", this.latitude, this.longitude)
                     L.marker([this.latitude, this.longitude]).addTo(this.map)
-                        .bindPopup('A marker on OpenStreetMap')
+                        .bindPopup('Event location')
                         .openPopup();
                 });
             }

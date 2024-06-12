@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="stylesheets/main.css">
     <link rel="stylesheet" href="stylesheets/MoreInformationOpportunityGuest.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <script src="javascripts/headerFooter.js"></script>
     <script src="javascripts/MoreInformationOpportunityGuest.js"></script>
 
@@ -41,19 +41,22 @@
                     <h3>{{ result.oppName }}</h3>
                     <a :href="result.link" class="organisationName"><b>{{ result.organisationName }}</b></a>
                     <div class="tags">
-                        <span v-for="tag in result.tags.split(', ')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
+                        <span v-for="tag in result.tags.split(', ')" :key="tag.trim()" class="opportunityTag">{{
+                            tag.trim() }}</span>
                     </div>
                     <p>{{ result.address }}</p>
                     <p class="description">{{ result.description }}</p>
                     <div class="buttonHolder">
-                        <button onclick="login()" type="submit" class="loginPrompt"><b>Must log in or sign up as user to RSVP/Join Organisation</b></button>
+                        <button onclick="login()" type="submit" class="loginPrompt"><b>Must log in or sign up as user to
+                                RSVP/Join Organisation</b></button>
                     </div>
                 </div>
                 <div class="rightSide">
                     <div class="detailsBox">
                         <h4>Categories</h4>
                         <div class="tags">
-                            <span v-for="tag in result.tags.split(', ')" :key="tag.trim()" class="opportunityTag">{{ tag.trim() }}</span>
+                            <span v-for="tag in result.tags.split(', ')" :key="tag.trim()" class="opportunityTag">{{
+                                tag.trim() }}</span>
                         </div>
                         <h4>Time Commitment</h4>
                         <p>{{ result.commitment }}</p>

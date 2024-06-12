@@ -2,99 +2,105 @@
 <html lang="en">
 
 <head>
-    <title>More Information</title>
-    <link rel="stylesheet" href="stylesheets/main.css">
-    <link rel="stylesheet" href="stylesheets/CreateVolunteerOpportunity.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
-    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="javascripts/headerFooter.js"></script>
-    <script src="javascripts/CreateVolunteerOpportunity.js"></script>
+  <title>More Information</title>
+  <link rel="stylesheet" href="stylesheets/main.css">
+  <link rel="stylesheet" href="stylesheets/CreateVolunteerOpportunity.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800' rel='stylesheet'>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="javascripts/headerFooter.js"></script>
+  <script src="javascripts/CreateVolunteerOpportunity.js"></script>
 
 </head>
 
 <body>
-    <div id="app">
-        <header-component></header-component>
-        <!-- Page Title -->
+  <div id="app">
+    <header-component></header-component>
+    <!-- Page Title -->
 
-        <div class="contentWrapper">
-            <h1 class="title">Create Volunteer Opportunity Post</h1>
-        <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
-            <div class="formBox">
-                <div class="dropdown">
-                    <select class="dropbtn" v-model="selectedBranch" @change="choseBranch" required placeholder="Select a Branch">
-                        <option v-for="branch in branches" :key="branch.branchID" :value="{ branchID: branch.branchID, branchName: branch.branchName }">{{ branch.branchName }}</option>
-                    </select>
-                </div>
-                <form action="#" method="post">
-                  <div class="formContain">
-                    <textarea class="programBox" v-model="programName" required placeholder="Program Name"></textarea>
-                    <div class="tagHolder">
-                      <select v-model="selectedTag" @change="addTag" name="addTag" required>
-                        <option value="" disabled selected>Add Tag</option>
-                        <option value="Aged Care">Aged Care</option>
-                        <option value="Animal Shelter">Animal Shelter</option>
-                        <option value="Food Bank">Food Bank</option>
-                        <option value="Health">Health</option>
-                        <option value="Youth Group">Youth Group</option>
-                        <option value="Shelters">Shelters</option>
-                        <option value="Ocean Cleanup">Ocean Cleanup</option>
-                      </select>
-                      <div class="tags">
-                        Added Tags:
-                        <div v-for="(tag, index) in addedTags" :key="index">
-                          <p style="display: inline;">{{ tag }}</p>
-                          <button class="remove" @click="removeTag(index)">Remove</button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <p class="addressText">Address</p>
-                    <textarea class="addressBox" v-model="stadd" required placeholder="Street Address"></textarea>
-                    <textarea class="addressBox" v-model="suburb" required placeholder="Suburb"></textarea>
-                    <textarea class="addressBox" v-model="state" required placeholder="State"></textarea>
-                    <textarea class="addressBox" v-model="postcode" required placeholder="Postcode" pattern="\d+"></textarea>
-                    <div class="commitmentHold">
-                      <select v-model="timeCommitment" class="commitmentSelect" id="commitment" name="commitment" required>
-                        <option value="" disabled selected>Time Commitment</option>
-                        <option value="Less than 1 hour">Less than 1 hour</option>
-                        <option value="1-2 hours">1-2 hours</option>
-                        <option value="2-4 hours">2-4 hours</option>
-                        <option value="4+ hours">4+ hours</option>
-                        <option value="Full day">Full day</option>
-                        <option value="Weekly">Weekly</option>
-                      </select>
-                      <input type="radio" id="private" name="Private" value="1" required>
-                      <label class="privateLabel" for="private">Private</label>
-                      <input type="radio" id="public" name="Private" value="0" required>
-                      <label class="publicLabel" for="public">Public</label><br>
-                    </div>
-                    <textarea class="miscBox" v-model="suitable" required placeholder="Suitable For"></textarea>
-                    <textarea class="miscBox" v-model="training" required placeholder="Training"></textarea>
-                    <textarea class="miscBox" v-model="requirements" required placeholder="Requirements"></textarea>
-                    <textarea class="briefBox" v-model="briefDescription" required placeholder="Brief Description (thumbnail description)"></textarea>
-                    <textarea class="fullBox" v-model="description" required placeholder="Complete Description"></textarea>
-                  </div>
-                  <textarea class="miscBox" v-model="dates" required placeholder="Dates"></textarea>
-                </form>
-                <div class="buttonHolder">
-                  <button type="button" class="closeButton" @click="closeForm">Close</button>
-                  <button type="submit" class="postButton" @click="submitForm">Post</button>
+    <div class="contentWrapper">
+      <h1 class="title">Create Volunteer Opportunity Post</h1>
+      <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
+      <div class="formBox">
+        <div class="dropdown">
+          <select class="dropbtn" v-model="selectedBranch" required placeholder="Select a Branch">
+            <option v-for="branch in branches" :key="branch.branchID"
+              :value="{ branchID: branch.branchID, branchName: branch.branchName }">{{ branch.branchName }}</option>
+          </select>
+        </div>
+        <form action="#" method="post">
+          <div class="formContain">
+            <textarea class="programBox" v-model="programName" required placeholder="Program Name"></textarea>
+            <div class="tagHolder">
+              <select v-model="selectedTag" @change="addTag" name="addTag" required>
+                <option value="" disabled selected>Add Tag</option>
+                <option value="Aged Care">Aged Care</option>
+                <option value="Animal Shelter">Animal Shelter</option>
+                <option value="Food Bank">Food Bank</option>
+                <option value="Health">Health</option>
+                <option value="Youth Group">Youth Group</option>
+                <option value="Shelters">Shelters</option>
+                <option value="Ocean Cleanup">Ocean Cleanup</option>
+              </select>
+              <div class="tags">
+                Added Tags:
+                <div v-for="(tag, index) in addedTags" :key="index">
+                  <p style="display: inline;">{{ tag }}</p>
+                  <button class="remove" @click="removeTag(index)">Remove</button>
                 </div>
               </div>
+            </div>
 
+            <p>Address</p>
+            <div class="addressInput">
+              <div class="addressBox">
+                <input type="text" id="address" placeholder="Search for address">
+                <br>
+                <button type=button id="locationButton" @click="findAddress">Search Location</button>
+              </div>
+            </div>
+            <div id="foundLocation"></div>
+          </div>
+
+          <div class="commitmentHold">
+            <select v-model="timeCommitment" class="commitmentSelect" id="commitment" name="commitment" required>
+              <option value="" disabled selected>Time Commitment</option>
+              <option value="Less than 1 hour">Less than 1 hour</option>
+              <option value="1-2 hours">1 to 2 hours</option>
+              <option value="2-4 hours">2 to 4 hours</option>
+              <option value="4+ hours">4+ hours</option>
+              <option value="Full day">Full day</option>
+              <option value="Weekly">Weekly</option>
+            </select>
+            <input type="radio" id="private" name="Private" value="1" required>
+            <label class="privateLabel" for="private">Private</label>
+            <input type="radio" id="public" name="Private" value="0" required>
+            <label class="publicLabel" for="public">Public</label><br>
+          </div>
+          <textarea class="miscBox" v-model="suitable" required placeholder="Suitable For"></textarea>
+          <textarea class="miscBox" v-model="training" required placeholder="Training"></textarea>
+          <textarea class="miscBox" v-model="requirements" required placeholder="Requirements"></textarea>
+          <textarea class="briefBox" v-model="briefDescription" required
+            placeholder="Brief Description (thumbnail description)"></textarea>
+          <textarea class="fullBox" v-model="description" required placeholder="Complete Description"></textarea>
+      </div>
+      <textarea class="miscBox" v-model="dates" required placeholder="Dates"></textarea>
+      </form>
+      <div class="buttonHolder">
+        <button type="button" class="closeButton" @click="closeForm">Close</button>
+        <button type="submit" class="postButton" @click="submitForm">Post</button>
+      </div>
     </div>
 
-    <!-- footer -->
-    <footer-component></footer-component>
-    </div>
+  </div>
+
+  <!-- footer -->
+  <footer-component></footer-component>
+  </div>
 
 </body>
 

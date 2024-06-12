@@ -3694,15 +3694,15 @@ router.post("/removeUserOrg", function (req, res, next) {
 router.post('/createEvent', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   // const { branchName, updateName, updateMsg, dateCreated } = req.body;
-  const { oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID } = req.body;
+  const { oppName, tags, address, lat, long, commitment, suitability, training, requirements, thumbnail, description, dates, branchID } = req.body;
   // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
   //get the last created and used updateID
 
-  var newPostQuery = "INSERT INTO Opportunities (oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+  var newPostQuery = "INSERT INTO Opportunities (oppName, tags, address, latitude, longitude, commitment, suitability, training, requirements, thumbnail, description, dates, branchID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
   //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
   //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-  connection.query(newPostQuery, [oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID], function (err2, returnVal) {
+  connection.query(newPostQuery, [oppName, tags, address, lat, long, commitment, suitability, training, requirements, thumbnail, description, dates, branchID], function (err2, returnVal) {
 
     //error handling
     if (err2) {

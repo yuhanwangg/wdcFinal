@@ -3268,7 +3268,8 @@ router.get('/searchPosts', function (req, res, next) {
       Opportunities.description,
       Opportunities.branchID,
       branchName,
-      org.orgName as organisationName
+      org.orgName as organisationName,
+      org.imgPath
       FROM Opportunities
       JOIN Branch b ON Opportunities.branchID = b.branchID
       JOIN Organisations org ON org.orgID = b.orgID
@@ -3345,7 +3346,8 @@ router.get('/searchSpecificPost', function (req, res, next) {
       Opportunities.description,
       Opportunities.branchID,
       branchName,
-      org.orgName as organisationName
+      org.orgName as organisationName,
+      org.imgPath
       FROM Opportunities
       JOIN Branch b ON Opportunities.branchID = b.branchID
       JOIN Organisations org ON org.orgID = b.orgID

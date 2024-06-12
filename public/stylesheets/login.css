@@ -33,96 +33,6 @@ a {
     align-self: flex-end;
 }
 
-header {
-    position: fixed;
-    margin: 0;
-    width: 100%;
-    top: 0;
-    right: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: white;
-    padding: 20px 5%;
-    /* overflow-x: hidden; */
-}
-
-.loginTitle {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.navbar {
-    display: flex;
-}
-
-.navbar a {
-    color: black;
-}
-
-.navbar li {
-    list-style-type: none;
-    text-decoration: none;
-    color: black;
-    font-size: 0.9rem;
-    cursor: pointer;
-    padding: 5px 0;
-    margin: 0px 30px;
-}
-
-
-.navbar a:hover {
-    color: #F7B733;
-    transition: .3s;
-}
-
-.userLogIn {
-    display: flex;
-    align-items: center;
-}
-
-.user i {
-    font-size: 0.9rem;
-    margin-right: 20px;
-}
-
-.ri-user-fill {
-    color: #4ABDAC;
-    margin-right: 5px;
-}
-
-#menu-icon {
-    font-size: 25px;
-    color: black;
-    cursor: pointer;
-    z-index: 10001;
-    display: none;
-}
-
-.nav_buttons {
-    display: flex;
-    align-items: center;
-}
-
-.nav_buttons a {
-    text-decoration: none;
-    font-size: 0.9rem;
-    margin-right: 25px;
-    margin-left: 10px;
-    color: black
-}
-
-.nav_buttons a:hover {
-    color: #4ABDAC;
-    transition: .3s;
-}
-
-.logo {
-    max-width: 100px;
-    margin-right: 3px;
-    transform: translateX(100px);
-}
 
 input {
     border-radius: 20px;
@@ -205,6 +115,7 @@ input[type=submit]:active {
     align-self: center;
     margin-top: 5px;
 }
+
 .box .googleButton {
     align-self: center;
     margin-top: 5px;

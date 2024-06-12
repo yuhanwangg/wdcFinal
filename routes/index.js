@@ -761,47 +761,49 @@ router.get('/getOrgName', function (req, res, next) {
 });
 
 router.get('/getOrgNameVolunteers', function (req, res, next) {
-  //console.log("I am in the getOrgName request in index.js!!!");
+  console.log("I am in the getOrgName request in index.js!!!");
   const branchID = req.query.selectedBranchID;
-  //console.log("The branchID is " + branchID);
+  console.log("The branchID is " + branchID);
 
-  //console.log("Connected to pool in org branch requests");
+  console.log("Connected to pool in org branch requests");
 
   // First query to get the orgID
-  var query = "SELECT orgID FROM Branch WHERE branchID = ?;";
-  connection.query(query, [branchID], function (err1, rows1) {
-    if (err1) {
-      //console.log("Error executing ID query:", err1);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    if (rows1.length === 0) {
-      // Organization not found
-      res.status(404).json({ error: "Organization not found" });
-      return;
-    }
-
-    var orgID = rows1[0].orgID; // Extract orgID from rows1
-    var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
-    connection.query(query, [orgID], function (err2, rows2) {
-      if (err2) {
-        //console.log("Error executing organization name query:", err2);
+  if (branchID !== '-1') {
+    var query = "SELECT orgID FROM Branch WHERE branchID = ?;";
+    connection.query(query, [branchID], function (err1, rows1) {
+      if (err1) {
+        console.log("Error executing ID query:", err1);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
 
-      if (rows2.length === 0) {
-        // Organization name not found
-        res.status(404).json({ error: "Organization name not found" });
+      if (rows1.length === 0) {
+        // Organization not found
+        res.status(404).json({ error: "Organization not found" });
         return;
       }
 
-      var orgName = rows2[0].orgName; // Extract orgName from rows2
-      //console.log("Returning organization name:", orgName);
-      res.json({ orgName: orgName });
+      var orgID = rows1[0].orgID; // Extract orgID from rows1
+      var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
+      connection.query(query, [orgID], function (err2, rows2) {
+        if (err2) {
+          console.log("Error executing organization name query:", err2);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+
+        if (rows2.length === 0) {
+          // Organization name not found
+          res.status(404).json({ error: "Organization name not found" });
+          return;
+        }
+
+        var orgName = rows2[0].orgName; // Extract orgName from rows2
+        console.log("Returning organization name:", orgName);
+        res.json({ orgName: orgName });
+      });
     });
-  });
+  }
 });
 
 
@@ -3009,27 +3011,69 @@ router.post("/unjoinOrgBranch", function (req, res, next) {
 
 router.get('/getPostsVolunteer', function (req, res, next) {
   // get the followed updates depending on the branch
+
   let branchID = req.query.branchID;
-  // Construct the SQL query to fetch posts based on branchID
+  let userID = req.session.accountID;
+  //all updates from all branches
+
   let sqlQuery = `
-    SELECT Updates.*, Organisations.imgPath
-    FROM Updates
-    JOIN Branch ON Updates.branchID = Branch.branchID
-    JOIN Organisations ON Branch.orgID = Organisations.orgID
-    WHERE Updates.branchID = ${branchID}`;
+    SELECT
+        Updates.*,
+        Organisations.orgName,
+        Branch.branchName,
+        Organisations.imgPath
+    FROM
+        Updates
+    JOIN
+        Branch ON Updates.branchID = Branch.branchID
+    JOIN
+        Organisations ON Branch.orgID = Organisations.orgID
+    LEFT JOIN
+        FollowedBranches ON Updates.branchID = FollowedBranches.branchID
+            AND FollowedBranches.userID = ?
+    WHERE
+        Updates.private = 0
+        OR
+        (Updates.private = 1 AND FollowedBranches.userID IS NOT NULL);
+    `;
+  // Construct the SQL query to fetch posts based on branchID
+  if (branchID !== '-1') {
+    console.log("NEW QUERY");
+    sqlQuery = `
+      SELECT Updates.*, Organisations.orgName,
+      Branch.branchName, Organisations.imgPath
+      FROM Updates
+      JOIN Branch ON Updates.branchID = Branch.branchID
+      JOIN Organisations ON Branch.orgID = Organisations.orgID
+      WHERE Updates.branchID = ?`;
+  }
 
   // Execute the SQL query
-  connection.query(sqlQuery, (err, results) => {
-    if (err) {
-      // Handle errors
-      console.error("Error fetching posts:", err);
-      res.status(500).json({ error: "Failed to fetch posts" });
-    } else {
-      // Send the fetched posts as JSON response
-      res.json(results);
-    }
-  });
+  if (branchID === '-1') {
+    connection.query(sqlQuery, [userID], (err, results) => {
+      if (err) {
+        // Handle errors
+        console.error("Error fetching posts:", err);
+        res.status(500).json({ error: "Failed to fetch posts" });
+      } else {
+        // Send the fetched posts as JSON response
+        res.json(results);
+      }
+    });
+  } else {
+    connection.query(sqlQuery, [branchID], (err, results) => {
+      if (err) {
+        // Handle errors
+        console.error("Error fetching posts:", err);
+        res.status(500).json({ error: "Failed to fetch posts" });
+      } else {
+        // Send the fetched posts as JSON response
+        res.json(results);
+      }
+    });
+  }
 })
+
 
 router.get('/getFollowedBranch', function (req, res, next) {
   // get the followed updates depending on the branch
@@ -3519,20 +3563,91 @@ router.get('/showPosts', function (req, res, next) {
   const commitment = req.query.commitment;
   const location = req.query.location;
   const branchID = req.query.branchID;
+  let query = '';
   if (branchID === '-1' || branchID === undefined || branchID === "undefined" || branchID === "") {
-    console.log("IT IS UNDEFINED");
-  }
 
+    req.pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Got error!!!!");
+        res.sendStatus(500);
+        return;
+      }
+      console.log("IT IS UNDEFINED");
+      query = `SELECT
+                o.oppID,
+                o.oppName,
+                org.orgName,
+                o.tags,
+                o.description,
+                o.thumbnail,
+                org.orgSite
+            FROM
+                Opportunities o
+            JOIN
+                Organisations org ON b.orgID = org.orgID`
 
-  req.pool.getConnection(function (err, connection) {
-    if (err) {
-      console.log("Got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("Connected to pool");
+      const queryParams = [];
 
-    let query = `
+      if (categories) {
+        if (queryParams.length === 0) {
+          query += ' WHERE';
+        } else {
+          query += ' AND';
+        }
+        query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
+        queryParams.push(categories);
+      }
+
+      if (commitment) {
+        if (queryParams.length === 0) {
+          query += ' WHERE';
+        } else {
+          query += ' AND';
+        }
+        query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
+        queryParams.push(commitment);
+      }
+
+      if (location) {
+        if (queryParams.length === 0) {
+          query += ' WHERE';
+        } else {
+          query += ' AND';
+        }
+        query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
+        queryParams.push(location);
+      }
+
+      query += ';';
+
+      connection.query(query, queryParams, function (err1, rows, fields) {
+        connection.release();
+        console.log(query);
+        if (err1) {
+          console.log("Error executing query:", err1);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+
+        if (rows.length === 0) {
+          res.status(404).json({ error: "No opportunities found" });
+          return;
+        }
+        console.log(rows);
+        console.log("HELOOOOOOOOO")
+        res.json(rows);
+      });
+    })
+  } else {
+    req.pool.getConnection(function (err, connection) {
+      if (err) {
+        console.log("Got error!!!!");
+        res.sendStatus(500);
+        return;
+      }
+      console.log("Connected to pool");
+
+      let query = `
           SELECT
               o.oppID,
               o.oppName,
@@ -3548,90 +3663,64 @@ router.get('/showPosts', function (req, res, next) {
           JOIN
               Organisations org ON b.orgID = org.orgID`;
 
-    const queryParams = [];
+      const queryParams = [];
 
-    if (branchID !== '-1' && branchID !== undefined && branchID !== "undefined" && branchID !== "") {
-      query += ' WHERE b.branchID = ?';
-      queryParams.push(branchID);
-    }
-
-    if (categories) {
-      if (queryParams.length === 0) {
-        query += ' WHERE';
-      } else {
-        query += ' AND';
-      }
-      query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(categories);
-    }
-    if (categories) {
-      if (queryParams.length === 0) {
-        query += ' WHERE';
-      } else {
-        query += ' AND';
-      }
-      query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(categories);
-    }
-
-    if (commitment) {
-      if (queryParams.length === 0) {
-        query += ' WHERE';
-      } else {
-        query += ' AND';
-      }
-      query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(commitment);
-    }
-    if (commitment) {
-      if (queryParams.length === 0) {
-        query += ' WHERE';
-      } else {
-        query += ' AND';
-      }
-      query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(commitment);
-    }
-
-    if (location) {
-      if (queryParams.length === 0) {
-        query += ' WHERE';
-      } else {
-        query += ' AND';
-      }
-      query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(location);
-    }
-    if (location) {
-      if (queryParams.length === 0) {
-        query += ' WHERE';
-      } else {
-        query += ' AND';
-      }
-      query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(location);
-    }
-
-    query += ';';
-
-    connection.query(query, queryParams, function (err1, rows, fields) {
-      connection.release();
-      console.log(query);
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
+      if (branchID !== '-1' && branchID !== undefined && branchID !== "undefined" && branchID !== "") {
+        query += ' WHERE b.branchID = ?';
+        queryParams.push(branchID);
       }
 
-      if (rows.length === 0) {
-        res.status(404).json({ error: "No opportunities found" });
-        return;
+      if (categories) {
+        if (queryParams.length === 0) {
+          query += ' WHERE';
+        } else {
+          query += ' AND';
+        }
+        query += ' o.tags LIKE CONCAT(\'%\', ?, \'%\')';
+        queryParams.push(categories);
       }
-      console.log(rows);
-      console.log("HELOOOOOOOOO")
-      res.json(rows);
+
+      if (commitment) {
+        if (queryParams.length === 0) {
+          query += ' WHERE';
+        } else {
+          query += ' AND';
+        }
+        query += ' o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
+        queryParams.push(commitment);
+      }
+
+      if (location) {
+        if (queryParams.length === 0) {
+          query += ' WHERE';
+        } else {
+          query += ' AND';
+        }
+        query += ' o.address LIKE CONCAT(\'%\', ?, \'%\')';
+        queryParams.push(location);
+      }
+
+      query += ';';
+
+      connection.query(query, queryParams, function (err1, rows, fields) {
+        connection.release();
+        console.log(query);
+        if (err1) {
+          console.log("Error executing query:", err1);
+          res.status(500).json({ error: "Internal Server Error" });
+          return;
+        }
+
+        if (rows.length === 0) {
+          res.status(404).json({ error: "No opportunities found" });
+          return;
+        }
+        console.log(rows);
+        console.log("HELOOOOOOOOO")
+        res.json(rows);
+      });
     });
-  });
+  }
 });
 
 
@@ -3646,7 +3735,8 @@ router.get('/findBranches', function (req, res, next) {
   JOIN
   Organisations org ON b.orgID = org.orgID
   WHERE
-  org.orgID = ?;`
+  org.orgID = ?
+  AND b.instated = 1;`
   connection.query(query, userID, function (err1, rows, fields) {
     if (err1) {
       console.log("Error executing query:", err1);
@@ -3725,15 +3815,15 @@ router.post("/removeUserOrg", function (req, res, next) {
 router.post('/createEvent', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   // const { branchName, updateName, updateMsg, dateCreated } = req.body;
-  const { oppName, tags, address, lat, long, commitment, suitability, training, requirements, thumbnail, description, dates, branchID } = req.body;
+  const { oppName, tags, address, lat, long, commitment, suitability, training, requirements, thumbnail, description, dates, branchID, privacyValue } = req.body;
   // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
   //get the last created and used updateID
 
-  var newPostQuery = "INSERT INTO Opportunities (oppName, tags, address, latitude, longitude, commitment, suitability, training, requirements, thumbnail, description, dates, branchID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+  var newPostQuery = "INSERT INTO Opportunities (oppName, tags, address, latitude, longitude, commitment, suitability, training, requirements, thumbnail, description, dates, branchID, private) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
   //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
   //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-  connection.query(newPostQuery, [oppName, tags, address, lat, long, commitment, suitability, training, requirements, thumbnail, description, dates, branchID], function (err2, returnVal) {
+  connection.query(newPostQuery, [oppName, tags, address, lat, long, commitment, suitability, training, requirements, thumbnail, description, dates, branchID, privacyValue], function (err2, returnVal) {
 
     //error handling
     if (err2) {
@@ -3845,9 +3935,27 @@ router.get('/allOpportunities', function (req, res, next) {
       }
       res.json(results);
     })
+  } else if (req.session.userType === 'volunteer') {
+    // show all posts regards
+    // let query = 'SELECT * FROM Opportunities';
+    let userID = req.session.accountID;
+    let query = `SELECT o.*
+                 FROM Opportunities o
+                 JOIN Branch b ON o.branchID = b.branchID
+                 LEFT JOIN FollowedBranches fb ON fb.branchID = b.branchID AND fb.userID = ?
+                 WHERE o.private = 0 OR fb.userID IS NOT NULL;`;
+    // only select if user id is
+    connection.query(query, [userID], function (err, results) {
+      if (err) {
+        console.log("error in executing the queyr", err)
+        res.status(500).json({ error: "internal server error" })
+        return;
+      }
+      res.json(results);
+    })
   } else {
     // show all posts regards
-    let query = 'SELECT * FROM Opportunities';
+    let query = 'SELECT * FROM Opportunities WHERE private = 0;';
     // only select if user id is
     connection.query(query, function (err, results) {
       if (err) {
@@ -3859,6 +3967,8 @@ router.get('/allOpportunities', function (req, res, next) {
     })
   }
 })
+
+
 
 
 module.exports = router;

@@ -26,7 +26,7 @@ function getOrgName() {
             console.log("RETUNRED THE ORGNAME " + JSON.parse(this.responseText).orgName);
             vueinst.orgName = JSON.parse(this.responseText).orgName;
 
-            console.log("FINAL THE ORGNAME " +  vueinst.orgName);
+            console.log("FINAL THE ORGNAME " + vueinst.orgName);
         } else if (this.status === 404) {
             //console.log("went into 404 else statement, couldn't find the org's name");
         }
@@ -52,7 +52,6 @@ function getOrgLogo() {
     xhttp1.open("GET", "/getOrgLogo", true);
     xhttp1.send();
 }
-
 
 function getPosts() {
     //get the user details
@@ -160,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
 
-
                 // Hide the branch selector box if it's not the first page
                 var branchSelector = document.querySelector('.dropdown');
                 if (vueinst.currPage !== 0) {
@@ -196,7 +194,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         previousPageButton.style.display = 'block';
                         nextPageButton.style.display = 'block';
                     }
-
 
 
                     // Hide the branch selector box if it's not the first page

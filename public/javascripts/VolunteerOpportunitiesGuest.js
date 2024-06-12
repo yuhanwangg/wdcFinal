@@ -104,5 +104,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    window.searchPosts = searchPosts;
+    // window.searchPosts = searchPosts;
 });

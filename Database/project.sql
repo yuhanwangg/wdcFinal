@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: WDCProject
 -- ------------------------------------------------------
--- Server version 8.0.32-0ubuntu0.22.04.2
+-- Server version	8.0.32-0ubuntu0.22.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -136,12 +136,13 @@ CREATE TABLE `Opportunities` (
   `branchID` int DEFAULT NULL,
   `latitude` decimal(10,8) DEFAULT NULL,
   `longitude` decimal(11,8) DEFAULT NULL,
+  `private` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`oppID`),
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
   CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,
   CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +151,7 @@ CREATE TABLE `Opportunities` (
 
 LOCK TABLES `Opportunities` WRITE;
 /*!40000 ALTER TABLE `Opportunities` DISABLE KEYS */;
-INSERT INTO `Opportunities` VALUES (1,'Walk the dogs','Community Service','14 Osmond Terrace Norwood SA 5067','everyone','no training','walking','walk the dogs on a leash',NULL,'you can sometimes let the dogs off leash but pls dont','5th october 1997',17,-34.92123000,138.60583000);
+INSERT INTO `Opportunities` VALUES (1,'Walk the dogs','Community Service','14 Osmond Terrace Norwood SA 5067','everyone','no training','walking','walk the dogs on a leash',NULL,'you can sometimes let the dogs off leash but pls dont','5th october 1997',17,-34.92123000,138.60583000,0),(2,'tst','Animal Shelter','64, Zoo Lane, Nelson County, Virginia, 22958, United States','Less than 1 hour','all','yes','none','descrip','big descript','oijoijoij',17,37.91663179,-78.85839271,1);
 /*!40000 ALTER TABLE `Opportunities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,4 +289,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  1:30:05
+-- Dump completed on 2024-06-12  6:41:55

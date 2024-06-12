@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             submitForm() {
                 // var addressform = vueinst.stadd.concat(", ", vueinst.suburb, ", ", vueinst.state, ", ", vueinst.postcode);
+                var privacyValue = this.privacy;
                 var addressform = this.addressArr[0];
                 // prevent them from submitting multiple addresses
                 if (this.addressArr.length > 1) {
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     description: vueinst.description,
                     dates: vueinst.dates,
                     branchID: vueinst.selectedBranch.branchID,
+                    privacyValue: privacyValue
                 }));
             },
             removeTag(index) {

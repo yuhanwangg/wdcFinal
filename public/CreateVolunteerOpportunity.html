@@ -76,9 +76,9 @@
               <option value="Full day">Full day</option>
               <option value="Weekly">Weekly</option>
             </select>
-            <input type="radio" id="private" name="Private" value="1" required>
+            <input type="radio" id="private" name="privacy" value="1" v-model="privacy" required>
             <label class="privateLabel" for="private">Private</label>
-            <input type="radio" id="public" name="Private" value="0" required>
+            <input type="radio" id="public" name="privacy" value="0" v-model="privacy" required>
             <label class="publicLabel" for="public">Public</label><br>
           </div>
           <textarea class="miscBox" v-model="suitable" required placeholder="Suitable For"></textarea>

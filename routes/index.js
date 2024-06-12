@@ -2311,12 +2311,11 @@ router.get('/getUpdates', (req, res) => {
   let branchID = req.query.branchID;
   //console.log("BRANCHID: ", branchID);
 
-
-
   const query = `
-    SELECT u.*, o.imgPath AS imgPath, org.orgName, b.branchName
+    SELECT u.*, o.imgPath AS imgPath, org.orgName AS orgName, b.branchName AS branchName
     FROM Updates u
     JOIN Branch b ON u.branchID = b.branchID
+    JOIN Organisations org ON b.orgID = org.orgID
     JOIN Organisations o ON b.orgID = o.orgID
     WHERE b.orgID = ? AND u.branchID = ?
     ORDER BY u.dateCreated DESC
@@ -2347,16 +2346,15 @@ router.get('/getPosts', (req, res) => {
   let branchID = req.query.branchID;
   //console.log("BRANCHID: ", branchID);
 
-
   const query = `
-      SELECT o.*, org.imgPath, org.orgName, b.branchName
-      FROM Opportunities o
-      JOIN Branch b ON o.branchID = b.branchID
-      JOIN Organisations org ON b.orgID = org.orgID
-      WHERE b.orgID = ? AND o.branchID = ?
-      ORDER BY o.dates DESC
-      LIMIT 3
-    `;
+    SELECT o.*, org.imgPath AS imgPath, org.orgName AS orgName, b.branchName AS branchName
+    FROM Opportunities o
+    JOIN Branch b ON o.branchID = b.branchID
+    JOIN Organisations org ON b.orgID = org.orgID
+    WHERE b.orgID = ? AND o.branchID = ?
+    ORDER BY o.dates DESC
+    LIMIT 3
+  `;
 
   connection.query(query, [organisationID, branchID], function (err, rows) {
 

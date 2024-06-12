@@ -28,9 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
             commitments: [],
             location: null,
             numPosts: 0,
-            currPages: 1,
-            sliceState: 0,
-            sliceEnd: 4,
             submitClicked: false
         },
         mounted() {
@@ -113,13 +110,18 @@ document.addEventListener('DOMContentLoaded', function () {
                             console.log('Data received:', data);
                             //reset the custom selects after successful submission
                             this.events = data; // Use 'this' to access events
-
                             resetCustomSelects();
+                            this.resetInputs();
                         })
                         .catch(error => {
                             console.error('Error during fetch operation:', error);
                         });
                 }
+            },
+            resetInputs(){
+                this.tags=[];
+                this.commitments=[];
+                this.location= null;
             },
             goTo(location) {
                 window.location.href = location;

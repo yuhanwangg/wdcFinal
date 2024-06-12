@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
             branches: [],
             oldPosts: [],
             selectedBranchName: null,
-            selectedBranchID: 0,
+            selectedBranchID: -1,
             numPosts: 0,
             currPage: 1,
             numPages: 1,

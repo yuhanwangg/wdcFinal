@@ -26,19 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
         },
         methods: {
-            nextPage() {
-                if (this.currentPage < this.totalPages) {
-                    this.currentPage++;
-                }
-            },
-            prevPage() {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                }
-            },
-            updatePaginatedResults() {
-                this.results = this.paginatedResults;
-            },
             generateLink(post) {
                 // Customize this function to generate the link based on the post data
                 return `/MoreInformationOpportunity?id=${post.oppID}`;
@@ -97,15 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     })
             }
         },
-        watch: {
-            savedResults() {
-                this.currentPage = 1; // Reset to first page on new results
-                this.updatePaginatedResults(); // Update the paginated results
-            },
-            currentPage() {
-                this.updatePaginatedResults(); // Update the paginated results when the page changes
-            }
-        }
     });
 
 

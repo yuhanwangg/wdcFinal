@@ -112,6 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 var xhttp1 = new XMLHttpRequest();
                 xhttp1.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
+                        
                         vueinst.searchUsers();
                     } else if (this.status === 409) {
                         alert("You weren't RSVPd.");

@@ -9,12 +9,12 @@ document.addEventListener("DOMContentLoaded", function () {
         xhttp1.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log("Response:", this.responseText); // Add this line for debugging
-                // Update the Vue instance's savedResults property
-                // Update the Vue instance's savedResults property
-                vueinst.savedResults = JSON.parse(this.responseText);
+                // Update the Vue instance's results property
+                // Update the Vue instance's results property
+                vueinst.results = JSON.parse(this.responseText);
             } else if (this.status === 404) {
                 console.log("THERE ARE NO POSTS TO SHOW");
-                vueinst.savedResults = []; // Clear savedResults if no posts found
+                vueinst.results = []; // Clear results if no posts found
                 vueinst.numPosts = 0;
                 vueinst.notFoundShowing = true;
             }
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .then(data => {
                     console.log('received all opportunities')
-                    vueinst.savedResults = data;
+                    vueinst.results = data;
                 })
                 .catch(error => {
                     console.error("error in getting all opportunities")
@@ -68,29 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
         el: '#app',
         data: {
             results: [],
-            savedResults: [],
-            currentPage: 1,
-            pageSize: 6, // Number of results per page
             branches: [],
-            numPosts: 0,
             selectedBranch: -1
-        },
-        computed: {
-            totalResults() {
-                return this.savedResults.length;
-            },
-            totalPages() {
-                var pageNum = Math.ceil(this.totalResults / this.pageSize);
-                if (pageNum === 0) {
-                    pageNum = 1;
-                }
-                return pageNum;
-            },
-            paginatedResults() {
-                const start = (this.currentPage - 1) * this.pageSize;
-                const end = start + this.pageSize;
-                return this.savedResults.slice(start, end);
-            },
         },
         mounted() {
             fetch('/allOpportunities')
@@ -124,19 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 xhttp1.open("GET", searchQ, true);
                 xhttp1.send();
             },
-            nextPage() {
-                if (this.currentPage < this.totalPages) {
-                    this.currentPage++;
-                }
-            },
-            prevPage() {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                }
-            },
-            updatePaginatedResults() {
-                this.results = this.paginatedResults;
-            },
             generateLink(post) {
                 // Customize this function to generate the link based on the post data
                 return `/MoreInformationOpportunity?id=${post.oppID}`;
@@ -155,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var xhttp1 = new XMLHttpRequest();
                 xhttp1.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        vueinst.savedResults = JSON.parse(this.responseText);
+                        vueinst.results = JSON.parse(this.responseText);
                     } else if (this.status === 404) {
                         vueinst.notFoundShowing = true;
                     }
@@ -192,15 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.selectedBranch = newBranches[0];
                     showPosts();
                 }
-            },
-            savedResults(newSavedResults) {
-                console.log("savedResults updated:", newSavedResults); // Add this line for debugging
-                this.currentPage = 1; // Reset to first page on new results
-                this.updatePaginatedResults(); // Update the paginated results
-            },
-            currentPage() {
-                this.updatePaginatedResults(); // Update the paginated results when the page changes
-            },
+            }
         },
         mounted() {
             this.findBranches();

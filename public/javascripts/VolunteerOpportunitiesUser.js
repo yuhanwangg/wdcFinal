@@ -2,9 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const vueinst = new Vue({
         el: '#app',
         data: {
-            results: [],
-            currentPage: 1,
-            pageSize: 1, // Number of results per page
+            results: []
         },
         mounted() {
             fetch(`/allOpportunities`)
@@ -22,33 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.error("error in getting all opportunities")
                 })
         },
-        computed: {
-            totalResults() {
-                return this.results.length;
-            },
-            totalPages() {
-                return Math.ceil(this.totalResults / this.pageSize);
-            },
-            paginatedResults() {
-                const start = (this.currentPage - 1) * this.pageSize;
-                const end = start + this.pageSize;
-                return this.results.slice(start, end);
-            },
-        },
         methods: {
-            nextPage() {
-                if (this.currentPage < this.totalPages) {
-                    this.currentPage++;
-                }
-            },
-            prevPage() {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                }
-            },
-            updatePaginatedResults() {
-                this.results = this.paginatedResults;
-            },
             generateLink(post) {
                 // Customize this function to generate the link based on the post data
                 return `/MoreInformationOpportunity?id=${post.oppID}`;
@@ -107,10 +79,5 @@ document.addEventListener("DOMContentLoaded", function () {
                     })
             }
         },
-        watch: {
-            currentPage() {
-                this.updatePaginatedResults(); // Update the paginated results when the page changes
-            }
-        }
     });
 });

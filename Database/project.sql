@@ -47,7 +47,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES (1,'Admin','Admin','admin@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$MplNzhLBUH4LMTkg86kHhQ$PNnE6/n7uBrQLR8/sT7aWJ6vW/FZxMghqxPB58VW1EU'),(2,'Admin2','Admin2','admin2@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$oTawQX2ITGXkn5OEWjV5Vw$o0WAQvHbjz50rPRt2w1G9kjzD1vw1J8ssO0vsb3qtF8');
+INSERT INTO `Admin` VALUES (3,'Georgia','McLeod','testEmail2@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$qJErDWThE0DkSx/uhWCtig$QLa9WIe1CxzuWk6GMte8DNSUckKKhEqqTNwFjnQmZMg'),(4,'Lucy','Fidock','lucy.fidock@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$mFngQY9wSd+jwHlhNV9ysA$34OW+AcyN+U+TSKl+FN7/nWH4UZk5PGIJH9MFFdxmpE');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -80,7 +80,7 @@ CREATE TABLE `Branch` (
 
 LOCK TABLES `Branch` WRITE;
 /*!40000 ALTER TABLE `Branch` DISABLE KEYS */;
-INSERT INTO `Branch` VALUES (3,'Adelaide Branch','Adelaide','SA','5000','Australia',1,1),(6,'Melbourne','Melbourne','VIC','5067','Australia',1,1),(7,'YuhanCorp','so ','cool','6969','yapcity',2,1),(8,'Sydney Branch','Sydney','NSW','2000','Australia',2,1),(9,'Brisbane Branch','Brisbane','QLD','4000','Australia',2,1),(10,'hkas','Adelaide','SA','5073','Australia',2,0),(11,'another one','hsadk','jkasd','600','njasd',2,0),(12,'one more','prett','please','696420','yooo',2,0),(13,'one more','prett','please','38942','yooo',2,0),(14,'yoo','gran','turismo','900','jdlsf',2,0),(15,'one mroe','test','opls','904','jdnsf',2,0),(16,'yoo','Adelaide','SA','5073','Australia',2,0),(17,'Noddy Corp','Norwood','SA','5067','Australia',3,1);
+INSERT INTO `Branch` VALUES (1,'Red Cross','Norwood','SA','5067','Australia',1,1),(2,'Mary Potter Foundation','Adelaide','SA','5000','Australia',2,1),(3,'Norwood Branch','Norwood','SA','5067','Australia',2,1),(4,'Adelaide Branch','Norwood','SA','5067','Australia',2,1),(5,'Henley Beach Branch','Norwood','SA','5067','Australia',2,1),(6,'Sydney Branch','Sydney','NSW','5067','Australia',2,0),(8,'Main Branch',NULL,NULL,NULL,NULL,3,1),(9,'Adelaide Branch','Norwood','SA','5067','Australia',3,1);
 /*!40000 ALTER TABLE `Branch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +110,7 @@ CREATE TABLE `FollowedBranches` (
 
 LOCK TABLES `FollowedBranches` WRITE;
 /*!40000 ALTER TABLE `FollowedBranches` DISABLE KEYS */;
-INSERT INTO `FollowedBranches` VALUES (3,6,1),(3,3,1),(2,7,1),(3,9,1),(4,3,1);
+INSERT INTO `FollowedBranches` VALUES (3,8,1),(3,5,1),(1,1,1),(1,2,1),(1,3,1),(1,5,1),(5,8,1),(5,4,1),(5,2,1),(5,1,1),(6,1,1),(6,2,1),(6,3,1),(6,4,1),(6,5,1),(6,8,1);
 /*!40000 ALTER TABLE `FollowedBranches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +131,7 @@ CREATE TABLE `Opportunities` (
   `training` varchar(500) DEFAULT NULL,
   `requirements` varchar(500) DEFAULT NULL,
   `thumbnail` varchar(500) DEFAULT NULL,
-  `description` varchar(100) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
   `dates` varchar(255) DEFAULT NULL,
   `branchID` int DEFAULT NULL,
   `latitude` decimal(10,8) DEFAULT NULL,
@@ -141,8 +141,8 @@ CREATE TABLE `Opportunities` (
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
   CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,
-  CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `Opportunities_ibfk_1` FOREIGN KEY (`branchID`) REFERENCES `Branch` (`branchID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +151,7 @@ CREATE TABLE `Opportunities` (
 
 LOCK TABLES `Opportunities` WRITE;
 /*!40000 ALTER TABLE `Opportunities` DISABLE KEYS */;
-INSERT INTO `Opportunities` VALUES (1,'Walk the dogs','Community Service','14 Osmond Terrace Norwood SA 5067','everyone','no training','walking','walk the dogs on a leash',NULL,'you can sometimes let the dogs off leash but pls dont','5th october 1997',17,-34.92123000,138.60583000,0),(2,'tst','Animal Shelter','64, Zoo Lane, Nelson County, Virginia, 22958, United States','Less than 1 hour','all','yes','none','descrip','big descript','oijoijoij',17,37.91663179,-78.85839271,1);
+INSERT INTO `Opportunities` VALUES (4,'Giving','Food Bank, Shelters','64, Zoo Lane, Nelson County, Virginia, 22958, United States','1-2 hours','teenagers','no training','no requirements','we are going to be giving food to people','we are going to be giving food to people in homeless shelters around zoo lane','14 and 15th of June 2024',8,37.91663179,-78.85839271,0),(5,'Victorian Ocean Cleanup (SECRET)','Ocean Cleanup','Sunshine Road, West Footscray, Melbourne, City of Maribyrnong, Victoria, 3012, Australia','2-4 hours','Adults 18+','Swimming','Must know scuba diving','Cleaning up garbage near Melbourne waters','Cleaning up garbage near Melbourne waters to save the ocean and do good.','30th of June',8,-37.80192330,144.88078220,1),(6,'food giving','Shelters','Norwood Parade, Beaconsfield, Mackay, Mackay Regional, Queensland, Australia','1-2 hours','all ages','non','like food','help us serve people food','Over the course of 1 to 2 hours, you can serve people food. For free.','19th November 2025',3,-21.08285640,149.16038320,0),(7,'Op shop','Aged Care','Norwood, Adelaide, The City of Norwood Payneham and St Peters, South Australia, 5067, Australia','Full day','18+ ','till training and register','friendly and helpful','Run the op shop for a day','For a whole day you can run the op shop. Enjoy it, it can be a fun way to engage with your community.','20th September 2024',3,-34.92134670,138.63208690,0),(8,'Pick shellos','Ocean Cleanup, Animal Shelter, Health, Youth Group','Henley Beach, Adelaide, City of Charles Sturt, South Australia, 5022, Australia','2-4 hours','all ages','none','like shells','pick up shells and make pretty things','Join us to collect shells and you can make bracelets or shell art!','1st Jan 2025',5,-34.91588020,138.49869530,1);
 /*!40000 ALTER TABLE `Opportunities` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +182,7 @@ CREATE TABLE `Organisations` (
 
 LOCK TABLES `Organisations` WRITE;
 /*!40000 ALTER TABLE `Organisations` DISABLE KEYS */;
-INSERT INTO `Organisations` VALUES (1,'Red Cross','redcross.org.au','redCross@gmail.com','redCrossPassword','Here at Red Cross we love to help people, and you should too! This is not a threat, we just really think you should help people! Join our wonderful community today.','images_assets/exampleLogo.png',0),(2,'YuhanCorp','www.big.com','test@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$rfpLc+G5JRxVDEk5Z7I03A$fBt7WOBVrC9tuSC4Cb6CYUGfQ2Jrxvq9FucSno+GE8g','i am so big','organisation_logos/1718022083666.png',0),(3,'Noddy Corp','https://en.wikipedia.org/wiki/Dog','test5@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$spq5UdyzsQn9gQRX2sE/DQ$dJv3iAdc0O7gQiNSjTMumqhI3W9fkez+F9VYOAaQobs','we are fancy','organisation_logos/1718147128838.png',0);
+INSERT INTO `Organisations` VALUES (1,'Red Cross','https://www.redcross.org.au/','redcross@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$A1ylzpcvtWMg6sichQjoJg$TY2+feRC9aPc8SHSd4O8TqcoLvmqSj7D6wYLvJVffIo','\nThe Red Cross is a global humanitarian network providing emergency assistance, disaster relief, and education in communities worldwide. Founded in 1863 by Henry Dunant, it operates under principles of neutrality, impartiality, and independence. With a presence in over 190 countries, the Red Cross delivers lifesaving aid during crises, supports health services, and promotes humanitarian values. Its volunteers and staff are dedicated to alleviating human suffering through initiatives like blood donations, first aid training, and disaster preparedness. Red Cross strives to protect human dignity and support vulnerable populations in times of need.','organisation_logos/1718195206958.png',0),(2,'Mary Potter Foundation','https://www.marypotter.org.au/get-involved/volunteering/','mp@icloud.com','$argon2id$v=19$m=65536,t=3,p=4$x3MyeAnjdnLKehw9NiS2qg$tE/Kfv6KYgMOUFKnYsCslErvt90sZcxg8XWMUUWHKqI','If you have some spare time and would like to help the Foundation at our events or sell lottery tickets on our behalf, we’d love to hear from you.','organisation_logos/1718195435591.png',0),(3,'Georgia McLeod','www.puppies.com','georgia.mcleod314@gmail.com',NULL,'We like to help people ','organisation_logos/1718197592509.png',1);
 /*!40000 ALTER TABLE `Organisations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,8 +200,6 @@ CREATE TABLE `RSVPD` (
   KEY `oppID` (`oppID`),
   KEY `idx_userID` (`userID`),
   KEY `idx_oppID` (`oppID`),
-  CONSTRAINT `fk_opportunity_rsvpd` FOREIGN KEY (`oppID`) REFERENCES `RSVPD` (`oppID`) ON DELETE CASCADE,
-  CONSTRAINT `fk_user_rsvpd` FOREIGN KEY (`userID`) REFERENCES `RSVPD` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `RSVPD_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`) ON DELETE CASCADE,
   CONSTRAINT `RSVPD_ibfk_2` FOREIGN KEY (`oppID`) REFERENCES `Opportunities` (`oppID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -213,6 +211,7 @@ CREATE TABLE `RSVPD` (
 
 LOCK TABLES `RSVPD` WRITE;
 /*!40000 ALTER TABLE `RSVPD` DISABLE KEYS */;
+INSERT INTO `RSVPD` VALUES (6,4),(6,5),(6,7),(6,8),(5,7),(5,5),(3,4),(3,5),(3,6);
 /*!40000 ALTER TABLE `RSVPD` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,7 +242,7 @@ CREATE TABLE `Updates` (
 
 LOCK TABLES `Updates` WRITE;
 /*!40000 ALTER TABLE `Updates` DISABLE KEYS */;
-INSERT INTO `Updates` VALUES (2,'Leprechauns!!!','Everyone, they are back! Come catch a leprechaun with us today and you won\'t ever need to volunteer again because we will be able to pay you in gold! (All gold profits found will go straight to us, pls do not keep any).',3,'June 4, 2024 at 10:03 AM',0),(3,'New Events','Hi everyone! Exciting stuff is happening, we are going to be created 5 new volunteering events - keep an eye on this space!!',3,'June 4, 2024 at 10:04 AM',0),(4,'test 1','testing 1',3,'June 4, 2024 at 10:04 AM',0),(5,'test 2','testing 2',3,'June 4, 2024 at 10:04 AM',0),(6,'test 3','testing 3',3,'June 4, 2024 at 10:04 AM',0),(7,'jamie\'s hand','yes',7,'June 10, 2024 at 9:51 PM',0),(8,'jamie\'s hand','yes',7,'June 10, 2024 at 9:51 PM',0),(9,'YAY','yesYAY',7,'June 10, 2024 at 9:52 PM',0),(10,'dsfsdfd','dsfsdf',8,'June 11, 2024 at 3:01 AM',0),(11,'for everyone','for everyone',17,'June 12, 2024 at 9:19 AM',0),(12,'for members','for members',17,'June 12, 2024 at 9:20 AM',0),(13,'members only','members',17,'this is a data',1);
+INSERT INTO `Updates` VALUES (1,'first update','woah what a great update',8,'June 12, 2024 at 10:50 PM',0),(2,'Scuba diving clean up coming soon !!!','You are a member of our organisation so we are just reminding you of the event we posted!',8,'June 12, 2024 at 11:00 PM',1),(3,'email update','you will recieve this as an email because you have joined our account',8,'June 12, 2024 at 11:15 PM',0),(4,'New branch instated!','Congrats on our approval :thumbsup:',9,'June 13, 2024 at 12:40 AM',0);
 /*!40000 ALTER TABLE `Updates` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +275,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'Georgia','McL','2004','Norwood','SA','5067','Australia','myemail@gmail.com','password',0),(2,'Lucy','Fidock','03/06/2004','Rostrevor','SA','5073','Australia','lucy.fidock@mail','mypass',0),(3,'Yuhan Wang','',NULL,NULL,NULL,NULL,NULL,'wyuhan18@gmail.com',NULL,1),(4,'Georgia McLeod','',NULL,NULL,NULL,NULL,NULL,'georgia.mcleod314@gmail.com',NULL,1);
+INSERT INTO `User` VALUES (1,'Sophie','Smith','31/12/1999','Glenelg','SA','5062','Australia','ss@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$Aq8EqUzbX5L5ezrnQEmBIQ$+UhTXqfKmJYRsAfWQPliu7YCpeYxmJ4ZG1FU69kCawg',0),(3,'Yuhan','Wang','20/02/2002','Rostrevor','SA','5073','Australia','wyuhan18@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$lj9zZIX33XO+ggpGSH/6Iw$/WZv6S40Qpcd2v9R76Zm0TZl/MZL9iUpaZ8GwFc5w8g',0),(5,'Ivan','Tchaikovsky','08/08/2004','St Peters','SA','5040','Australia','ivanT@icloud.com','$argon2id$v=19$m=65536,t=3,p=4$9vF7BYYmzA/DiF8zPUwveg$hTnitq0M05GrOiJik+KOvcurHJJfWG3BeVYEocvdlJ0',0),(6,'Arthur','Kirkland','21/04/1926','Small London','Big London','1000','England','arthur.kirkland@gmail.com','$argon2id$v=19$m=65536,t=3,p=4$8nYLoe3Z4MMp5iL98BDjKQ$r8T/9+3oiqpQHmwgaQTuLWkIht/XpBaZ4EmLTrGVDIQ',0);
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -289,4 +288,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12  6:41:55
+-- Dump completed on 2024-06-12 16:02:51

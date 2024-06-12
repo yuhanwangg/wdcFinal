@@ -58,17 +58,18 @@
                     </div>
 
                     <!-- Result and Page Count-->
-                    <div id="searchMatchInfo">
+                    <!-- <div id="searchMatchInfo">
                         <p class="searchCount">{{ totalResults }} Search Results Match</p>
                         <p class="pageCount">Page {{ currentPage }}/{{ totalPages }}</p>
-                    </div>
+                    </div> -->
 
                     <!-- Opportunities Box filled using AJAX, should be empty <p> tags -->
 
-                    <div v-if="savedResults.length != 0" v-for="post in results" :key="post.oppID"
+                    <div v-if="results.length != 0" v-for="post in results" :key="post.oppID"
                         class="opportunityBox">
                         <div class="contentLeft">
                             <a :href="generateLink(post)" class="organisationName"><b>{{ post.oppName }}</b></a>
+                            <p>{{ post.orgName }} — {{ post.branchName}}</p>
                             <p v-if="post.private" id="privateMsg">Members only event</p> <!-- Display message if opportunity is private -->
                             <div class="tags">
                                 <span v-for="tag in post.tags.split(',')" :key="tag.trim()" class="opportunityTag">{{
@@ -90,11 +91,11 @@
 
             </div>
             <!-- Next Button -->
-            <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages"
+            <!-- <button class="nextButton" @click="nextPage" v-if="currentPage !== totalPages"
                 :disabled="currentPage === totalPages" type="submit">Next Page</button>
             <button class="prevButton" @click="prevPage" v-if="currentPage !== 1" :disabled="currentPage === 1"
                 type="submit">Previous Page</button>
-        </div>
+        </div> -->
         <!-- footer -->
         <footer-component></footer-component>
     </div>

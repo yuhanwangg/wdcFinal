@@ -831,7 +831,7 @@ router.post('/createNewPost', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   // const { branchName, updateName, updateMsg, dateCreated } = req.body;
   const orgID = req.session.accountID;
-  const { branchID, updateName, updateMsg, dateCreated } = req.body;
+  const { branchID, updateName, updateMsg, dateCreated, privateUpdate} = req.body;
   // //console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
   //get the last created and used updateID
   var currUpdateIdQuery = "SELECT updateID FROM Updates ORDER BY updateID DESC LIMIT 1;";
@@ -852,11 +852,11 @@ router.post('/createNewPost', function (req, res, next) {
     }
     //console.log("the new update id is " + currUpdateId);
 
-    var newPostQuery = "INSERT INTO Updates (updateID, updateName, updateMsg, branchID, dateCreated) VALUES (?, ?, ?, ?, ?);";
+    var newPostQuery = "INSERT INTO Updates (updateID, updateName, updateMsg, branchID, dateCreated, private) VALUES (?, ?, ?, ?, ?, ?);";
 
     //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
     //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-    connection.query(newPostQuery, [currUpdateId, updateName, updateMsg, branchID, dateCreated], function (err2, returnVal) {
+    connection.query(newPostQuery, [currUpdateId, updateName, updateMsg, branchID, dateCreated, privateUpdate], function (err2, returnVal) {
 
       //error handling
       if (err2) {
@@ -3089,6 +3089,7 @@ router.get('/getFollowedBranch', function (req, res, next) {
 })
 
 router.post('/findRSVP', function (req, res, next) {
+  console.log("WE ARE FINDING RSVP");
   const { commitments, tags, location } = req.body;
   const userID = req.session.accountID;
 
@@ -3118,11 +3119,15 @@ router.post('/findRSVP', function (req, res, next) {
     whereClause += `address LIKE '%${location}%'`;
   }
 
+  console.log("the where clause: ", whereClause)
+
   // Construct the SQL query with the WHERE clause and join operation
   let query = `
     SELECT *
     FROM Opportunities AS o
     JOIN RSVPD AS r ON o.oppID = r.oppID
+    JOIN Branch AS b ON o.branchID = b.branchID
+    JOIN Organisations AS org ON b.orgID = org.orgID
     WHERE r.userID = ${userID}
   `;
 
@@ -3138,6 +3143,7 @@ router.post('/findRSVP', function (req, res, next) {
       res.status(500).json({ error: 'An error occurred while searching for opportunities' });
       return;
     }
+    console.log(results);
     res.json(results);
   });
 });
@@ -3180,6 +3186,31 @@ router.get('/checkGoogleOrg', function (req, res, next) {
   });
 })
 
+router.get('/getRSVPDHome', function (req, res, next) {
+  const userID = req.session.accountID;
+
+  const query = `
+    SELECT o.*, b.branchName, b.suburb AS branchSuburb, b.state AS branchState, org.orgName AS orgName, org.imgPath AS imgPath, org.orgSite AS link
+    FROM Opportunities AS o
+    JOIN RSVPD AS r ON o.oppID = r.oppID
+    JOIN Branch AS b ON o.branchID = b.branchID
+    JOIN Organisations AS org ON b.orgID = org.orgID
+    WHERE r.userID = ?
+    ORDER BY o.dates DESC
+    LIMIT 3
+  `;
+
+  connection.query(query, [userID], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      res.status(500).json({ error: 'An error occurred while retrieving opportunities' });
+      return;
+    }
+    console.log("the results of search: ", results);
+    res.json(results);
+  });
+})
+
 router.get('/getRSVPD', function (req, res, next) {
   const userID = req.session.accountID;
 
@@ -3198,9 +3229,11 @@ router.get('/getRSVPD', function (req, res, next) {
       res.status(500).json({ error: 'An error occurred while retrieving opportunities' });
       return;
     }
+    console.log("the results of search: ", results);
     res.json(results);
   });
 })
+
 
 router.post('/deleteGoogleUser', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
@@ -3290,31 +3323,33 @@ router.get('/searchPosts', function (req, res, next) {
 
     // handle for different session token
     var session = req.session.userType;
+    let queryParams = [];
 
-    let query = `SELECT oppID,
-  oppName,
-  tags,
-  dates,
-  address,
-  commitment,
-  suitability,
-  training,
-  requirements,
-  thumbnail,
-  Opportunities.description,
-  Opportunities.branchID,
-  branchName,
-  org.orgName as organisationName,
-  org.imgPath,
-  private
-  FROM Opportunities
-  JOIN Branch b ON Opportunities.branchID = b.branchID
-  JOIN Organisations org ON org.orgID = b.orgID
+    let query = `SELECT
+    o.oppID,
+    o.oppName,
+    o.tags,
+    o.dates,
+    o.address,
+    o.commitment,
+    o.suitability,
+    o.training,
+    o.requirements,
+    o.thumbnail,
+    o.description,
+    b.branchName,
+    org.orgName,
+    org.orgSite,
+    org.imgPath,
+    o.private
+  FROM Opportunities o
+  JOIN Branch b ON o.branchID = b.branchID
+  JOIN Organisations org ON b.orgID = org.orgID
   WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
 
     if (session === 'volunteer') {
       query += ` AND (private = 0 OR
-                Opportunities.branchID IN (SELECT branchID FROM FollowedBranches WHERE userID = ?))`;
+                o.branchID IN (SELECT branchID FROM FollowedBranches WHERE userID = ?))`;
       queryParams.push(req.session.accountID);
     } else if (session === 'organisation') {
       query += ` AND (private = 0 OR
@@ -3580,20 +3615,22 @@ router.get('/showPosts', function (req, res, next) {
       }
       console.log("IT IS UNDEFINED");
       query = `SELECT
-                o.oppID,
-                o.oppName,
-                org.orgName,
-                o.tags,
-                o.description,
-                o.thumbnail,
-                org.orgSite,
-                private
-                org.orgSite,
-                private
-            FROM
-                Opportunities o
-            JOIN
-                Organisations org ON b.orgID = org.orgID`
+      o.oppID,
+      o.oppName,
+      org.orgName,
+      o.tags,
+      o.description,
+      o.thumbnail,
+      b.branchName,
+      org.orgSite,
+      org.imgPath,
+      private
+  FROM
+      Opportunities o
+  JOIN
+      Branch b ON o.branchID = b.branchID
+  JOIN
+      Organisations org ON b.orgID = org.orgID;`
 
       const queryParams = [];
 
@@ -3665,6 +3702,7 @@ router.get('/showPosts', function (req, res, next) {
               o.description,
               o.thumbnail,
               org.orgSite,
+              org.imgPath,
               private
           FROM
               Opportunities o
@@ -3761,6 +3799,7 @@ router.get('/findBranches', function (req, res, next) {
     }
 
     // Results found, send back the details
+    console.log(rows);
     res.json(rows);
   });
 });
@@ -3943,6 +3982,7 @@ router.get('/allOpportunities', function (req, res, next) {
         res.status(500).json({ error: "internal server error" })
         return;
       }
+      console.log("Query Results:", results);
       res.json(results);
     })
   } else if (req.session.userType === 'volunteer') {

@@ -922,7 +922,7 @@ router.post('/emailUpdate', function (req, res, next) {
       const emailList = rows.map(row => row.email);
       // Organization found, send back the details
       let info = transporter.sendMail({
-        from: "heartfelthelpers@outlook.com", //sender address
+        from: "HeartFeltHelpersVolunteering@outlook.com", //sender address
         to: emailList.join(','), //list of recievers
         subject: req.body.subject, //subject line
         text: req.body.text, //plain text body
@@ -3796,7 +3796,7 @@ router.post('/emailConfirmation', function (req, res, next) {
       const emailList = rows.map(row => row.email);
       // Organization found, send back the details
       let info = transporter.sendMail({
-        from: "heartfelthelpers@outlook.com", //sender address
+        from: "HeartFeltHelpersVolunteering@outlook.com", //sender address
         to: emailList.join(','), //list of recievers
         subject: req.body.subject, //subject line
         text: req.body.text, //plain text body
@@ -3877,6 +3877,8 @@ router.get('/allOpportunities', function (req, res, next) {
     })
   }
 })
+
+
 
 
 module.exports = router;

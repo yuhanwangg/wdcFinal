@@ -126,6 +126,7 @@ CREATE TABLE `Opportunities` (
   `description` varchar(100) DEFAULT NULL,
   `dates` varchar(255) DEFAULT NULL,
   `branchID` int DEFAULT NULL,
+  `private` int DEFAULT NULL,
   KEY `branchID` (`branchID`),
   KEY `idx_branchID` (`branchID`),
   CONSTRAINT `fk_organisation_opportunities` FOREIGN KEY (`branchID`) REFERENCES `Opportunities` (`branchID`) ON DELETE CASCADE,

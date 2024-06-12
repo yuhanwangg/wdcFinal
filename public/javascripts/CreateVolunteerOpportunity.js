@@ -61,19 +61,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 xhttp1.open("POST", "/createEvent", true);
                 xhttp1.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                 xhttp1.send(JSON.stringify({
-                    oppName: vueinst.programName,
+                    oppName: encodeURIComponent(vueinst.programName),
                     tags: tags,
                     address: addressform,
-                    commitment: vueinst.timeCommitment,
-                    suitability: vueinst.suitable,
-                    training: vueinst.training,
-                    requirements: vueinst.requirements,
-                    thumbnail: vueinst.thumbnail,
-                    description: vueinst.description,
-                    dates: vueinst.dates,
+                    commitment: encodeURIComponent(vueinst.timeCommitment),
+                    suitability: encodeURIComponent(vueinst.suitable),
+                    training: encodeURIComponent(vueinst.training),
+                    requirements: encodeURIComponent(vueinst.requirements),
+                    thumbnail: encodeURIComponent(vueinst.thumbnail),
+                    description: encodeURIComponent(vueinst.description),
+                    dates: encodeURIComponent(vueinst.dates),
                     branchID: vueinst.selectedBranch.branchID,
                 }));
             },
+            removeTag(index) {
+                this.addedTags.splice(index, 1);
+            }
         },
         mounted() {
             this.findBranches();

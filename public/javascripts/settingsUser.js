@@ -12,10 +12,10 @@ function checkDuplicateEmail(email) {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200) {
-                    console.log("No duplicate!");
+                    //console.log("No duplicate!");
                     resolve(false);
                 } else if (this.status == 400) {
-                    console.log("Email already in use");
+                    //console.log("Email already in use");
                     resolve(true);
                 } else {
                     console.error("Fail. Status:", this.status);
@@ -26,7 +26,7 @@ function checkDuplicateEmail(email) {
 
         xhttp.open("POST", "/checkEmail", true);
         xhttp.setRequestHeader("Content-type", "application/json");
-        console.log(email);
+        //console.log(email);
         xhttp.send(JSON.stringify({ email: email }));
     });
 }
@@ -38,10 +38,10 @@ function checkPassword(password) {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200) {
-                    console.log("Password matches!");
+                    //console.log("Password matches!");
                     resolve(false);
                 } else if (this.status == 400) {
-                    console.log("Password fails");
+                    //console.log("Password fails");
                     resolve(true);
                 } else {
                     console.error("Fail. Status:", this.status);
@@ -52,7 +52,7 @@ function checkPassword(password) {
 
         xhttp.open("POST", "/checkPassword", true);
         xhttp.setRequestHeader("Content-type", "application/json");
-        console.log(password);
+        //console.log(password);
         xhttp.send(JSON.stringify({ password: password }));
     });
 }
@@ -65,12 +65,12 @@ function checkIfGoogleUser() {
             if (this.readyState == 4) {
                 if (this.status == 200) {
                     var val = JSON.parse(this.responseText);
-                    console.log("this is the value", val);
+                    //console.log("this is the value", val);
                     if (val[0].googleUser == 1) {
-                        console.log("is google user")
+                        //console.log("is google user")
                         resolve(true);
                     } else {
-                        console.log("is not google user")
+                        //console.log("is not google user")
                         resolve(false);
                     }
                 } else {
@@ -199,7 +199,7 @@ async function saveDetails() {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200) {
-                    console.log("Details updated successfully!");
+                    //console.log("Details updated successfully!");
                     message.style.display = "block";
                     message.textContent = "Updated successfully";
                     message.style.color = "black";
@@ -261,7 +261,7 @@ async function deleteAccount() {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.status == 200) {
-                    console.log("Deleted successfully!");
+                    //console.log("Deleted successfully!");
                     message.style.display = "block";
                     message.textContent = "Account deleted successfully";
                     message.style.color = "black";
@@ -284,7 +284,7 @@ async function deleteAccount() {
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        console.log("Deleted successfully!");
+                        //console.log("Deleted successfully!");
                         message.style.display = "block";
                         message.textContent = "Account deleted successfully";
                         message.style.color = "black";

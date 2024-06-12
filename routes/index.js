@@ -25,7 +25,7 @@ connection.connect(function (err) {
     console.error('Error connecting to database: ' + err.stack);
     return;
   }
-  console.log('Connected to database');
+  //console.log('Connected to database');
 });
 router.use(bodyParser.json());
 
@@ -46,7 +46,7 @@ const storage = multer.diskStorage({
     cb(null, "organisation_logos");
   },
   filename: (req, file, cb) => {
-    console.log(file);
+    //console.log(file);
     cb(null, Date.now() + path.extname(file.originalname));
   }
 })
@@ -159,7 +159,7 @@ router.get('/recentUpdatesVolun', (req, res) => {
 router.post('/addAdmin', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { first_name, last_name, email, password } = req.body;
-  console.log("values in /addAdmin are" + first_name, last_name, email, password);
+  //console.log("values in /addAdmin are" + first_name, last_name, email, password);
 
 
   //get the last created and used AdminId
@@ -169,7 +169,7 @@ router.post('/addAdmin', function (req, res, next) {
 
     //error handling
     if (err1) {
-      console.log("Got error while fetching AdminID: ", err1);
+      //console.log("Got error while fetching AdminID: ", err1);
       res.sendStatus(500);
       return;
     }
@@ -178,7 +178,7 @@ router.post('/addAdmin', function (req, res, next) {
     if (result.length > 0) {
       currAdminId = result[0].adminId + 1
     }
-    console.log("the new admin id is " + currAdminId);
+    //console.log("the new admin id is " + currAdminId);
 
     //hash password
     var hash;
@@ -186,7 +186,7 @@ router.post('/addAdmin', function (req, res, next) {
     try {
       hash = await hashPass(password);
     } catch (err) {
-      console.log("error in hash");
+      //console.log("error in hash");
       res.sendStatus(500);
       return;
     }
@@ -199,7 +199,7 @@ router.post('/addAdmin', function (req, res, next) {
       //release the query, don't need access to the database anymore
       //error handling
       if (err2) {
-        console.log("Got error while inserting new admin: ", err2);
+        //console.log("Got error while inserting new admin: ", err2);
         res.sendStatus(500);
         return;
       }
@@ -211,13 +211,13 @@ router.post('/addAdmin', function (req, res, next) {
 });
 
 router.get('/orgDetails', function (req, res, next) {
-  console.log("i am here now!!!");
+  //console.log("i am here now!!!");
 
   const orgName = req.query.orgName;
   const email = req.query.email;
-  console.log("the org name and email in /orgDetails is " + orgName + " " + email);
+  //console.log("the org name and email in /orgDetails is " + orgName + " " + email);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool");
+  //console.log("connected to pool");
   //this is the query which i can change
   var query = "SELECT orgName, email, description, orgID FROM Organisations WHERE orgName = ? AND email = ?;";
   //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
@@ -225,7 +225,7 @@ router.get('/orgDetails', function (req, res, next) {
 
     //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
     if (err1) {
-      console.log("Error executing query:", err1);
+      //console.log("Error executing query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -243,17 +243,17 @@ router.get('/orgDetails', function (req, res, next) {
 });
 
 router.get('/orgBranchRequests', function (req, res, next) {
-  console.log("i am in the branch requests index.js!!!");
+  //console.log("i am in the branch requests index.js!!!");
   const orgName = req.query.orgName;
   const email = req.query.email;
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool in org branch requests");
+  //console.log("connected to pool in org branch requests");
   // First query to get the orgID
   var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
   connection.query(IDquery, [orgName, email], function (err1, rows1) {
 
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -270,7 +270,7 @@ router.get('/orgBranchRequests', function (req, res, next) {
     var branchRequestQuery = "SELECT branchName FROM Branch WHERE orgID = ? AND instated = 0";
     connection.query(branchRequestQuery, [orgID], function (err2, rows2) {
       if (err2) {
-        console.log("Error executing branch request query:", err2);
+        //console.log("Error executing branch request query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -283,18 +283,18 @@ router.get('/orgBranchRequests', function (req, res, next) {
 });
 
 router.get('/orgCurrentBranches', function (req, res, next) {
-  console.log("i am in  current branch function now!!!");
+  //console.log("i am in  current branch function now!!!");
   const orgName = req.query.orgName;
   const email = req.query.email;
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool for current branch");
+  //console.log("connected to pool for current branch");
   // First query to get the orgID
   var IDquery = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ?;";
   connection.query(IDquery, [orgName, email], function (err1, rows1) {
 
     if (err1) {
 
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -312,7 +312,7 @@ router.get('/orgCurrentBranches', function (req, res, next) {
     var branchRequestQuery = "SELECT branchName FROM Branch WHERE orgID = ? AND instated = 1";
     connection.query(branchRequestQuery, [orgID], function (err2, rows2) {
       if (err2) {
-        console.log("Error executing branch current query:", err2);
+        //console.log("Error executing branch current query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -325,10 +325,10 @@ router.get('/orgCurrentBranches', function (req, res, next) {
 });
 
 router.post('/instantiateBranch', function (req, res, next) {
-  console.log("went into instantiateBranch");
+  //console.log("went into instantiateBranch");
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { branchName, orgName, orgEmail } = req.body;
-  console.log(branchName, orgName, orgEmail);
+  //console.log(branchName, orgName, orgEmail);
 
   //get the connection again
   // First query to get the orgID
@@ -336,7 +336,7 @@ router.post('/instantiateBranch', function (req, res, next) {
   connection.query(IDquery, [orgName, orgEmail], function (err1, rows1) {
 
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -353,7 +353,7 @@ router.post('/instantiateBranch', function (req, res, next) {
     var updateInstanitatedQuery = "UPDATE Branch SET instated = 1 WHERE orgID = ? AND branchName = ?;";
     connection.query(updateInstanitatedQuery, [orgID, branchName], function (err2, rows2) {
       if (err2) {
-        console.log("Error executing branch current query:", err2);
+        //console.log("Error executing branch current query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -367,10 +367,10 @@ router.post('/instantiateBranch', function (req, res, next) {
 
 
 router.post('/removeBranch', function (req, res, next) {
-  console.log("went into removeBranch");
+  //console.log("went into removeBranch");
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { branchName, orgName, orgEmail } = req.body;
-  console.log(branchName, orgName, orgEmail);
+  //console.log(branchName, orgName, orgEmail);
 
   //get the connection again
   // First query to get the orgID
@@ -378,7 +378,7 @@ router.post('/removeBranch', function (req, res, next) {
   connection.query(IDquery, [orgName, orgEmail], function (err1, rows1) {
 
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -395,7 +395,7 @@ router.post('/removeBranch', function (req, res, next) {
     var updateInstanitatedQuery = "DELETE FROM Branch WHERE orgID = ? AND branchName = ?;";
     connection.query(updateInstanitatedQuery, [orgID, branchName], function (err2, rows2) {
       if (err2) {
-        console.log("Error executing branch current query:", err2);
+        //console.log("Error executing branch current query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -412,10 +412,10 @@ router.post('/orgInfo', function (req, res, next) {
 
   // const {orgId} = req.body;
   const { orgName, orgEmail } = req.body;
-  console.log("i am here now in orgInfo!!!");
+  //console.log("i am here now in orgInfo!!!");
   //console.log("i am here now in orgInfo!!! and the orgId is " + orgId);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool");
+  //console.log("connected to pool");
   //this is the query which i can change
   // var query = "SELECT orgName, email, description FROM Organisations WHERE orgID = ?;";
 
@@ -438,31 +438,31 @@ router.post('/orgId', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
 
   const { orgName, orgEmail } = req.body;
-  console.log("the orgName and email in the index.js /orgId is " + orgName + " " + orgEmail);
+  //console.log("the orgName and email in the index.js /orgId is " + orgName + " " + orgEmail);
 
   // First query to get the orgID
 
   var query = "SELECT orgID FROM Organisations WHERE orgName = ? AND email = ? ;";
 
   connection.query(query, [orgName, orgEmail], function (err1, rows, fields) {
-    console.log("the built query is: " + query);
-    console.log("orgName value is: " + orgName);
-    console.log("orgEmail value is: " + orgEmail);
+    //console.log("the built query is: " + query);
+    //console.log("orgName value is: " + orgName);
+    //console.log("orgEmail value is: " + orgEmail);
 
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
 
     if (rows.length === 0) {
       // Organization not found
-      console.log("I AM HERE!!");
+      //console.log("I AM HERE!!");
       res.status(404).json({ error: "Organization not found" });
       return;
     }
 
-    console.log("the found orgId in index.js is " + rows[0].orgID);
+    //console.log("the found orgId in index.js is " + rows[0].orgID);
     res.json(rows);
   });
 });
@@ -470,7 +470,7 @@ router.post('/orgId', function (req, res, next) {
 router.post('/saveOrgInfoNewName', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { orgId, newOrgName, newOrgEmail, newOrgDescription } = req.body;
-  console.log("in saveOrgInfo index.js the values parsed are" + orgId + " " + newOrgName + " " + newOrgEmail + " " + newOrgDescription);
+  //console.log("in saveOrgInfo index.js the values parsed are" + orgId + " " + newOrgName + " " + newOrgEmail + " " + newOrgDescription);
 
   if (orgId > 0) {
     //get the connection again
@@ -500,7 +500,7 @@ router.post('/saveOrgInfoNewName', function (req, res, next) {
 router.post('/saveOrgInfoOldName', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { orgId, newOrgName, newOrgEmail, newOrgDescription } = req.body;
-  console.log("in saveOrgInfoOldName index.js the values parsed are" + orgId + " " + newOrgName + " " + newOrgEmail + " " + newOrgDescription);
+  //console.log("in saveOrgInfoOldName index.js the values parsed are" + orgId + " " + newOrgName + " " + newOrgEmail + " " + newOrgDescription);
 
   if (orgId > 0) {
     //get the connection again
@@ -530,7 +530,7 @@ router.post('/deleteOrg', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { orgId } = req.body;
 
-  console.log("went into /deleteOrg and orgId = " + orgId);
+  //console.log("went into /deleteOrg and orgId = " + orgId);
 
   if (orgId > 0) {
     //get the connection again
@@ -558,15 +558,15 @@ router.post('/deleteOrg', function (req, res, next) {
 });
 
 router.get('/userDetails', function (req, res, next) {
-  console.log("i am here now!!!");
+  //console.log("i am here now!!!");
 
   const firstName = req.query.userFirstName;
   const lastName = req.query.userLastName;
   const email = req.query.email;
-  console.log("the first name, last name, and email in /userDetails is " + firstName + " " + lastName + " " + email);
+  //console.log("the first name, last name, and email in /userDetails is " + firstName + " " + lastName + " " + email);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
 
-  console.log("connected to pool");
+  //console.log("connected to pool");
   //this is the query which i can change
   var query = "SELECT userID, firstName, lastName, email FROM User WHERE firstName = ? AND lastName = ? AND email = ?;";
   //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
@@ -594,10 +594,10 @@ router.get('/userDetails', function (req, res, next) {
 router.post('/userInfo', function (req, res, next) {
 
   const { userID } = req.body;
-  console.log("i am here now in userInfo!!!");
+  //console.log("i am here now in userInfo!!!");
 
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool");
+  //console.log("connected to pool");
   //this is the query which i can change
 
   var query = "SELECT firstName, lastName, email FROM User WHERE userID = ? ;";
@@ -650,7 +650,7 @@ router.post('/deleteUser', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const { userID } = req.body;
 
-  console.log("went into /deleteUser and userID = " + userID);
+  //console.log("went into /deleteUser and userID = " + userID);
 
   if (userID > 0) {
     //get the connection again
@@ -679,19 +679,19 @@ router.post('/deleteUser', function (req, res, next) {
 
 
 router.get('/oldPosts', function (req, res, next) {
-  console.log("i am in the oldPosts requests index.js!!!");
+  //console.log("i am in the oldPosts requests index.js!!!");
   const branchID = req.query.branchID;
   //const branchName = req.query.branch;
   const orgID = req.query.orgID;
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
 
-  console.log("connected to pool in org branch requests");
+  //console.log("connected to pool in org branch requests");
 
   // query to get the update posts by the branch
   var oldPostsQuery = "SELECT * FROM Updates WHERE branchID = ?";
   connection.query(oldPostsQuery, [branchID], function (err2, rows2) {
     if (err2) {
-      console.log("Error executing branch request query:", err2);
+      //console.log("Error executing branch request query:", err2);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -703,30 +703,30 @@ router.get('/oldPosts', function (req, res, next) {
 });
 
 router.get('/getBranches', function (req, res, next) {
-  console.log("i am in the getBranches requests index.js!!!");
+  //console.log("i am in the getBranches requests index.js!!!");
   const orgID = req.session.accountID;
-  console.log("orgID: ", orgID);
+  //console.log("orgID: ", orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
 
-  console.log("connected to pool in org branch requests");
+  //console.log("connected to pool in org branch requests");
   // First query to get the orgID
   var query = "SELECT * FROM Branch WHERE orgID = ? && instated = 1;";
   connection.query(query, [orgID], function (err1, rows1) {
 
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
 
-    console.log("row length: ", rows1.length);
+    //console.log("row length: ", rows1.length);
 
     if (rows1.length === 0) {
       // Organization not found
       res.status(404).json({ error: "Organisation not found" });
       return;
     }
-    console.log("ALL GOOD WE ARE RETURNING " + rows1);
+    //console.log("ALL GOOD WE ARE RETURNING " + rows1);
     res.json(rows1);
     return;
   });
@@ -734,47 +734,44 @@ router.get('/getBranches', function (req, res, next) {
 
 
 router.get('/getOrgName', function (req, res, next) {
-  console.log("i am in the getOrgName requests index.js!!!");
+  //console.log("i am in the getOrgName requests index.js!!!");
   const orgID = req.session.accountID;
-  console.log("the orgID is " + orgID);
+  //console.log("the orgID is " + orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool in org branch requests");
+  //console.log("connected to pool in org branch requests");
   // First query to get the orgID
   var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
   connection.query(query, [orgID], function (err1, rows1) {
 
-
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
-
 
     if (rows1.length === 0) {
       // Organization not found
       res.status(404).json({ error: "Organization not found" });
       return;
     }
-    console.log("ALL GOOD WE ARE RETURNING " + rows1[0]);
+    //console.log("ALL GOOD WE ARE RETURNING " + rows1[0]);
     res.json(rows1[0]);
     return;
   });
- });
-
+});
 
 router.get('/getOrgNameVolunteers', function (req, res, next) {
-  console.log("I am in the getOrgName request in index.js!!!");
+  //console.log("I am in the getOrgName request in index.js!!!");
   const branchID = req.query.selectedBranchID;
-  console.log("The branchID is " + branchID);
+  //console.log("The branchID is " + branchID);
 
-  console.log("Connected to pool in org branch requests");
+  //console.log("Connected to pool in org branch requests");
 
   // First query to get the orgID
   var query = "SELECT orgID FROM Branch WHERE branchID = ?;";
   connection.query(query, [branchID], function (err1, rows1) {
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -789,7 +786,7 @@ router.get('/getOrgNameVolunteers', function (req, res, next) {
     var query = "SELECT orgName FROM Organisations WHERE orgID = ?;";
     connection.query(query, [orgID], function (err2, rows2) {
       if (err2) {
-        console.log("Error executing organization name query:", err2);
+        //console.log("Error executing organization name query:", err2);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -801,7 +798,7 @@ router.get('/getOrgNameVolunteers', function (req, res, next) {
       }
 
       var orgName = rows2[0].orgName; // Extract orgName from rows2
-      console.log("Returning organization name:", orgName);
+      //console.log("Returning organization name:", orgName);
       res.json({ orgName: orgName });
     });
   });
@@ -810,17 +807,17 @@ router.get('/getOrgNameVolunteers', function (req, res, next) {
 
 
 router.get('/getOrgLogo', function (req, res, next) {
-  console.log("i am in the getOrgLogo requests index.js!!!");
+  //console.log("i am in the getOrgLogo requests index.js!!!");
   const orgID = req.session.accountID;
-  console.log("the orgID is " + orgID);
+  //console.log("the orgID is " + orgID);
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool in org branch requests");
+  //console.log("connected to pool in org branch requests");
   // First query to get the orgID
   var query = "SELECT imgPath FROM Organisations WHERE orgID = ?;";
   connection.query(query, [orgID], function (err1, rows1) {
 
     if (err1) {
-      console.log("Error executing ID query:", err1);
+      //console.log("Error executing ID query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -830,7 +827,7 @@ router.get('/getOrgLogo', function (req, res, next) {
       res.status(404).json({ error: "Organisation not fsound" });
       return;
     }
-    console.log("ALL GOOD WE ARE RETURNING " + rows1[0].imgPath);
+    //console.log("ALL GOOD WE ARE RETURNING " + rows1[0].imgPath);
     res.json(rows1[0]);
     return;
   });
@@ -842,7 +839,7 @@ router.post('/createNewPost', function (req, res, next) {
   // const { branchName, updateName, updateMsg, dateCreated } = req.body;
   const orgID = req.session.accountID;
   const { branchID, updateName, updateMsg, dateCreated } = req.body;
-  // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
+  // //console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
   //get the last created and used updateID
   var currUpdateIdQuery = "SELECT updateID FROM Updates ORDER BY updateID DESC LIMIT 1;";
 
@@ -851,7 +848,7 @@ router.post('/createNewPost', function (req, res, next) {
 
     //error handling
     if (err1) {
-      console.log("Got error while fetching updateID: ", err1);
+      //console.log("Got error while fetching updateID: ", err1);
       res.sendStatus(500);
       return;
     }
@@ -860,7 +857,7 @@ router.post('/createNewPost', function (req, res, next) {
     if (result.length > 0) {
       currUpdateId = result[0].updateID + 1
     }
-    console.log("the new update id is " + currUpdateId);
+    //console.log("the new update id is " + currUpdateId);
 
     var newPostQuery = "INSERT INTO Updates (updateID, updateName, updateMsg, branchID, dateCreated) VALUES (?, ?, ?, ?, ?);";
 
@@ -871,7 +868,7 @@ router.post('/createNewPost', function (req, res, next) {
       //error handling
       if (err2) {
         //release the query, don't need access to the database anymore
-        console.log("Got error while inserting new post: ", err2);
+        //console.log("Got error while inserting new post: ", err2);
         res.sendStatus(500);
         return;
       }
@@ -879,7 +876,7 @@ router.post('/createNewPost', function (req, res, next) {
       var allPosts = "SELECT * FROM Updates WHERE branchID = ?";
       connection.query(allPosts, [branchID], function (err2, rows2) {
         if (err2) {
-          console.log("Error executing branch request query:", err2);
+          //console.log("Error executing branch request query:", err2);
           res.status(500).json({ error: "Internal Server Error" });
           return;
         }
@@ -907,7 +904,7 @@ router.post('/email', function (req, res, next) {
 router.post('/emailUpdate', function (req, res, next) {
   //find the email list
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool");
+  //console.log("connected to pool");
   //this is the query which i can change
   var query = "SELECT email FROM User WHERE userID IN (SELECT userID FROM FollowedBranches WHERE branchID = ? AND emailSubscribed = 1);";
   //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
@@ -915,7 +912,7 @@ router.post('/emailUpdate', function (req, res, next) {
 
     //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
     if (err1) {
-      console.log("Error executing query:", err1);
+      //console.log("Error executing query:", err1);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -937,14 +934,14 @@ router.post('/emailUpdate', function (req, res, next) {
 });
 
 router.get('/allUsers', function (req, res, next) {
-  console.log("i am in the allUsers requests index.js!!!");
+  //console.log("i am in the allUsers requests index.js!!!");
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
 
   // query to get the update posts by the branch
   var oldPostsQuery = "SELECT * FROM User";
   connection.query(oldPostsQuery, function (err2, rows2) {
     if (err2) {
-      console.log("Error executing user request query:", err2);
+      //console.log("Error executing user request query:", err2);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -956,14 +953,14 @@ router.get('/allUsers', function (req, res, next) {
 });
 
 router.get('/allOrgs', function (req, res, next) {
-  console.log("i am in the allOrgs requests index.js!!!");
+  //console.log("i am in the allOrgs requests index.js!!!");
   //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
 
   // query to get the update posts by the branch
   var allOrgs = "SELECT * FROM Organisations;";
   connection.query(allOrgs, function (err2, rows2) {
     if (err2) {
-      console.log("Error executing user request query:", err2);
+      //console.log("Error executing user request query:", err2);
       res.status(500).json({ error: "Internal Server Error" });
       return;
     }
@@ -979,13 +976,13 @@ router.get('/allOrgs', function (req, res, next) {
 router.post('/addUser', function (req, res, next) {
 
   const { first_name, last_name, dob, suburb, state, postcode, country, email, password } = req.body;
-  console.log("Received data ", first_name, last_name, dob, suburb, state, postcode, country, email, password);
+  //console.log("Received data ", first_name, last_name, dob, suburb, state, postcode, country, email, password);
 
   //get connection
   req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -995,7 +992,7 @@ router.post('/addUser', function (req, res, next) {
     connection.query(checkPresent, [email], function (err1, result1) {
       if (err1) {
         connection.release();
-        console.log("Error checking for email: ", err1);
+        //console.log("Error checking for email: ", err1);
         res.sendStatus(500);
         return;
       }
@@ -1003,7 +1000,7 @@ router.post('/addUser', function (req, res, next) {
       //email exists
       if (result1.length > 0) {
         connection.release();
-        console.log("email in use");
+        //console.log("email in use");
         res.status(400).send("email in use");
         return;
       }
@@ -1014,7 +1011,7 @@ router.post('/addUser', function (req, res, next) {
       connection.query(checkPresent, [email], function (err2, result2) {
         if (err2) {
           connection.release();
-          console.log("Error checking for email: ", err2);
+          //console.log("Error checking for email: ", err2);
           res.sendStatus(500);
           return;
         }
@@ -1022,7 +1019,7 @@ router.post('/addUser', function (req, res, next) {
         //email exists
         if (result2.length > 0) {
           connection.release();
-          console.log("email in use");
+          //console.log("email in use");
           res.status(400).send("email in use");
           return;
         }
@@ -1033,7 +1030,7 @@ router.post('/addUser', function (req, res, next) {
         connection.query(checkPresent, [email], function (err3, result3) {
           if (err3) {
             connection.release();
-            console.log("Error checking for email: ", err3);
+            //console.log("Error checking for email: ", err3);
             res.sendStatus(500);
             return;
           }
@@ -1041,7 +1038,7 @@ router.post('/addUser', function (req, res, next) {
           //email exists
           if (result3.length > 0) {
             connection.release();
-            console.log("email in use");
+            //console.log("email in use");
             res.status(400).send("email in use");
             return;
           }
@@ -1055,7 +1052,7 @@ router.post('/addUser', function (req, res, next) {
             //error handling
             if (err4) {
               connection.release();
-              console.log("Got error while fetching userID: ", err4);
+              //console.log("Got error while fetching userID: ", err4);
               res.sendStatus(500);
               return;
             }
@@ -1064,7 +1061,7 @@ router.post('/addUser', function (req, res, next) {
             if (result.length > 0) {
               currUserId = result[0].userID + 1;
             }
-            console.log("the new user id is " + currUserId);
+            //console.log("the new user id is " + currUserId);
 
             //hash password
             var hash;
@@ -1072,7 +1069,7 @@ router.post('/addUser', function (req, res, next) {
             try {
               hash = await hashPass(password);
             } catch (err) {
-              console.log("error in hash");
+              //console.log("error in hash");
               res.sendStatus(500);
               return;
             }
@@ -1083,7 +1080,7 @@ router.post('/addUser', function (req, res, next) {
               connection.release();
 
               if (err5) {
-                console.log("error inserting user", err5);
+                //console.log("error inserting user", err5);
                 res.sendStatus(500);
                 return;
               }
@@ -1111,13 +1108,13 @@ router.post('/addUser', function (req, res, next) {
 router.post('/addOrg', function (req, res, next) {
 
   const { name, email, password, suburb, state, postcode, country } = req.body;
-  console.log("Received data ", name, email, password, suburb, state, postcode, country);
+  //console.log("Received data ", name, email, password, suburb, state, postcode, country);
 
   //get connection
   req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1127,7 +1124,7 @@ router.post('/addOrg', function (req, res, next) {
     connection.query(checkPresent, [email], function (err1, result1) {
       if (err1) {
         connection.release();
-        console.log("Error checking for email: ", err1);
+        //console.log("Error checking for email: ", err1);
         res.sendStatus(500);
         return;
       }
@@ -1135,7 +1132,7 @@ router.post('/addOrg', function (req, res, next) {
       //email exists
       if (result1.length > 0) {
         connection.release();
-        console.log("email in use");
+        //console.log("email in use");
         res.status(400).send("email in use");
         return;
       }
@@ -1146,7 +1143,7 @@ router.post('/addOrg', function (req, res, next) {
       connection.query(checkPresent, [email], function (err2, result2) {
         if (err2) {
           connection.release();
-          console.log("Error checking for email: ", err2);
+          //console.log("Error checking for email: ", err2);
           res.sendStatus(500);
           return;
         }
@@ -1154,7 +1151,7 @@ router.post('/addOrg', function (req, res, next) {
         //email exists
         if (result2.length > 0) {
           connection.release();
-          console.log("email in use");
+          //console.log("email in use");
           res.status(400).send("email in use");
           return;
         }
@@ -1165,7 +1162,7 @@ router.post('/addOrg', function (req, res, next) {
         connection.query(checkPresent, [email], function (err3, result3) {
           if (err3) {
             connection.release();
-            console.log("Error checking for email: ", err3);
+            //console.log("Error checking for email: ", err3);
             res.sendStatus(500);
             return;
           }
@@ -1173,7 +1170,7 @@ router.post('/addOrg', function (req, res, next) {
           //email exists
           if (result3.length > 0) {
             connection.release();
-            console.log("email in use");
+            //console.log("email in use");
             res.status(400).send("email in use");
             return;
           }
@@ -1183,7 +1180,7 @@ router.post('/addOrg', function (req, res, next) {
           connection.query(checkNamePresent, [name], function (err42, result42) {
             if (err42) {
               connection.release();
-              console.log("Error checking for orgName: ", err42);
+              //console.log("Error checking for orgName: ", err42);
               res.sendStatus(500);
               return;
             }
@@ -1191,7 +1188,7 @@ router.post('/addOrg', function (req, res, next) {
             //name exists
             if (result42.length > 0) {
               connection.release();
-              console.log("Organisation Name in use");
+              //console.log("Organisation Name in use");
               res.status(400).send("Organisation Name in use");
               return;
             }
@@ -1204,7 +1201,7 @@ router.post('/addOrg', function (req, res, next) {
               //error handling
               if (err4) {
                 connection.release();
-                console.log("Got error while fetching orgID: ", err4);
+                //console.log("Got error while fetching orgID: ", err4);
                 res.sendStatus(500);
                 return;
               }
@@ -1213,7 +1210,7 @@ router.post('/addOrg', function (req, res, next) {
               if (result4.length > 0) {
                 currOrgId = result4[0].orgID + 1;
               }
-              console.log("the new org id is " + currOrgId);
+              //console.log("the new org id is " + currOrgId);
 
               //get last branch id
               var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
@@ -1223,7 +1220,7 @@ router.post('/addOrg', function (req, res, next) {
                 //error handling
                 if (err5) {
                   connection.release();
-                  console.log("Got error while fetching branchID: ", err5);
+                  //console.log("Got error while fetching branchID: ", err5);
                   res.sendStatus(500);
                   return;
                 }
@@ -1232,7 +1229,7 @@ router.post('/addOrg', function (req, res, next) {
                 if (result5.length > 0) {
                   currBranchId = result5[0].branchID + 1;
                 }
-                console.log("the new branch id is " + currBranchId);
+                //console.log("the new branch id is " + currBranchId);
 
                 //hash password
                 var hash;
@@ -1240,7 +1237,7 @@ router.post('/addOrg', function (req, res, next) {
                 try {
                   hash = await hashPass(password);
                 } catch (err) {
-                  console.log("error in hash");
+                  //console.log("error in hash");
                   res.sendStatus(500);
                   return;
                 }
@@ -1252,7 +1249,7 @@ router.post('/addOrg', function (req, res, next) {
 
                   if (err6) {
                     connection.release();
-                    console.log("error inserting org", err6);
+                    //console.log("error inserting org", err6);
                     res.sendStatus(500);
                     return;
                   }
@@ -1268,7 +1265,7 @@ router.post('/addOrg', function (req, res, next) {
                   connection.release();
 
                   if (err7) {
-                    console.log("error inserting branch", err7);
+                    //console.log("error inserting branch", err7);
                     res.sendStatus(500);
                     return;
                   }
@@ -1276,7 +1273,7 @@ router.post('/addOrg', function (req, res, next) {
                   req.session.user = email;
                   req.session.userType = "organisation";
                   req.session.accountID = currOrgId;
-                  console.log(req.session.user, req.session.userType, req.session.accountID);
+                  //console.log(req.session.user, req.session.userType, req.session.accountID);
 
                 //send an empty response, not needing to return anything, or can send a message for clarity
                 res.send("branch and org successfully added");
@@ -1301,7 +1298,7 @@ router.post('/addOrg', function (req, res, next) {
 router.post('/login', async function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password);
+  //console.log("Received data ", email, password);
 
   //set session user to email
   req.session.user = req.body.email;
@@ -1310,7 +1307,7 @@ router.post('/login', async function (req, res, next) {
   req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1319,14 +1316,14 @@ router.post('/login', async function (req, res, next) {
     connection.query(accountQuery, [email], async function (err, rows) {
       if (err) {
         connection.release();
-        console.log("Error finding login", err);
+        //console.log("Error finding login", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
 
       if (rows.length > 0) {
 
-        console.log(rows[0].password, password, rows[0].userID);
+        //console.log(rows[0].password, password, rows[0].userID);
 
         //check if password matches, if it doesn't return the doesn't match error, if matches, login
         try {
@@ -1335,8 +1332,8 @@ router.post('/login', async function (req, res, next) {
             const id = rows[0].userID;
             req.session.userType = "volunteer";
             req.session.accountID = id;
-            console.log("User id:", id);
-            console.log(req.session.userType, req.session.user);
+            //console.log("User id:", id);
+            //console.log(req.session.userType, req.session.user);
             res.status(200).json({ userType: 'volunteer' });
             return;
           } else {
@@ -1345,7 +1342,7 @@ router.post('/login', async function (req, res, next) {
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
 
@@ -1354,24 +1351,24 @@ router.post('/login', async function (req, res, next) {
         connection.query(orgQuery, [email], async function (err, rows) {
           if (err) {
             connection.release();
-            console.log("Error finding login", err);
+            //console.log("Error finding login", err);
             res.status(500).json({ error: "Internal Server Error" });
             return;
           }
 
           if (rows.length > 0) {
 
-            console.log(rows[0].password, password, rows[0].userID);
+            //console.log(rows[0].password, password, rows[0].userID);
 
             //check if password matches, if it doesn't return the doesn't match error, if matches, login
             try {
               if (await deHashPass(rows[0].password, password)) {
                 connection.release();
                 const id = rows[0].orgID;
-                console.log("Org id:", id);
+                //console.log("Org id:", id);
                 req.session.userType = "organisation";
                 req.session.accountID = id;
-                console.log(req.session.userType, req.session.user);
+                //console.log(req.session.userType, req.session.user);
                 res.status(200).json({ userType: 'organisation' });
                 return;
               } else {
@@ -1380,7 +1377,7 @@ router.post('/login', async function (req, res, next) {
               }
             } catch (err) {
               connection.release();
-              console.log("Error validating hash", err);
+              //console.log("Error validating hash", err);
               res.status(500).json({ error: "Internal Server Error" });
             }
 
@@ -1389,23 +1386,23 @@ router.post('/login', async function (req, res, next) {
             connection.query(adminQuery, [email], async function (err, rows) {
               connection.release();
               if (err) {
-                console.log("Error finding login", err);
+                //console.log("Error finding login", err);
                 res.status(500).json({ error: "Internal Server Error" });
                 return;
               }
 
               if (rows.length > 0) {
 
-                console.log(rows[0].password, password, rows[0].userID);
+                //console.log(rows[0].password, password, rows[0].userID);
 
                 //check if password matches, if it doesn't return the doesn't match error, if matches, login
                 try {
                   if (await deHashPass(rows[0].password, password)) {
                     const id = rows[0].adminID;
-                    console.log("Admin id:", id);
+                    //console.log("Admin id:", id);
                     req.session.accountID = id;
                     req.session.userType = "admin";
-                    console.log(req.session.userType, req.session.user);
+                    //console.log(req.session.userType, req.session.user);
                     res.status(200).json({ userType: 'admin' });
                     return;
                   } else {
@@ -1414,7 +1411,7 @@ router.post('/login', async function (req, res, next) {
                   }
                 } catch (err) {
                   connection.release();
-                  console.log("Error validating hash", err);
+                  //console.log("Error validating hash", err);
                   res.status(500).json({ error: "Internal Server Error" });
                 }
 
@@ -1435,13 +1432,13 @@ router.post('/login', async function (req, res, next) {
 //check duplicate email
 router.post('/checkEmail', function (req, res, next) {
   const { email } = req.body;
-  console.log(email);
+  //console.log(email);
 
   //get connection
   req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1451,7 +1448,7 @@ router.post('/checkEmail', function (req, res, next) {
     connection.query(checkPresent, [email], function (err1, result1) {
       if (err1) {
         connection.release();
-        console.log("Error checking for email: ", err1);
+        //console.log("Error checking for email: ", err1);
         res.sendStatus(500);
         return;
       }
@@ -1459,7 +1456,7 @@ router.post('/checkEmail', function (req, res, next) {
       //email exists
       if (result1.length > 0) {
         connection.release();
-        console.log("email in use");
+        //console.log("email in use");
         res.status(400).send("email in use");
         return;
       }
@@ -1470,7 +1467,7 @@ router.post('/checkEmail', function (req, res, next) {
       connection.query(checkPresent, [email], function (err2, result2) {
         if (err2) {
           connection.release();
-          console.log("Error checking for email: ", err2);
+          //console.log("Error checking for email: ", err2);
           res.sendStatus(500);
           return;
         }
@@ -1478,7 +1475,7 @@ router.post('/checkEmail', function (req, res, next) {
         //email exists
         if (result2.length > 0) {
           connection.release();
-          console.log("email in use");
+          //console.log("email in use");
           res.status(400).send("email in use");
           return;
         }
@@ -1489,7 +1486,7 @@ router.post('/checkEmail', function (req, res, next) {
         connection.query(checkPresent, [email], function (err3, result3) {
           if (err3) {
             connection.release();
-            console.log("Error checking for email: ", err3);
+            //console.log("Error checking for email: ", err3);
             res.sendStatus(500);
             return;
           }
@@ -1497,7 +1494,7 @@ router.post('/checkEmail', function (req, res, next) {
           //email exists
           if (result3.length > 0) {
             connection.release();
-            console.log("email in use");
+            //console.log("email in use");
             res.status(400).send("email in use");
             return;
           }
@@ -1513,14 +1510,14 @@ router.post('/checkEmail', function (req, res, next) {
 //check password matches in user
 router.post('/checkPassword', function (req, res, next) {
   const { password } = req.body;
-  console.log(password);
+  //console.log(password);
   var accountID = req.session.accountID;
 
   //get connection
   req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1531,7 +1528,7 @@ router.post('/checkPassword', function (req, res, next) {
 
       if (err) {
         //connection.release();
-        console.log("Error finding login", err);
+        //console.log("Error finding login", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -1543,17 +1540,17 @@ router.post('/checkPassword', function (req, res, next) {
             res.send();
           } else {
             connection.release();
-            console.log("password incorrect !!");
+            //console.log("password incorrect !!");
             res.status(400).send("password incorrect");
             return;
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
       } else {
-        console.log("Error searching with id", err);
+        //console.log("Error searching with id", err);
         res.sendStatus(500);
         return;
       }
@@ -1567,14 +1564,14 @@ router.post('/checkPassword', function (req, res, next) {
 //check password matches in org
 router.post('/checkPasswordOrg', function (req, res, next) {
   const { password } = req.body;
-  console.log(password, accountID);
+  //console.log(password, accountID);
   var accountID = req.session.accountID;
 
   //get connection
   req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1585,7 +1582,7 @@ router.post('/checkPasswordOrg', function (req, res, next) {
 
       if (err) {
         //connection.release();
-        console.log("Error finding login", err);
+        //console.log("Error finding login", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -1597,17 +1594,17 @@ router.post('/checkPasswordOrg', function (req, res, next) {
             res.send();
           } else {
             connection.release();
-            console.log("password incorrect !!");
+            //console.log("password incorrect !!");
             res.status(400).send("password incorrect");
             return;
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
       } else {
-        console.log("Error searching with id", err);
+        //console.log("Error searching with id", err);
         res.sendStatus(500);
         return;
       }
@@ -1621,14 +1618,14 @@ router.post('/checkPasswordOrg', function (req, res, next) {
 //check password matches in admin
 router.post('/checkPasswordAdmin', function (req, res, next) {
   const { password } = req.body;
-  console.log(password, accountID);
+  //console.log(password, accountID);
   var accountID = req.session.accountID;
 
   //get connection
   req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1639,7 +1636,7 @@ router.post('/checkPasswordAdmin', function (req, res, next) {
 
       if (err) {
         //connection.release();
-        console.log("Error finding login", err);
+        //console.log("Error finding login", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -1651,17 +1648,17 @@ router.post('/checkPasswordAdmin', function (req, res, next) {
             res.send();
           } else {
             connection.release();
-            console.log("password incorrect !!");
+            //console.log("password incorrect !!");
             res.status(400).send("password incorrect");
             return;
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
       } else {
-        console.log("Error searching with id", err);
+        //console.log("Error searching with id", err);
         res.sendStatus(500);
         return;
       }
@@ -1679,12 +1676,12 @@ router.post('/updateUserInfo', async function (req, res, next) {
   const currentEmail = req.session.user;
   const accountID = req.session.accountID;
 
-  console.log(req.session.user, req.session.userType, accountID, email);
+  //console.log(req.session.user, req.session.userType, accountID, email);
 
   await req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1696,11 +1693,11 @@ router.post('/updateUserInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new email", err);
+          //console.log("error inserting new email", err);
           res.sendStatus(500);
           return;
         }
-        console.log("email updated")
+        //console.log("email updated")
       });
     }
 
@@ -1711,11 +1708,11 @@ router.post('/updateUserInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new name", err);
+          //console.log("error inserting new name", err);
           res.sendStatus(500);
           return;
         }
-        console.log("name updated");
+        //console.log("name updated");
       });
 
     }
@@ -1729,7 +1726,7 @@ router.post('/updateUserInfo', async function (req, res, next) {
       try {
         hash = await hashPass(newPassword);
       } catch (err) {
-        console.log("error in hash");
+        //console.log("error in hash");
         res.sendStatus(500);
         return;
       }
@@ -1739,12 +1736,12 @@ router.post('/updateUserInfo', async function (req, res, next) {
       await connection.query(query, [hash, accountID], function (err, returnVal) {
         // connection.release();
         if (err) {
-          console.log("error inserting new password", err);
+          //console.log("error inserting new password", err);
           res.sendStatus(500);
           return;
         }
 
-        console.log("password updated");
+        //console.log("password updated");
       });
       // });
 
@@ -1757,11 +1754,11 @@ router.post('/updateUserInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new location", err);
+          //console.log("error inserting new location", err);
           res.sendStatus(500);
           return;
         }
-        console.log("location updated");
+        //console.log("location updated");
       });
 
     }
@@ -1773,17 +1770,17 @@ router.post('/updateUserInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error updating email preference", err);
+          //console.log("error updating email preference", err);
           res.sendStatus(500);
           return;
         }
-        console.log("email preference updated");
+        //console.log("email preference updated");
       });
 
     }
 
 
-    console.log("got to the end");
+    //console.log("got to the end");
     //if connection has not been released, release it
     //if ((connection && connection.threadId)) {
     connection.release();
@@ -1797,7 +1794,7 @@ router.post('/updateUserInfo', async function (req, res, next) {
 
 router.get('/sessionUserType', function (req, res) {
   if (req.session.userType) {
-    console.log("session type: ", req.session.userType);
+    //console.log("session type: ", req.session.userType);
     res.json({ userType: req.session.userType });
   } else if (req.session.userType == null) {
     res.json({})
@@ -1809,8 +1806,8 @@ router.get('/sessionUserType', function (req, res) {
 
 router.get('/getName', function (req, res) {
   if (req.session.userType) {
-    console.log("session type: ", req.session.userType);
-    console.log("user ID: ", req.session.accountID);
+    //console.log("session type: ", req.session.userType);
+    //console.log("user ID: ", req.session.accountID);
 
     let id = req.session.accountID;
 
@@ -1854,7 +1851,7 @@ router.get('/getName', function (req, res) {
 router.post('/deleteSelfUser', function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password);
+  //console.log("Received data ", email, password);
 
   accountID = req.session.accountID;
 
@@ -1862,7 +1859,7 @@ router.post('/deleteSelfUser', function (req, res, next) {
   req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1872,7 +1869,7 @@ router.post('/deleteSelfUser', function (req, res, next) {
     connection.query(accountQuery, [email, accountID], async function (err, rows) {
       if (err) {
         connection.release();
-        console.log("Error matching details", err);
+        //console.log("Error matching details", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -1904,16 +1901,16 @@ router.post('/deleteSelfUser', function (req, res, next) {
             });
           } else {
             connection.release();
-            console.log("account details incorrect !!");
+            //console.log("account details incorrect !!");
             res.status(400).send("account details incorrect");
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
       } else {
-        console.log("Error searching with id", err);
+        //console.log("Error searching with id", err);
         res.sendStatus(500);
         return;
       }
@@ -1928,12 +1925,12 @@ router.post('/updateOrgInfo', async function (req, res, next) {
   const currentEmail = req.session.user;
   const accountID = req.session.accountID;
 
-  console.log(req.session.user, req.session.userType, accountID, email);
+  //console.log(req.session.user, req.session.userType, accountID, email);
 
   await req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -1945,11 +1942,11 @@ router.post('/updateOrgInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new email", err);
+          //console.log("error inserting new email", err);
           res.sendStatus(500);
           return;
         }
-        console.log("email updated")
+        //console.log("email updated")
       });
     }
 
@@ -1960,11 +1957,11 @@ router.post('/updateOrgInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new name", err);
+          //console.log("error inserting new name", err);
           res.sendStatus(500);
           return;
         }
-        console.log("name updated");
+        //console.log("name updated");
       });
 
     }
@@ -1976,11 +1973,11 @@ router.post('/updateOrgInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new url", err);
+          //console.log("error inserting new url", err);
           res.sendStatus(500);
           return;
         }
-        console.log("url updated");
+        //console.log("url updated");
       });
 
     }
@@ -1994,7 +1991,7 @@ router.post('/updateOrgInfo', async function (req, res, next) {
       try {
         hash = await hashPass(newPassword);
       } catch (err) {
-        console.log("error in hash");
+        //console.log("error in hash");
         res.sendStatus(500);
         return;
       }
@@ -2004,18 +2001,18 @@ router.post('/updateOrgInfo', async function (req, res, next) {
       await connection.query(query, [hash, accountID], function (err, returnVal) {
         // connection.release();
         if (err) {
-          console.log("error inserting new password", err);
+          //console.log("error inserting new password", err);
           res.sendStatus(500);
           return;
         }
 
-        console.log("password updated");
+        //console.log("password updated");
       });
       // });
 
     }
 
-    console.log("got to the end");
+    //console.log("got to the end");
     //if connection has not been released, release it
     //if ((connection && connection.threadId)) {
     connection.release();
@@ -2031,7 +2028,7 @@ router.post('/updateOrgInfo', async function (req, res, next) {
 router.post('/deleteSelfOrg', function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password);
+  //console.log("Received data ", email, password);
 
   accountID = req.session.accountID;
 
@@ -2039,7 +2036,7 @@ router.post('/deleteSelfOrg', function (req, res, next) {
   req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -2049,7 +2046,7 @@ router.post('/deleteSelfOrg', function (req, res, next) {
     connection.query(accountQuery, [email, accountID], async function (err, rows) {
       if (err) {
         connection.release();
-        console.log("Error matching details", err);
+        //console.log("Error matching details", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -2081,16 +2078,16 @@ router.post('/deleteSelfOrg', function (req, res, next) {
             });
           } else {
             connection.release();
-            console.log("account details incorrect !!");
+            //console.log("account details incorrect !!");
             res.status(400).send("account details incorrect");
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
       } else {
-        console.log("Error searching with id", err);
+        //console.log("Error searching with id", err);
         res.sendStatus(500);
         return;
       }
@@ -2105,12 +2102,12 @@ router.post('/updateAdminInfo', async function (req, res, next) {
   const currentEmail = req.session.user;
   const accountID = req.session.accountID;
 
-  console.log(req.session.user, req.session.userType, accountID, email);
+  //console.log(req.session.user, req.session.userType, accountID, email);
 
   await req.pool.getConnection(async function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -2122,11 +2119,11 @@ router.post('/updateAdminInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new email", err);
+          //console.log("error inserting new email", err);
           res.sendStatus(500);
           return;
         }
-        console.log("email updated")
+        //console.log("email updated")
       });
     }
 
@@ -2137,11 +2134,11 @@ router.post('/updateAdminInfo', async function (req, res, next) {
         //connection.release();
 
         if (err) {
-          console.log("error inserting new name", err);
+          //console.log("error inserting new name", err);
           res.sendStatus(500);
           return;
         }
-        console.log("name updated");
+        //console.log("name updated");
       });
 
     }
@@ -2155,7 +2152,7 @@ router.post('/updateAdminInfo', async function (req, res, next) {
       try {
         hash = await hashPass(newPassword);
       } catch (err) {
-        console.log("error in hash");
+        //console.log("error in hash");
         res.sendStatus(500);
         return;
       }
@@ -2165,18 +2162,18 @@ router.post('/updateAdminInfo', async function (req, res, next) {
       await connection.query(query, [hash, accountID], function (err, returnVal) {
         // connection.release();
         if (err) {
-          console.log("error inserting new password", err);
+          //console.log("error inserting new password", err);
           res.sendStatus(500);
           return;
         }
 
-        console.log("password updated");
+        //console.log("password updated");
       });
       // });
 
     }
 
-    console.log("got to the end");
+    //console.log("got to the end");
     //if connection has not been released, release it
     //if ((connection && connection.threadId)) {
     connection.release();
@@ -2192,7 +2189,7 @@ router.post('/updateAdminInfo', async function (req, res, next) {
 router.post('/deleteSelfAdmin', function (req, res, next) {
 
   const { email, password } = req.body;
-  console.log("Received data ", email, password);
+  //console.log("Received data ", email, password);
 
   accountID = req.session.accountID;
 
@@ -2200,7 +2197,7 @@ router.post('/deleteSelfAdmin', function (req, res, next) {
   req.pool.getConnection(function (err, connection) {
     //error handling
     if (err) {
-      console.log("error")
+      //console.log("error")
       res.sendStatus(500);
       return;
     }
@@ -2210,7 +2207,7 @@ router.post('/deleteSelfAdmin', function (req, res, next) {
     connection.query(accountQuery, [email, accountID], async function (err, rows) {
       if (err) {
         connection.release();
-        console.log("Error matching details", err);
+        //console.log("Error matching details", err);
         res.status(500).json({ error: "Internal Server Error" });
         return;
       }
@@ -2242,16 +2239,16 @@ router.post('/deleteSelfAdmin', function (req, res, next) {
             });
           } else {
             connection.release();
-            console.log("account details incorrect !!");
+            //console.log("account details incorrect !!");
             res.status(400).send("account details incorrect");
           }
         } catch (err) {
           connection.release();
-          console.log("Error validating hash", err);
+          //console.log("Error validating hash", err);
           res.status(500).json({ error: "Internal Server Error" });
         }
       } else {
-        console.log("Error searching with id", err);
+        //console.log("Error searching with id", err);
         res.sendStatus(500);
         return;
       }
@@ -2279,7 +2276,7 @@ router.get('/checkVerified', function (req, res, next) {
 });
 
 router.post('/uploadLogo', upload.single('fileName'), (req, res) => {
-  console.log("image uploaded successfully!");
+  //console.log("image uploaded successfully!");
   let filePath = req.file.path;
   let orgID = req.session.accountID;
   let query = `UPDATE Organisations SET imgPath = ? WHERE orgID = ?`;
@@ -2288,14 +2285,14 @@ router.post('/uploadLogo', upload.single('fileName'), (req, res) => {
       console.error("Error updating path:", err);
       res.status(500).send("Error updating path");
     } else {
-      console.log("path updated successfully");
+      //console.log("path updated successfully");
       res.sendStatus(200);
     }
   });
 });
 
 router.post('/uploadDescLink', function (req, res, next) {
-  console.log("AHHHHH");
+  //console.log("AHHHHH");
   const { desc, link } = req.body;
   let orgID = req.session.accountID;
   if (!desc || !link) {
@@ -2308,7 +2305,7 @@ router.post('/uploadDescLink', function (req, res, next) {
       console.error("Error updating description and link:", err);
       res.status(500).json({ error: "Error updating description and link" });
     } else {
-      console.log("Description and link updated successfully");
+      //console.log("Description and link updated successfully");
       res.json({ message: "Description and link updated successfully" });
     }
   });
@@ -2317,10 +2314,10 @@ router.post('/uploadDescLink', function (req, res, next) {
 
 router.get('/getUpdates', (req, res) => {
   let organisationID = req.session.accountID;
-  console.log("orgID=", organisationID);
-  console.log("IM IN GET UPDATES");
+  //console.log("orgID=", organisationID);
+  //console.log("IM IN GET UPDATES");
   let branchID = req.query.branchID;
-  console.log("BRANCHID: ", branchID);
+  //console.log("BRANCHID: ", branchID);
 
 
 
@@ -2342,7 +2339,7 @@ router.get('/getUpdates', (req, res) => {
     }
 
     if (rows.length === 0) {
-      console.log("THERE IS NO UpDATES");
+      //console.log("THERE IS NO UpDATES");
     }
 
     res.json(rows); // send updates as JSON response
@@ -2352,10 +2349,10 @@ router.get('/getUpdates', (req, res) => {
 
 router.get('/getPosts', (req, res) => {
   let organisationID = req.session.accountID;
-  console.log("orgID=", organisationID);
-  console.log("IM IN GET POSTS");
+  //console.log("orgID=", organisationID);
+  //console.log("IM IN GET POSTS");
   let branchID = req.query.branchID;
-  console.log("BRANCHID: ", branchID);
+  //console.log("BRANCHID: ", branchID);
 
 
   const query = `
@@ -2376,7 +2373,7 @@ router.get('/getPosts', (req, res) => {
     }
 
     if (rows.length === 0) {
-      console.log("THERE IS NO POSTS");
+      //console.log("THERE IS NO POSTS");
     }
 
     res.json(rows); // send updates as JSON response
@@ -2389,7 +2386,7 @@ const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client('YOUR_GOOGLE_CLIENT_ID');
 
 router.post('/loginGoogle', async function (req, res, next) {
-  console.log("/loginGoogle running");
+  //console.log("/loginGoogle running");
 
   try {
     const ticket = await client.verifyIdToken({
@@ -2398,12 +2395,12 @@ router.post('/loginGoogle', async function (req, res, next) {
     });
 
     const payload = ticket.getPayload();
-    console.log(payload['email'], payload['name']);
+    //console.log(payload['email'], payload['name']);
     const email = payload['email'];
 
     req.pool.getConnection(function (err, connection) {
       if (err) {
-        console.log("error");
+        //console.log("error");
         res.sendStatus(500);
         return;
       }
@@ -2418,13 +2415,13 @@ router.post('/loginGoogle', async function (req, res, next) {
       let checkPresent = "SELECT email, userID FROM User WHERE email = ? AND googleUser = 1;";
       connection.query(checkPresent, [email], function (err1, result1) {
         if (err1) {
-          console.log("Error checking for email: ", err1);
+          //console.log("Error checking for email: ", err1);
           handleResponse(500, "Error checking for email");
           return;
         }
 
         if (result1.length > 0) {
-          console.log("email in users");
+          //console.log("email in users");
           req.session.userType = "volunteer";
           req.session.accountID = result1[0].userID;
           req.session.user = result1[0].email;
@@ -2436,13 +2433,13 @@ router.post('/loginGoogle', async function (req, res, next) {
         checkPresent = "SELECT email, orgID FROM Organisations WHERE email = ? AND googleUser = 1;";
         connection.query(checkPresent, [email], function (err2, result2) {
           if (err2) {
-            console.log("Error checking for email: ", err2);
+            //console.log("Error checking for email: ", err2);
             handleResponse(500, "Error checking for email");
             return;
           }
 
           if (result2.length > 0) {
-            console.log("email in organisation");
+            //console.log("email in organisation");
             req.session.userType = "organisation";
             req.session.accountID = result2[0].orgID;
             req.session.user = result2[0].email;
@@ -2454,13 +2451,13 @@ router.post('/loginGoogle', async function (req, res, next) {
           checkPresent = "SELECT email, adminID FROM Admin WHERE email = ?;";
           connection.query(checkPresent, [email], function (err3, result3) {
             if (err3) {
-              console.log("Error checking for email: ", err3);
+              //console.log("Error checking for email: ", err3);
               handleResponse(500, "Error checking for email");
               return;
             }
 
             if (result3.length > 0) {
-              console.log("email in admin");
+              //console.log("email in admin");
               req.session.userType = "admin";
               req.session.accountID = result3[0].adminID;
               req.session.user = result3[0].email;
@@ -2468,7 +2465,7 @@ router.post('/loginGoogle', async function (req, res, next) {
               return;
             }
 
-            console.log("email not in any database");
+            //console.log("email not in any database");
             handleResponse(400, "You need to sign up before signing in");
           });
         });
@@ -2490,7 +2487,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
     });
 
     const payload = ticket.getPayload();
-    console.log(payload['email'], payload['name']);
+    //console.log(payload['email'], payload['name']);
     const email = payload['email'];
     const name = payload['name'];
     const space = "";
@@ -2501,7 +2498,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
     req.pool.getConnection(async function (err, connection) {
       //error handling
       if (err) {
-        console.log("error")
+        //console.log("error")
         res.sendStatus(500);
         return;
       }
@@ -2511,7 +2508,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
       connection.query(checkPresent, [email], function (err1, result1) {
         if (err1) {
           connection.release();
-          console.log("Error checking for email: ", err1);
+          //console.log("Error checking for email: ", err1);
           res.sendStatus(500);
           return;
         }
@@ -2519,7 +2516,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
         //email exists
         if (result1.length > 0) {
           connection.release();
-          console.log("email in use");
+          //console.log("email in use");
           res.status(400).send("email in use");
           return;
         }
@@ -2530,7 +2527,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
         connection.query(checkPresent, [email], function (err2, result2) {
           if (err2) {
             connection.release();
-            console.log("Error checking for email: ", err2);
+            //console.log("Error checking for email: ", err2);
             res.sendStatus(500);
             return;
           }
@@ -2538,7 +2535,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
           //email exists
           if (result2.length > 0) {
             connection.release();
-            console.log("email in use");
+            //console.log("email in use");
             res.status(400).send("email in use");
             return;
           }
@@ -2549,7 +2546,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
           connection.query(checkPresent, [email], function (err3, result3) {
             if (err3) {
               connection.release();
-              console.log("Error checking for email: ", err3);
+              //console.log("Error checking for email: ", err3);
               res.sendStatus(500);
               return;
             }
@@ -2557,7 +2554,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
             //email exists
             if (result3.length > 0) {
               connection.release();
-              console.log("email in use");
+              //console.log("email in use");
               res.status(400).send("email in use");
               return;
             }
@@ -2571,7 +2568,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
               //error handling
               if (err4) {
                 connection.release();
-                console.log("Got error while fetching userID: ", err4);
+                //console.log("Got error while fetching userID: ", err4);
                 res.sendStatus(500);
                 return;
               }
@@ -2580,7 +2577,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
               if (result.length > 0) {
                 currUserId = result[0].userID + 1;
               }
-              console.log("the new user id is " + currUserId);
+              //console.log("the new user id is " + currUserId);
 
               var query = "INSERT INTO User (userID, firstName, lastName, email, googleUser) VALUES (?, ?, ?, ?, ?);";
 
@@ -2588,7 +2585,7 @@ router.post('/signUpGoogleUser', async function (req, res, next) {
                 connection.release();
 
                 if (err5) {
-                  console.log("error inserting user", err5);
+                  //console.log("error inserting user", err5);
                   res.sendStatus(500);
                   return;
                 }
@@ -2625,7 +2622,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
     });
 
     const payload = ticket.getPayload();
-    console.log(payload['email'], payload['name']);
+    //console.log(payload['email'], payload['name']);
     const email = payload['email'];
     const name = payload['name'];
     // const dob = payload['birthdate'];
@@ -2634,7 +2631,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
     req.pool.getConnection(async function (err, connection) {
       //error handling
       if (err) {
-        console.log("error")
+        //console.log("error")
         res.sendStatus(500);
         return;
       }
@@ -2644,7 +2641,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
       connection.query(checkPresent, [email], function (err1, result1) {
         if (err1) {
           connection.release();
-          console.log("Error checking for email: ", err1);
+          //console.log("Error checking for email: ", err1);
           res.sendStatus(500);
           return;
         }
@@ -2652,7 +2649,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
         //email exists
         if (result1.length > 0) {
           connection.release();
-          console.log("email in use");
+          //console.log("email in use");
           res.status(400).send("email in use");
           return;
         }
@@ -2663,7 +2660,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
         connection.query(checkPresent, [email], function (err2, result2) {
           if (err2) {
             connection.release();
-            console.log("Error checking for email: ", err2);
+            //console.log("Error checking for email: ", err2);
             res.sendStatus(500);
             return;
           }
@@ -2671,7 +2668,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
           //email exists
           if (result2.length > 0) {
             connection.release();
-            console.log("email in use");
+            //console.log("email in use");
             res.status(400).send("email in use");
             return;
           }
@@ -2682,7 +2679,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
           connection.query(checkPresent, [email], function (err3, result3) {
             if (err3) {
               connection.release();
-              console.log("Error checking for email: ", err3);
+              //console.log("Error checking for email: ", err3);
               res.sendStatus(500);
               return;
             }
@@ -2690,7 +2687,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
             //email exists
             if (result3.length > 0) {
               connection.release();
-              console.log("email in use");
+              //console.log("email in use");
               res.status(400).send("email in use");
               return;
             }
@@ -2700,7 +2697,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
             connection.query(checkPresent, [name], function (err3, result3) {
               if (err3) {
                 connection.release();
-                console.log("Error checking for name: ", err3);
+                //console.log("Error checking for name: ", err3);
                 res.sendStatus(500);
                 return;
               }
@@ -2708,7 +2705,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
               //name already exists
               if (result3.length > 0) {
                 connection.release();
-                console.log("name in use");
+                //console.log("name in use");
                 res.status(400).send("name in use");
                 return;
               }
@@ -2723,7 +2720,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
                 //error handling
                 if (err4) {
                   connection.release();
-                  console.log("Got error while fetching orgID: ", err4);
+                  //console.log("Got error while fetching orgID: ", err4);
                   res.sendStatus(500);
                   return;
                 }
@@ -2732,7 +2729,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
                 if (result.length > 0) {
                   currOrgId = result[0].orgID + 1;
                 }
-                console.log("the new org id is " + currOrgId);
+                //console.log("the new org id is " + currOrgId);
 
                 //get last branch id
                 var mostRecentBranchId = "SELECT branchID FROM Branch ORDER BY branchID DESC LIMIT 1;";
@@ -2742,7 +2739,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
                   //error handling
                   if (err5) {
                     connection.release();
-                    console.log("Got error while fetching branchID: ", err5);
+                    //console.log("Got error while fetching branchID: ", err5);
                     res.sendStatus(500);
                     return;
                   }
@@ -2751,7 +2748,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
                   if (result5.length > 0) {
                     currBranchId = result5[0].branchID + 1;
                   }
-                  console.log("the new branch id is " + currBranchId);
+                  //console.log("the new branch id is " + currBranchId);
 
                   var query = "INSERT INTO Organisations (orgID, orgName, email, googleUser) VALUES (?, ?, ?, ?);";
 
@@ -2759,7 +2756,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
                     //connection.release();
 
                     if (err5) {
-                      console.log("error inserting user", err5);
+                      //console.log("error inserting user", err5);
                       res.sendStatus(500);
                       return;
                     }
@@ -2770,7 +2767,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
                       connection.release();
 
                       if (err7) {
-                        console.log("error inserting branch", err7);
+                        //console.log("error inserting branch", err7);
                         res.sendStatus(500);
                         return;
                       }
@@ -2802,7 +2799,7 @@ router.post('/signUpGoogleOrg', async function (req, res, next) {
 router.post('/logOut', function (req, res, next) {
   req.session.destroy(function (err) {
     if (err) {
-      console.log("error destroying session: ", err);
+      //console.log("error destroying session: ", err);
       res.status(500).send("failed to log out");
     } else {
       res.status(200).send("logged out");
@@ -2812,11 +2809,11 @@ router.post('/logOut', function (req, res, next) {
 
 router.get('/getNumVolunteers', function (req, res, next) {
   // first get the branch id
-  console.log("GETTING NUM OF VOLUNTEERS OF EACH BRANCH");
+  //console.log("GETTING NUM OF VOLUNTEERS OF EACH BRANCH");
   let organisationID = req.session.accountID;
-  console.log("orgID=", organisationID);
+  //console.log("orgID=", organisationID);
   let branchID = req.query.branchID;
-  console.log("BRANCHID: ", branchID);
+  //console.log("BRANCHID: ", branchID);
 
   const query = `
     SELECT COUNT(DISTINCT fb.userID) AS follower_count
@@ -2832,18 +2829,18 @@ router.get('/getNumVolunteers', function (req, res, next) {
       return;
     }
     const followerCount = count[0].follower_count || 0;
-    console.log("the number of volunteers: ", followerCount);
+    //console.log("the number of volunteers: ", followerCount);
     res.json({ followerCount }); // send updates as JSON response
   });
 })
 
 router.get('/getBranchVolunteers', function (req, res, next) {
   // first get the branch id
-  console.log("GETTING ALL VOLUNTEERS");
+  //console.log("GETTING ALL VOLUNTEERS");
   let organisationID = req.session.accountID;
-  console.log("orgID=", organisationID);
+  //console.log("orgID=", organisationID);
   let branchID = req.query.branchID;
-  console.log("BRANCHID: ", branchID);
+  //console.log("BRANCHID: ", branchID);
 
   const query = `
     SELECT u.firstName, u.lastName, u.email, u.userID
@@ -2859,18 +2856,18 @@ router.get('/getBranchVolunteers', function (req, res, next) {
       res.status(500).json({ error: 'internal server error' });
       return;
     }
-    console.log("yay, we're getting the branch volunteers now!!!");
+    //console.log("yay, we're getting the branch volunteers now!!!");
     res.json(volunteers);
   });
 })
 
 router.post('/removeVolunteer/:branchID/:volunteerID', function (req, res, next) {
-  console.log("REMOVE VOLUNTEER")
+  //console.log("REMOVE VOLUNTEER")
   // get user ID and branch ID and org ID
   let branchID = req.params.branchID;
   let userID = req.params.volunteerID;
-  console.log("branch ID: ", branchID);
-  console.log("user ID: ", userID);
+  //console.log("branch ID: ", branchID);
+  //console.log("user ID: ", userID);
 
   const query = `
         DELETE FROM FollowedBranches
@@ -2881,20 +2878,20 @@ router.post('/removeVolunteer/:branchID/:volunteerID', function (req, res, next)
       console.error('Error removing volunteer:', err);
       res.status(500).json({ error: 'Internal server error' });
     } else {
-      console.log('Volunteer removed successfully');
+      //console.log('Volunteer removed successfully');
       res.status(200).json({ message: 'Volunteer removed successfully' });
     }
   });
 });
 
 router.post('/regBranch', function (req, res, next) {
-  console.log("IN REGISTER BRANCH")
+  //console.log("IN REGISTER BRANCH")
   // get user ID and branch ID and org ID
 
   let orgID = req.session.accountID;
 
   const { name, suburb, state, postcode, country } = req.body;
-  console.log("values in new branch: " + name + suburb + state + postcode + country)
+  //console.log("values in new branch: " + name + suburb + state + postcode + country)
 
   // get the last query ID
   var currBranchIDQuery = "SELECT MAX(branchID) AS highestBranchID FROM Branch;";
@@ -2912,7 +2909,7 @@ router.post('/regBranch', function (req, res, next) {
           console.error('Error registering branch:', err);
           res.status(500).json({ error: 'Internal server error' });
         } else {
-          console.log('Branch registered successfully');
+          //console.log('Branch registered successfully');
           res.status(200).json({ message: 'Branch registered successfully' });
         }
       }
@@ -3012,69 +3009,27 @@ router.post("/unjoinOrgBranch", function (req, res, next) {
 
 router.get('/getPostsVolunteer', function (req, res, next) {
   // get the followed updates depending on the branch
-
   let branchID = req.query.branchID;
-  let userID = req.session.accountID;
-  //all updates from all branches
-
-  let sqlQuery = `
-    SELECT
-        Updates.*,
-        Organisations.orgName,
-        Branch.branchName,
-        Organisations.imgPath
-    FROM
-        Updates
-    JOIN
-        Branch ON Updates.branchID = Branch.branchID
-    JOIN
-        Organisations ON Branch.orgID = Organisations.orgID
-    LEFT JOIN
-        FollowedBranches ON Updates.branchID = FollowedBranches.branchID
-            AND FollowedBranches.userID = ?
-    WHERE
-        Updates.private = 0
-        OR
-        (Updates.private = 1 AND FollowedBranches.userID IS NOT NULL);
-    `;
   // Construct the SQL query to fetch posts based on branchID
-  if (branchID !== '-1') {
-    console.log("NEW QUERY");
-    sqlQuery = `
-      SELECT Updates.*, Organisations.orgName,
-      Branch.branchName, Organisations.imgPath
-      FROM Updates
-      JOIN Branch ON Updates.branchID = Branch.branchID
-      JOIN Organisations ON Branch.orgID = Organisations.orgID
-      WHERE Updates.branchID = ?`;
-  }
+  let sqlQuery = `
+    SELECT Updates.*, Organisations.imgPath
+    FROM Updates
+    JOIN Branch ON Updates.branchID = Branch.branchID
+    JOIN Organisations ON Branch.orgID = Organisations.orgID
+    WHERE Updates.branchID = ${branchID}`;
 
   // Execute the SQL query
-  if (branchID === '-1') {
-    connection.query(sqlQuery, [userID], (err, results) => {
-      if (err) {
-        // Handle errors
-        console.error("Error fetching posts:", err);
-        res.status(500).json({ error: "Failed to fetch posts" });
-      } else {
-        // Send the fetched posts as JSON response
-        res.json(results);
-      }
-    });
-  } else {
-    connection.query(sqlQuery, [branchID], (err, results) => {
-      if (err) {
-        // Handle errors
-        console.error("Error fetching posts:", err);
-        res.status(500).json({ error: "Failed to fetch posts" });
-      } else {
-        // Send the fetched posts as JSON response
-        res.json(results);
-      }
-    });
-  }
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      // Handle errors
+      console.error("Error fetching posts:", err);
+      res.status(500).json({ error: "Failed to fetch posts" });
+    } else {
+      // Send the fetched posts as JSON response
+      res.json(results);
+    }
+  });
 })
-
 
 router.get('/getFollowedBranch', function (req, res, next) {
   // get the followed updates depending on the branch
@@ -3217,7 +3172,7 @@ router.post('/deleteGoogleUser', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const userID = req.session.accountID;
 
-  console.log("went into /deleteUser and userID = " + userID);
+  //console.log("went into /deleteUser and userID = " + userID);
 
   if (userID > 0) {
     //get the connection again
@@ -3251,7 +3206,7 @@ router.post('/deleteGoogleOrg', function (req, res, next) {
   //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
   const orgID = req.session.accountID;
 
-  console.log("went into /deleteOrg and orgID = " + orgID);
+  //console.log("went into /deleteOrg and orgID = " + orgID);
 
   if (orgID > 0) {
     //get the connection again
@@ -3281,526 +3236,6 @@ router.post('/deleteGoogleOrg', function (req, res, next) {
   }
 });
 
-router.get('/searchPosts', function (req, res, next) {
-  console.log("i am here now!!!");
 
-  const categories = req.query.categories;
-  const commitment = req.query.commitment;
-  const location = req.query.location;
-  console.log("thingys");
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("connected to pool");
-    //this is the query which i can change
-
-    let query = `SELECT oppID,
-      oppName,
-      tags,
-      dates,
-      address,
-      commitment,
-      suitability,
-      training,
-      requirements,
-      thumbnail,
-      Opportunities.description,
-      Opportunities.branchID,
-      branchName,
-      org.orgName as organisationName
-      FROM Opportunities
-      JOIN Branch b ON Opportunities.branchID = b.branchID
-      JOIN Organisations org ON org.orgID = b.orgID
-      WHERE 1=1`; // Adding a dummy condition to simplify appending AND conditions
-
-    const queryParams = [];
-
-    if (categories) {
-      query += ' AND oppType LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(categories);
-    }
-
-    if (commitment) {
-      query += ' AND commitment LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(commitment);
-    }
-
-    if (location) {
-      query += ' AND address LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(location);
-    }
-
-    query += ';';
-
-
-
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, queryParams, function (err1, rows, fields) {
-      // Close the connection
-      console.log(query);
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        // No results found
-        res.status(404).json({ error: "Opps not found" });
-        return;
-      }
-
-      // Results found, send back the details
-      res.json(rows);
-    });
-  });
-});
-
-router.get('/searchSpecificPost', function (req, res, next) {
-  console.log("new page laoded");
-
-  const ID = req.query.id;
-  console.log(ID);
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("connected to pool");
-    //this is the query which i can change
-
-    let query = `SELECT oppName,
-      tags,
-      address,
-      commitment,
-      suitability,
-      training,
-      requirements,
-      thumbnail,
-      Opportunities.description,
-      Opportunities.branchID,
-      branchName,
-      org.orgName as organisationName
-      FROM Opportunities
-      JOIN Branch b ON Opportunities.branchID = b.branchID
-      JOIN Organisations org ON org.orgID = b.orgID
-      WHERE oppID = ?;`; // Adding a dummy condition to simplify appending AND conditions
-
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [ID], function (err1, rows, fields) {
-      // Close the connection
-      console.log(query);
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        // No results found
-        res.status(404).json({ error: "Opp not found" });
-        return;
-      }
-      res.json(rows[0]);
-    });
-  });
-});
-
-router.post('/addRSVP', (req, res) => {
-  const { oppID } = req.body;
-  const userID = req.session.accountID;
-
-  req.pool.getConnection(function (err, connection) {
-    if (!userID || !oppID) {
-        return res.status(400).send({ error: true, message: 'Please provide userID and oppID' });
-    }
-    const check = 'SELECT * FROM RSVPD WHERE userID = ? AND oppID = ?;';
-    connection.query(check, [userID, oppID], (err, reults) => {
-      if (err) {
-        console.error('Error checking RSVPD:', err);
-        return res.status(500).send({ error: true, message: 'Database insertion failed' });
-      }
-      if (reults.length > 0) {
-        return res.status(409).send({ error: true, message: 'RSVP already exists' });
-      }
-
-      const query = 'INSERT INTO RSVPD (userID, oppID) VALUES (?, ?);';
-      connection.query(query, [userID, oppID], (err, results) => {
-          if (err) {
-              console.error('Error inserting into RSVPD:', err);
-              return res.status(500).send({ error: true, message: 'Database insertion failed' });
-          }
-          res.send({ error: false, message: 'RSVP added successfully', data: results });
-      });
-    });
-  });
-});
-
-router.post("/removeRSVP", function (req, res, next) {
-  // first get user ID, branch ID and org ID
-  let userID = req.session.accountID;
-  const { oppID } = req.body;
-
-  let query = "DELETE FROM RSVPD WHERE userID = ? AND oppID = ?";
-  connection.query(query, [userID, oppID], function (err, result) {
-    if (err) {
-      console.error('Error unjoining branch:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-    res.json({ message: 'Successfully unRSVPD' });
-  });
-});
-
-router.get('/checkRSVP', function (req, res, next) {
-  console.log("checkrsvp");
-
-  const oppID = req.query.id;
-  const userID = req.session.accountID;
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-
-    let query = `SELECT * FROM RSVPD WHERE userID = ? AND oppID = ?;`; // Adding a dummy condition to simplify appending AND conditions
-
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [userID, oppID], function (err1, rows, fields) {
-      // Close the connection
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length > 0) {
-        // Results found
-        res.json(true);
-      } else {
-        // No results found
-        res.json(false);
-      }
-    });
-  });
-});
-
-router.get('/checkOrg', function (req, res, next) {
-  console.log("checkOrg");
-
-  const branchID = req.query.id;
-  const userID = req.session.accountID;
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-
-    let query = `SELECT * FROM FollowedBranches WHERE userID = ? AND branchID = ?;`; // Adding a dummy condition to simplify appending AND conditions
-
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [userID, branchID], function (err1, rows, fields) {
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length > 0) {
-        // Results found
-        console.log("org found");
-        res.json(true);
-      } else {
-        // No results found
-        res.json(false);
-      }
-    });
-  });
-});
-
-router.get('/findEmailName', function (req, res, next) {
-  const query = 'SELECT o.oppName, u.email FROM RSVPD r JOIN Opportunities o ON r.oppID = o.oppID JOIN User u ON r.userID = u.userID WHERE r.userID = ? AND r.oppID = ?;';
-  const userID = req.session.accountID;
-  const oppID = req.query.id;
-  connection.query(query, [userID, oppID], function (err1, rows, fields) {
-    // Close the connection
-    if (err1) {
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    if (rows.length === 0) {
-      // No results found
-      res.status(404).json({ error: "Opps not found" });
-      return;
-    }
-    res.json(rows[0]);
-  });
-});
-
-router.get('/showPosts', function (req, res, next) {
-  console.log("I am here now!!!");
-
-  const categories = req.query.categories;
-  const commitment = req.query.commitment;
-  const location = req.query.location;
-  const branchID = req.query.branchID;
-
-  if (!branchID) {
-    res.status(400).json({ error: "Branch ID is required" });
-    return;
-  }
-
-  req.pool.getConnection(function (err, connection) {
-    if (err) {
-      console.log("Got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("Connected to pool");
-
-    let query = `
-    SELECT
-        o.oppID,
-        o.oppName,
-        org.orgName,
-        o.tags,
-        o.description,
-        o.thumbnail,
-        org.orgSite
-    FROM
-        Opportunities o
-    JOIN
-        Branch b ON o.branchID = b.branchID
-    JOIN
-        Organisations org ON b.orgID = org.orgID
-    WHERE
-        b.branchID = ?`;
-
-    const queryParams = [branchID];
-
-    if (categories) {
-      query += ' AND o.tags LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(categories);
-    }
-
-    if (commitment) {
-      query += ' AND o.commitment LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(commitment);
-    }
-
-    if (location) {
-      query += ' AND o.address LIKE CONCAT(\'%\', ?, \'%\')';
-      queryParams.push(location);
-    }
-
-    query += ';';
-
-    connection.query(query, queryParams, function (err1, rows, fields) {
-      connection.release();
-      console.log(query);
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        res.status(404).json({ error: "No opportunities found" });
-        return;
-      }
-      console.log(rows);
-      res.json(rows);
-    });
-  });
-});
-
-router.get('/findBranches', function (req, res, next) {
-var userID = req.session.accountID;
-  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-  var query = `SELECT
-  b.branchName,
-  b.branchID
-  FROM
-  Branch b
-  JOIN
-  Organisations org ON b.orgID = org.orgID
-  WHERE
-  org.orgID = ?;`
-  connection.query(query, userID, function (err1, rows, fields) {
-    if (err1) {
-      console.log("Error executing query:", err1);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    if (rows.length === 0) {
-      // No results found
-      res.status(404).json({ error: "Opps not found" });
-      return;
-    }
-
-    // Results found, send back the details
-    res.json(rows);
-  });
-});
-
-router.get('/searchUsers', function (req, res, next) {
-  const ID = req.query.id;
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  req.pool.getConnection(function (err, connection) {
-    //this is the error handling
-    if (err) {
-      console.log("got error!!!!");
-      res.sendStatus(500);
-      return;
-    }
-    console.log("connected to pool");
-    //this is the query which i can change
-
-    let query = `SELECT User.firstName, User.lastName, User.userID
-    FROM User
-    JOIN RSVPD ON User.userID = RSVPD.userID
-    JOIN Opportunities ON RSVPD.oppID = Opportunities.oppID
-    WHERE Opportunities.oppID = ?;`; // Adding a dummy condition to simplify appending AND conditions
-
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-    connection.query(query, [ID], function (err1, rows, fields) {
-      // Close the connection
-      console.log(query);
-      connection.release();
-      if (err1) {
-        console.log("Error executing query:", err1);
-        res.status(500).json({ error: "Internal Server Error" });
-        return;
-      }
-
-      if (rows.length === 0) {
-        // No results found
-        res.status(404).json({ error: "Opp not found" });
-        return;
-      }
-      res.json(rows);
-    });
-  });
-});
-
-router.post("/removeUserOrg", function (req, res, next) {
-  // first get user ID, branch ID and org ID
-  const { userID, oppID } = req.body;
-  console.log(userID);
-  console.log(oppID);
-  let query = "DELETE FROM RSVPD WHERE userID = ? AND oppID = ?";
-  connection.query(query, [userID, oppID], function (err, result) {
-    console.log(query);
-    if (err) {
-      console.error('Error unjoining branch:', err);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
-    }
-    res.json({ message: 'Successfully unRSVPD' });
-  });
-});
-
-router.post('/createEvent', function (req, res, next) {
-  //we have taken in values and we are wanting to add them into the database, so we set these values to equal some variable name
-  // const { branchName, updateName, updateMsg, dateCreated } = req.body;
-  const { oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID } = req.body;
-  // console.log("THE VALUES PARSED TO CREATE A NEW POST ARE " + branchName, orgID, updateName, updateMsg, dateCreated);
-  //get the last created and used updateID
-
-  var newPostQuery = "INSERT INTO Opportunities (oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-  //using our connection apply the query to the database, we need the array [] to be the placeholder values of ? ? ? ? ?
-  //err1 is the error, returnVal is the result (we can change this to be any variable, it will probalby return an empty list or soemthing from the query), don't need fields
-  connection.query(newPostQuery, [oppName, tags, address, commitment, suitability, training, requirements, thumbnail, description, dates, branchID], function (err2, returnVal) {
-
-    //error handling
-    if (err2) {
-      //release the query, don't need access to the database anymore
-      console.log("Got error while inserting new post: ", err2);
-      res.sendStatus(500);
-      return;
-    }
-
-      res.json({ message: 'Successfully Created Event' });
-  });
-});
-
-router.get('/getAddress', function (req, res, next) {
-  var branchID = req.body;
-    //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-  var query = `SELECT
-  address
-  FROM
-  Opportunities
-  WHERE
-  oppID = ?;`
-  connection.query(query, oppID, function (err1, rows, fields) {
-    if (err1) {
-      console.log("Error executing query:", err1);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    if (rows.length === 0) {
-      // No results found
-      res.status(404).json({ error: "Addy not found" });
-      return;
-    }
-    console.log(json(rows[0]));
-    // Results found, send back the details
-    res.json(rows[0]);
-  });
-});
-
-router.post('/emailConfirmation', function (req, res, next) {
-  //find the email list
-  var userID = req.session.accountID;
-  //get the connection, we have defined req.pool as our key in app.js, its like a door which opens to the database
-  console.log("connected to pool");
-  //this is the query which i can change
-  var query = "SELECT email FROM User WHERE userID = ?;";
-  //this is us using the query to access/change the database, error is returned in err1, result from query is stored in rows, dont need fields
-  connection.query(query, [userID], function (err1, rows, fields) {
-
-    //close the door of the database, its like a bank vault, once we have opened it and got out the money (using the query) we close it
-    if (err1) {
-      console.log("Error executing query:", err1);
-      res.status(500).json({ error: "Internal Server Error" });
-      return;
-    }
-
-    if (rows.length > 0) {
-      // Extract email addresses from the result rows
-      const emailList = rows.map(row => row.email);
-      // Organization found, send back the details
-      let info = transporter.sendMail({
-        from: "heartfelthelpers@outlook.com", //sender address
-        to: emailList.join(','), //list of recievers
-        subject: req.body.subject, //subject line
-        text: req.body.text, //plain text body
-      })
-    }
-    return;
-  });
-});
 
 module.exports = router;

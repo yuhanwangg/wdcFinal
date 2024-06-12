@@ -10,7 +10,7 @@ function login() {
         if (this.readyState == 4) {
             if (this.readyState == 4) {
                 if (this.status == 200) {
-                    console.log("Logged in successfuly!");
+                    //console.log("Logged in successfuly!");
 
                     //redirect to relevant home page
                     var response = JSON.parse(this.responseText);
@@ -25,7 +25,7 @@ function login() {
                     window.location.href = "/home";
 
                 } else if (this.status == 400) {
-                    console.log("Email or password is incorrect");
+                    //console.log("Email or password is incorrect");
                     message.style.display = "block";
                     message.textContent = "Email or password is incorrect";
                 } else {
@@ -38,7 +38,7 @@ function login() {
     xhttp.open("POST", "/login", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 
-    console.log(email, password);
+    //console.log(email, password);
 
     xhttp.send(JSON.stringify({
         email: email,
@@ -50,7 +50,7 @@ function login() {
 
 function googleLogin(response) {
 
-    console.log(response);
+    //console.log(response);
 
     var message = document.getElementsByClassName("errorInput2")[0];
 
@@ -60,12 +60,12 @@ function googleLogin(response) {
         if (this.readyState == 4) {
             if (this.readyState == 4) {
                 if (this.status == 200) {
-                    console.log("Logged in successfuly!");
+                    //console.log("Logged in successfuly!");
                     //redirect to relevant home page
                     //var response = JSON.parse(this.responseText);
                     window.location.href = "/home";
                 } else if (this.status == 400) {
-                    console.log("You need to sign up before signing in");
+                    //console.log("You need to sign up before signing in");
                     message.style.display = "block";
                     message.textContent = "You must sign up with google before signing in";
                 } else {

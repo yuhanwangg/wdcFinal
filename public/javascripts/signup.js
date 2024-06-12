@@ -153,17 +153,17 @@ function sendInfo() {
         const postcode = document.getElementById("postcode").value;
         const country = document.getElementById("country").value;
 
-        console.log("all info okay");
+        //console.log("all info okay");
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        console.log("Added successfully!");
+                        //console.log("Added successfully!");
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email already in use");
+                        //console.log("Email already in use");
                         message.style.display = "block";
                         message.textContent = "Email already in use";
                     } else {
@@ -176,7 +176,7 @@ function sendInfo() {
         xhttp.open("POST", "/addUser", true);
         xhttp.setRequestHeader("Content-type", "application/json");
 
-        console.log(firstName, lastName, email, password, dob, suburb, state, postcode, country);
+        //console.log(firstName, lastName, email, password, dob, suburb, state, postcode, country);
 
         xhttp.send(JSON.stringify({
             first_name: firstName,
@@ -275,17 +275,17 @@ function sendInfo() {
         const postcode = document.getElementById("postcode").value;
         const country = document.getElementById("country").value;
 
-        console.log("all info okay");
+        //console.log("all info okay");
         var xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4) {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        console.log("Added successfully!");
+                        //console.log("Added successfully!");
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email or name already in use");
+                        //console.log("Email or name already in use");
                         message.style.display = "block";
                         message.textContent = "Email or name already in use";
                     } else {
@@ -298,7 +298,7 @@ function sendInfo() {
         xhttp.open("POST", "/addOrg", true);
         xhttp.setRequestHeader("Content-type", "application/json");
 
-        console.log(name, email, password);
+        //console.log(name, email, password);
 
         xhttp.send(JSON.stringify({
             name: name,
@@ -317,7 +317,7 @@ function sendInfo() {
 
 function googleSignUp(response) {
 
-    console.log(response);
+    //console.log(response);
 
     //check if user or organisation sign up
     if (document.getElementsByClassName("userButton")[0].style.outline == "auto") {
@@ -330,12 +330,12 @@ function googleSignUp(response) {
             if (this.readyState == 4) {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        console.log("Signed up in successfuly!");
+                        //console.log("Signed up in successfuly!");
                         //redirect to relevant home page
                         //var response = JSON.parse(this.responseText);
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email already in use");
+                        //console.log("Email already in use");
                         message.style.display = "block";
                         message.textContent = "Email already in use";
                     } else {
@@ -360,12 +360,12 @@ function googleSignUp(response) {
             if (this.readyState == 4) {
                 if (this.readyState == 4) {
                     if (this.status == 200) {
-                        console.log("Signed up in successfuly!");
+                        //console.log("Signed up in successfuly!");
                         //redirect to relevant home page
                         //var response = JSON.parse(this.responseText);
                         window.location.href = "/home";
                     } else if (this.status == 400) {
-                        console.log("Email or name already in use");
+                        //console.log("Email or name already in use");
                         message.style.display = "block";
                         message.textContent = "Email or name already in use";
                     } else {

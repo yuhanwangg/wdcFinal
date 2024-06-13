@@ -16,4 +16,8 @@ To run our program, please install the following packages:
     npm install express-session
     npm install express mysql
 
+To view the admin pages, you will need to sign in as a prexisting an admin before being able to create your own. Please use these log in details to log in as one of our current admin accounts in the database.
+email: testEmail2@gmail.com
+password: admin1
+
 To view our brief overview of the website, please navigate to the final_video folder
